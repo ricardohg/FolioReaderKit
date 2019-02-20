@@ -22,6 +22,7 @@ open class Highlight: Object {
     @objc open dynamic var startOffset: Int = -1
     @objc open dynamic var endOffset: Int = -1
     @objc open dynamic var noteForHighlight: String?
+    @objc open dynamic var drawNote: Data?
 
     override open class func primaryKey()-> String {
         return "highlightId"
