@@ -99,7 +99,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             webView?.removeGestureRecognizer(gesture)
         })
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
-        tapGestureRecognizer.numberOfTapsRequired = 1
+        tapGestureRecognizer.numberOfTapsRequired = 2
         tapGestureRecognizer.delegate = self
         webView?.addGestureRecognizer(tapGestureRecognizer)
     }
@@ -195,6 +195,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         }
 
         delegate?.pageWillLoad?(self)
+        
 
         // Add the custom class based onClick listener
         self.setupClassBasedOnClickListeners()
