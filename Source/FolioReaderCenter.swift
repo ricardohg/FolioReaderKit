@@ -70,6 +70,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var currentPageNumber: Int = 0
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
+    
+    // tool bar
+    
+    let toolBarViewController = ToolBarViewController()
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -197,6 +201,25 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let scrollScrubber = scrollScrubber {
             view.addSubview(scrollScrubber.slider)
         }
+        
+        setupToolBar()
+    }
+    
+    private func setupToolBar() {
+        
+        addChild(toolBarViewController)
+        toolBarViewController.didMove(toParent: self)
+        
+        view.addSubview(toolBarViewController.view)
+        
+        toolBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        toolBarViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        toolBarViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        toolBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        toolBarViewController.view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        
     }
 
     override open func viewWillAppear(_ animated: Bool) {
