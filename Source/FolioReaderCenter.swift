@@ -74,6 +74,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     // tool bar
     
     let toolBarViewController = ToolBarViewController()
+    
+    // drawable
+    
+    let drawableViewController = DrawableViewController()
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -211,6 +215,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         toolBarViewController.toolSelected = { tool in
             print(tool)
+            self.addCanvasView()
         }
         
         view.addSubview(toolBarViewController.view)
@@ -243,6 +248,27 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         setPageSize(UIApplication.shared.statusBarOrientation)
         updateSubviewFrames()
+    }
+    
+    // MARK: -- CanvasView For Drawing
+    
+    private func addCanvasView() {
+        
+        addChild(drawableViewController)
+        
+        drawableViewController.didMove(toParent: self)
+        
+        view.addSubview(drawableViewController.view)
+        
+        drawableViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        drawableViewController.view.topAnchor.constraint(equalTo: toolBarViewController.view.bottomAnchor).isActive = true
+        drawableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        drawableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        drawableViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        
     }
 
     // MARK: Layout

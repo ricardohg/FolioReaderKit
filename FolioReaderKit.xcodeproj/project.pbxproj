@@ -102,6 +102,7 @@
 		3A27F0C71FD9C33A00D84A57 /* Highlight+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F211D397BE900D56699 /* Highlight+Helper.swift */; };
 		3A27F0C81FD9C33A00D84A57 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F231D397BE900D56699 /* Highlight.swift */; };
 		3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */; };
+		8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89022272A830027C17F /* DrawableViewController.swift */; };
 		8C82985D2224714A004BF531 /* CGMathExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8298592224714A004BF531 /* CGMathExtensions.swift */; };
 		8C82985E2224714A004BF531 /* CGDrawingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C82985A2224714A004BF531 /* CGDrawingEngine.swift */; };
 		8C82985F2224714A004BF531 /* StrokeCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C82985B2224714A004BF531 /* StrokeCollection.swift */; };
@@ -188,6 +189,7 @@
 		3A27F08A1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderUserDefaults.swift; sourceTree = "<group>"; };
 		3A27F08B1FD9BE5800D84A57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderWebView.swift; sourceTree = "<group>"; };
+		8C5AE89022272A830027C17F /* DrawableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableViewController.swift; sourceTree = "<group>"; };
 		8C8298592224714A004BF531 /* CGMathExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGMathExtensions.swift; sourceTree = "<group>"; };
 		8C82985A2224714A004BF531 /* CGDrawingEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGDrawingEngine.swift; sourceTree = "<group>"; };
 		8C82985B2224714A004BF531 /* StrokeCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StrokeCollection.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 				1A958F901D397BE900D56699 /* ScrollScrubber.swift */,
 				8C8389672225BA31007C6153 /* ToolBarViewController.swift */,
 				8C8389692226F711007C6153 /* CanvasContainerView.swift */,
+				8C5AE89022272A830027C17F /* DrawableViewController.swift */,
 			);
 			path = Source;
 			sourceTree = SOURCE_ROOT;
@@ -604,6 +607,7 @@
 				1A958FA11D397BE900D56699 /* FolioReaderFontsMenu.swift in Sources */,
 				1A958F9F1D397BE900D56699 /* FolioReaderConfig.swift in Sources */,
 				1A958FA51D397BE900D56699 /* FolioReaderPage.swift in Sources */,
+				8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */,
 				8C82985F2224714A004BF531 /* StrokeCollection.swift in Sources */,
 				B0D69CC91D0387F7003B4CCD /* SMSegment.swift in Sources */,
 				B0D69CCA1D0387F7003B4CCD /* SMSegmentView.swift in Sources */,

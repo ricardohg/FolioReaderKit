@@ -147,10 +147,10 @@ open class StrokeCGView: UIView {
         super.init(frame: frame)
         
         layer.drawsAsynchronously = true
-        
+        isOpaque = false
         let dirtyRectView = { () -> UIView in
             let view = UIView(frame: CGRect(x: -10, y: -10, width: 0, height: 0))
-            view.layer.borderColor = UIColor.red.cgColor
+            view.layer.borderColor = UIColor.clear.cgColor
             view.layer.borderWidth = 0.5
             view.isUserInteractionEnabled = false
             view.isHidden = true
@@ -171,7 +171,7 @@ open class StrokeCGView: UIView {
 extension StrokeCGView {
     
     override open func draw(_ rect: CGRect) {
-        UIColor.white.set()
+        UIColor.clear.set()
         UIRectFill(rect)
         
         // Optimization opportunity: Draw the existing collection in a different view,
