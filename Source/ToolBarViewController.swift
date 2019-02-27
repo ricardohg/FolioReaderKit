@@ -12,9 +12,12 @@ class ToolBarViewController: UIViewController {
     
     enum Tool {
         case pencil
+        case none
     }
     
-    var toolSelected: (() -> (Tool))?
+    let pencilButton = UIButton(type: .custom)
+    
+    var toolSelected: ((Tool) -> ())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +29,10 @@ class ToolBarViewController: UIViewController {
         
         view.backgroundColor = UIColor(rgba: "#2BB2AC")
         
-        let pencilButton = UIButton(type: .custom)
-        
         pencilButton.setImage(UIImage(readerImageNamed: "pencil"), for: .normal)
         pencilButton.setImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
+        
+        pencilButton.addTarget(self, action: #selector(pencilPressed), for: .touchUpInside)
         
         view.addSubview(pencilButton)
         pencilButton.translatesAutoresizingMaskIntoConstraints = false
@@ -39,5 +42,10 @@ class ToolBarViewController: UIViewController {
         
         
     }
-
+    
+    // MARK - Actions
+    
+    @objc func pencilPressed() {
+        self.toolSelected?(Tool.pencil)
+    }
 }

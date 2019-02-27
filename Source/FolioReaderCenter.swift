@@ -181,8 +181,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.register(FolioReaderPage.self, forCellWithReuseIdentifier: kReuseCellIdentifier)
 
         // Configure navigation bar and layout
-
-        automaticallyAdjustsScrollViewInsets = false
+        
         extendedLayoutIncludesOpaqueBars = true
         configureNavBar()
 
@@ -209,6 +208,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         addChild(toolBarViewController)
         toolBarViewController.didMove(toParent: self)
+        
+        toolBarViewController.toolSelected = { tool in
+            print(tool)
+        }
         
         view.addSubview(toolBarViewController.view)
         
