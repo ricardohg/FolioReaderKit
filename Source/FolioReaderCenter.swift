@@ -321,6 +321,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
 
         navigationItem.leftBarButtonItems = [menu, toc]
+        
+        let layerIcon = UIImage(readerImageNamed: "layers-icon")?.ignoreSystemTint(withConfiguration: self.readerConfig)
+        let layerButton =  UIBarButtonItem(image: layerIcon, style: .plain, target: self, action:nil)
+        
+        navigationItem.rightBarButtonItem = layerButton
 
 //        var rightBarIcons = [UIBarButtonItem]()
 //
