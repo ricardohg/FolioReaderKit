@@ -103,6 +103,8 @@
 		3A27F0C81FD9C33A00D84A57 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F231D397BE900D56699 /* Highlight.swift */; };
 		3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */; };
 		8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89022272A830027C17F /* DrawableViewController.swift */; };
+		8C5AE89B2228749F0027C17F /* Layers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5AE89A2228749F0027C17F /* Layers.storyboard */; };
+		8C5AE89D22287A0B0027C17F /* LayersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */; };
 		8C82985D2224714A004BF531 /* CGMathExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8298592224714A004BF531 /* CGMathExtensions.swift */; };
 		8C82985E2224714A004BF531 /* CGDrawingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C82985A2224714A004BF531 /* CGDrawingEngine.swift */; };
 		8C82985F2224714A004BF531 /* StrokeCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C82985B2224714A004BF531 /* StrokeCollection.swift */; };
@@ -190,6 +192,8 @@
 		3A27F08B1FD9BE5800D84A57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderWebView.swift; sourceTree = "<group>"; };
 		8C5AE89022272A830027C17F /* DrawableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableViewController.swift; sourceTree = "<group>"; };
+		8C5AE89A2228749F0027C17F /* Layers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Layers.storyboard; sourceTree = "<group>"; };
+		8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersTableViewController.swift; sourceTree = "<group>"; };
 		8C8298592224714A004BF531 /* CGMathExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGMathExtensions.swift; sourceTree = "<group>"; };
 		8C82985A2224714A004BF531 /* CGDrawingEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGDrawingEngine.swift; sourceTree = "<group>"; };
 		8C82985B2224714A004BF531 /* StrokeCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StrokeCollection.swift; sourceTree = "<group>"; };
@@ -315,6 +319,7 @@
 		1A958F251D397BE900D56699 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C5AE8992228747B0027C17F /* LayerSelector */,
 				1A958F271D397BE900D56699 /* Fonts */,
 				1A9590141D397C1300D56699 /* Images.xcassets */,
 				1A958F261D397BE900D56699 /* Bridge.js */,
@@ -376,6 +381,15 @@
 				1A958F3B1D397BE900D56699 /* Raleway-Regular.ttf */,
 			);
 			path = Raleway;
+			sourceTree = "<group>";
+		};
+		8C5AE8992228747B0027C17F /* LayerSelector */ = {
+			isa = PBXGroup;
+			children = (
+				8C5AE89A2228749F0027C17F /* Layers.storyboard */,
+				8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */,
+			);
+			path = LayerSelector;
 			sourceTree = "<group>";
 		};
 		8C829858222470FF004BF531 /* DrawingEngine */ = {
@@ -569,6 +583,7 @@
 				1A958FBA1D397BE900D56699 /* Lora-Italic.ttf in Resources */,
 				1A958FB21D397BE900D56699 /* Andada-Italic.otf in Resources */,
 				1A958FBF1D397BE900D56699 /* Raleway-Regular.ttf in Resources */,
+				8C5AE89B2228749F0027C17F /* Layers.storyboard in Resources */,
 				1A958FBB1D397BE900D56699 /* Lora-Regular.ttf in Resources */,
 				1A958FB41D397BE900D56699 /* Lato-Bold.ttf in Resources */,
 				1A958FB31D397BE900D56699 /* Andada-Regular.otf in Resources */,
@@ -632,6 +647,7 @@
 				1A958F971D397BE900D56699 /* FRSmilElement.swift in Sources */,
 				1A41E8912031E22300A8F70C /* MediaType.swift in Sources */,
 				3A27F08E1FD9BE5800D84A57 /* Extensions.swift in Sources */,
+				8C5AE89D22287A0B0027C17F /* LayersTableViewController.swift in Sources */,
 				1A958F9D1D397BE900D56699 /* FolioReaderChapterList.swift in Sources */,
 				1A958F951D397BE900D56699 /* FRResource.swift in Sources */,
 				1A958F9B1D397BE900D56699 /* FolioReaderAudioPlayer.swift in Sources */,

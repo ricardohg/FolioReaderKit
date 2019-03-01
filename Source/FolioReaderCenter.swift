@@ -132,6 +132,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         loadingView.hidesWhenStopped = true
         loadingView.startAnimating()
         self.view.addSubview(loadingView)
+
     }
 
     // MARK: - View life cicle
@@ -323,7 +324,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         navigationItem.leftBarButtonItems = [menu, toc]
         
         let layerIcon = UIImage(readerImageNamed: "layers-icon")?.ignoreSystemTint(withConfiguration: self.readerConfig)
-        let layerButton =  UIBarButtonItem(image: layerIcon, style: .plain, target: self, action:nil)
+        let layerButton =  UIBarButtonItem(image: layerIcon, style: .plain, target: self, action:#selector(showLayers(_:)))
         
         navigationItem.rightBarButtonItem = layerButton
 
@@ -1370,6 +1371,22 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     @objc func closeReader(_ sender: UIBarButtonItem) {
         dismiss()
         folioReader.close()
+    }
+    
+    @objc func showLayers(_ sender: UIBarButtonItem) {
+        guard let layersViewController = UIStoryboard(name: "Layers", bundle: Bundle(for: LayersTableViewController.self)).instantiateInitialViewController() as? LayersTableViewController else {
+            assertionFailure("cannot load view controller")
+            return
+        }
+        
+        layersViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+        layersViewController.preferredContentSize = CGSize(width: 300, height: 200)
+        self.navigationController?.present(layersViewController, animated: true, completion: nil)
+        
+        let popController = layersViewController.popoverPresentationController
+        popController?.permittedArrowDirections = .any
+        popController?.barButtonItem = sender
+
     }
 
     /**
