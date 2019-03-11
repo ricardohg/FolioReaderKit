@@ -223,7 +223,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         toolBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        toolBarViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         toolBarViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         toolBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         toolBarViewController.view.heightAnchor.constraint(equalToConstant: 50).isActive = true
