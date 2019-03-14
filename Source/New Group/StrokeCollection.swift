@@ -11,11 +11,13 @@ import UIKit
 
 open class StrokeCollection {
     open var strokes: [Stroke] = []
+    open var undoStrokes: [Stroke] = []
     open var activeStroke: Stroke?
     
     open func takeActiveStroke() {
         if let stroke = activeStroke {
             strokes.append(stroke)
+            undoStrokes.removeAll()
             activeStroke = nil
         }
     }

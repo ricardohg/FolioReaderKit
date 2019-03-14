@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+extension Notification.Name {
+    static let undoAction = Notification.Name("undoAction")
+    static let redoAction = Notification.Name("redoAction")
+}
+
 extension UICollectionView.ScrollDirection {
     static func direction(withConfiguration readerConfig: FolioReaderConfig) -> UICollectionView.ScrollDirection {
         return readerConfig.isDirection(.vertical, .horizontal, .horizontal)

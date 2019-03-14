@@ -30,7 +30,8 @@ enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
 }
 
 open class StrokeCGView: UIView {
-    var displayOptions = StrokeViewDisplayOptions.calligraphy {
+    
+    var displayOptions = StrokeViewDisplayOptions.ink {
         didSet {
             if strokeCollection != nil {
                 setNeedsDisplay()
@@ -158,6 +159,7 @@ open class StrokeCGView: UIView {
             return view
         }
         dirtyRectViews = [dirtyRectView(), dirtyRectView()]
+        
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -178,6 +180,7 @@ extension StrokeCGView {
         // and only draw each time we add a stroke.
         if let strokeCollection = strokeCollection {
             for stroke in strokeCollection.strokes {
+                
                 draw(stroke: stroke, in: rect)
             }
         }

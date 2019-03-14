@@ -18,6 +18,10 @@ class DrawableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(undo), name: .undoAction, object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(redo), name: .redoAction, object: nil)
 
         view.backgroundColor = .clear
         
@@ -37,6 +41,10 @@ class DrawableViewController: UIViewController {
         pencilStrokeRecognizer = setupStrokeGestureRecognizer(isForPencil: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
     
     func receivedAllUpdatesForStroke(_ stroke: Stroke) {
         cgView.setNeedsDisplay(for: stroke)
@@ -90,7 +98,11 @@ class DrawableViewController: UIViewController {
         }
         
         cgView.strokeCollection = strokeCollection
+        
     }
+    
+    
+
     
     // MARK: Pencil Recognition and UI Adjustments
     /*
@@ -109,8 +121,32 @@ class DrawableViewController: UIViewController {
         guard let lastSeenPencilInteraction = self.lastSeenPencilInteraction else { return true }
         return abs(lastSeenPencilInteraction.timeIntervalSinceNow) > self.pencilResetInterval
     }
-    
 
+}
+
+// MARK: -- Undo Operations
+
+extension DrawableViewController {
+    
+    @objc func undo() {
+        guard cgView.strokeCollection?.strokes.count > 0, let stroke = cgView.strokeCollection?.strokes.removeLast() else {
+        return
+        }
+        cgView.strokeCollection?.undoStrokes.append(stroke)
+        cgView.setNeedsDisplay()
+    }
+    
+    @objc func redo() {
+        
+        guard let collection = cgView.strokeCollection, collection.undoStrokes.count > 0 else {
+            return
+        }
+        
+        let stroke = collection.undoStrokes.removeLast()
+        cgView.strokeCollection?.strokes.append(stroke)
+        cgView.setNeedsDisplay()
+
+    }
 }
 
 

@@ -15,17 +15,11 @@ class ToolBarViewController: UIViewController {
         case none
     }
     
-    enum EditDrawingType {
-        case undo
-        case redo
-    }
-    
     let pencilButton = UIButton(type: .custom)
-    let undoButton = UIButton(type: .custom)
-    let redoButton = UIButton(type: .custom)
+    let undoButton = UIButton(type: .system)
+    let redoButton = UIButton(type: .system)
     
     var toolSelected: ((Tool) -> ())?
-    var undoRedoAction: ((EditDrawingType) -> ())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,17 +42,20 @@ class ToolBarViewController: UIViewController {
         redoButton.addTarget(self, action: #selector(redoPressed), for: .touchUpInside)
         
         view.addSubview(pencilButton)
-//        view.addSubview(undoButton)
-//        view.addSubview(redoButton)
+        view.addSubview(undoButton)
+        view.addSubview(redoButton)
         
         pencilButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         redoButton.translatesAutoresizingMaskIntoConstraints = false
         
+        let leftPadding: CGFloat = 20
         
-//        undoButton.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-//        undoButton.trailingAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        undoButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leftPadding).isActive = true
+        undoButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
+        redoButton.leadingAnchor.constraint(equalTo: undoButton.trailingAnchor, constant: leftPadding).isActive = true
+        redoButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
         pencilButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         pencilButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -73,10 +70,12 @@ class ToolBarViewController: UIViewController {
     }
 
     @objc func undoPressed() {
-        self.undoRedoAction?(.undo)
+        NotificationCenter.default.post(name: .undoAction, object: nil)
+    
     }
     
     @objc func redoPressed() {
-        self.undoRedoAction?(.undo)
+        NotificationCenter.default.post(name: .redoAction, object: nil)
+
     }
 }
