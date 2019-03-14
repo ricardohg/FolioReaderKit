@@ -219,6 +219,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.addCanvasView()
         }
         
+        
         view.addSubview(toolBarViewController.view)
         
         toolBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -264,10 +265,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         drawableViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
         
-        drawableViewController.view.topAnchor.constraint(equalTo: toolBarViewController.view.bottomAnchor).isActive = true
+        drawableViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         drawableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         drawableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        drawableViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        drawableViewController.view.bottomAnchor.constraint(equalTo: toolBarViewController.view.topAnchor).isActive = true
         
         
     }
