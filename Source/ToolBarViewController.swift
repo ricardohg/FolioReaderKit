@@ -19,6 +19,8 @@ class ToolBarViewController: UIViewController {
     let undoButton = UIButton(type: .custom)
     let redoButton = UIButton(type: .custom)
     
+    static let toolbarHeight: CGFloat = 50
+    
     var toolSelected: ((Tool) -> ())?
 
     override func viewDidLoad() {

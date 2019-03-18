@@ -77,6 +77,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     var toolBarAnchor: NSLayoutConstraint?
     
+    var isShowingToolBar: Bool {
+        return toolBarAnchor?.constant == 0
+    }
+    
     // drawable
     
     let drawableViewController = DrawableViewController()
@@ -254,10 +258,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         toolBarViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         toolBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        toolBarViewController.view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        toolBarViewController.view.heightAnchor.constraint(equalToConstant: ToolBarViewController.toolbarHeight).isActive = true
         
         
-        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 50)
+        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: ToolBarViewController.toolbarHeight)
         toolBarAnchor?.isActive = true
         
         
@@ -266,7 +270,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func toggleToolBar() {
         
         toolBarAnchor?.isActive = false
-        toolBarAnchor?.constant = toolBarAnchor?.constant == 0 ? 50 : 0
+        toolBarAnchor?.constant = toolBarAnchor?.constant == 0 ? ToolBarViewController.toolbarHeight : 0
         toolBarAnchor?.isActive = true
         
         UIView.animate(withDuration: 0.3) {
