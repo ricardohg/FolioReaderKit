@@ -75,6 +75,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     let toolBarViewController = ToolBarViewController()
     
+    var toolBarAnchor: NSLayoutConstraint?
+    
     // drawable
     
     let drawableViewController = DrawableViewController()
@@ -207,7 +209,33 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         setupToolBar()
+        
     }
+
+
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        configureNavBar()
+        
+        showBars()
+
+        // Update pages
+        pagesForCurrentPage(currentPage)
+        pageIndicatorView?.reloadView(updateShadow: true)
+    }
+
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        screenBounds = self.getScreenBounds()
+        loadingView.center = view.center
+
+        setPageSize(UIApplication.shared.statusBarOrientation)
+        updateSubviewFrames()
+    }
+    
+    // MARK: -- Toolbar
     
     private func setupToolBar() {
         
@@ -224,32 +252,27 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         toolBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         toolBarViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         toolBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         toolBarViewController.view.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
         
+        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 50)
+        toolBarAnchor?.isActive = true
+        
+        
     }
-
-    override open func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        configureNavBar()
-
-        // Update pages
-        pagesForCurrentPage(currentPage)
-        pageIndicatorView?.reloadView(updateShadow: true)
-    }
-
-    override open func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        screenBounds = self.getScreenBounds()
-        loadingView.center = view.center
-
-        setPageSize(UIApplication.shared.statusBarOrientation)
-        updateSubviewFrames()
+    
+    func toggleToolBar() {
+        
+        toolBarAnchor?.isActive = false
+        toolBarAnchor?.constant = toolBarAnchor?.constant == 0 ? 50 : 0
+        toolBarAnchor?.isActive = true
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    
     }
     
     // MARK: -- CanvasView For Drawing
@@ -328,22 +351,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let layerButton =  UIBarButtonItem(image: layerIcon, style: .plain, target: self, action:#selector(showLayers(_:)))
         
         navigationItem.rightBarButtonItem = layerButton
-
-//        var rightBarIcons = [UIBarButtonItem]()
-//
-//        if (self.readerConfig.allowSharing == true) {
-//            rightBarIcons.append(UIBarButtonItem(image: shareIcon, style: .plain, target: self, action:#selector(shareChapter(_:))))
-//        }
-//
-//        if self.book.hasAudio || self.readerConfig.enableTTS {
-//            rightBarIcons.append(UIBarButtonItem(image: audioIcon, style: .plain, target: self, action:#selector(presentPlayerMenu(_:))))
-//        }
-//
-//        let font = UIBarButtonItem(image: fontIcon, style: .plain, target: self, action: #selector(presentFontsMenu))
-//        font.width = space
-//
-//        rightBarIcons.append(contentsOf: [font])
-//        navigationItem.rightBarButtonItems = rightBarIcons
         
         if(self.readerConfig.displayTitle){
             navigationItem.title = book.title

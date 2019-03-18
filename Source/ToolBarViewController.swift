@@ -16,8 +16,8 @@ class ToolBarViewController: UIViewController {
     }
     
     let pencilButton = UIButton(type: .custom)
-    let undoButton = UIButton(type: .system)
-    let redoButton = UIButton(type: .system)
+    let undoButton = UIButton(type: .custom)
+    let redoButton = UIButton(type: .custom)
     
     var toolSelected: ((Tool) -> ())?
 
@@ -26,7 +26,6 @@ class ToolBarViewController: UIViewController {
         setupView()
     }
     
-    
     private func setupView() {
         
         view.backgroundColor = UIColor(rgba: "#2BB2AC")
@@ -34,8 +33,8 @@ class ToolBarViewController: UIViewController {
         pencilButton.setImage(UIImage(readerImageNamed: "pencil"), for: .normal)
         pencilButton.setImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
         
-        undoButton.setTitle("undo", for: .normal)
-        redoButton.setTitle("redo", for: .normal)
+        undoButton.setTitle("Undo", for: .normal)
+        redoButton.setTitle("Redo", for: .normal)
         
         pencilButton.addTarget(self, action: #selector(pencilPressed), for: .touchUpInside)
         undoButton.addTarget(self, action: #selector(undoPressed), for: .touchUpInside)

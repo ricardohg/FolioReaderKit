@@ -98,10 +98,18 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         webView?.gestureRecognizers?.forEach({ gesture in
             webView?.removeGestureRecognizer(gesture)
         })
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
         tapGestureRecognizer.numberOfTapsRequired = 2
         tapGestureRecognizer.delegate = self
         webView?.addGestureRecognizer(tapGestureRecognizer)
+        
+        let pencilTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handlePencilTap(_:)))
+        pencilTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.pencil.rawValue as NSNumber]
+        pencilTapGestureRecognizer.delegate = self
+        pencilTapGestureRecognizer.numberOfTapsRequired = 1
+        webView?.addGestureRecognizer(pencilTapGestureRecognizer)
+        
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -393,6 +401,12 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             self.menuIsVisible = false
         }
     }
+    
+    @objc open func handlePencilTap(_ recognizer: UITapGestureRecognizer) {
+        
+        self.folioReader.readerCenter?.toggleToolBar()
+    }
+    
 
     // MARK: - Public scroll postion setter
 
