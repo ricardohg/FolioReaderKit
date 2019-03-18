@@ -100,6 +100,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         })
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        tapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
         tapGestureRecognizer.numberOfTapsRequired = 2
         tapGestureRecognizer.delegate = self
         webView?.addGestureRecognizer(tapGestureRecognizer)
@@ -109,6 +110,13 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         pencilTapGestureRecognizer.delegate = self
         pencilTapGestureRecognizer.numberOfTapsRequired = 1
         webView?.addGestureRecognizer(pencilTapGestureRecognizer)
+        
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
+        singleTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
+        singleTapGestureRecognizer.delegate = self
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        webView?.addGestureRecognizer(singleTapGestureRecognizer)
+        
         
     }
 
@@ -398,6 +406,10 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             })
         } else if (self.readerConfig.shouldHideNavigationOnTap == true) {
             self.folioReader.readerCenter?.hideBars()
+            //hide toolbar if needed
+            if self.folioReader.readerCenter?.isShowingToolBar ?? false {
+                self.folioReader.readerCenter?.toggleToolBar()
+            }
             self.menuIsVisible = false
         }
     }
@@ -406,6 +418,14 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         
         self.folioReader.readerCenter?.toggleToolBar()
     }
+    
+    @objc open func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
+        
+        if let isShowing = self.folioReader.readerCenter?.isShowingToolBar, isShowing {
+            self.folioReader.readerCenter?.toggleToolBar()
+        }
+    }
+    
     
 
     // MARK: - Public scroll postion setter
