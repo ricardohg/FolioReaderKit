@@ -32,8 +32,10 @@ class ToolBarViewController: UIViewController {
         
         view.backgroundColor = UIColor(rgba: "#2BB2AC")
         
-        pencilButton.setImage(UIImage(readerImageNamed: "pencil"), for: .normal)
-        pencilButton.setImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
+        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil"), for: .normal)
+        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
+        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .highlighted)
+        //pencilButton.backgroundColor = .white
         
         undoButton.setTitle("Undo", for: .normal)
         redoButton.setTitle("Redo", for: .normal)
@@ -66,7 +68,8 @@ class ToolBarViewController: UIViewController {
     
     // MARK - Actions
     
-    @objc func pencilPressed() {
+    @objc func pencilPressed(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
         self.toolSelected?(.pencil)
     }
 
