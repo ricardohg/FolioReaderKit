@@ -84,6 +84,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     // drawable
     
     let drawableViewController = DrawableViewController()
+    
+    var pageDrawings: [Int: UIImage] = [:]
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -287,16 +289,32 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         drawableViewController.didMove(toParent: self)
         
+        drawableViewController.saveImage = { view in
+            
+            let image = UIImage.imageWithLayer(view.layer)
+            self.currentPage?.drawImageView.image = image
+
+            self.pageDrawings[self.currentPageNumber] = image
+    
+            self.toggleToolBar()
+            self.updateCurrentPage()
+            let strokeCollection = StrokeCollection()
+            self.drawableViewController.strokeCollection = strokeCollection
+            self.drawableViewController.cgView.strokeCollection = strokeCollection
+            self.drawableViewController.removeFromParent()
+            self.drawableViewController.view.removeFromSuperview()
+            
+        }
+        
         view.addSubview(drawableViewController.view)
+        view.bringSubviewToFront(toolBarViewController.view)
         
         drawableViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        
-        drawableViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        drawableViewController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: -10).isActive = true
         drawableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         drawableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        drawableViewController.view.bottomAnchor.constraint(equalTo: toolBarViewController.view.topAnchor).isActive = true
-        
+        drawableViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
     }
 
@@ -516,6 +534,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         cell.setup(withReaderContainer: readerContainer)
         cell.pageNumber = indexPath.row+1
+        cell.drawImageView.image = nil
+        if let image = pageDrawings[cell.pageNumber] {
+            cell.drawImageView.image = image
+        }
+        
         cell.webView?.scrollView.delegate = self
         if #available(iOS 11.0, *) {
             cell.webView?.scrollView.contentInsetAdjustmentBehavior = .never
@@ -697,6 +720,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func updateCurrentPage(_ page: FolioReaderPage? = nil, completion: (() -> Void)? = nil) {
         if let page = page {
             currentPage = page
+            
             self.previousPageNumber = page.pageNumber-1
             self.currentPageNumber = page.pageNumber
         } else {
