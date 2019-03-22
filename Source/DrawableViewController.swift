@@ -15,6 +15,8 @@ class DrawableViewController: UIViewController {
     var canvasContainerView: CanvasContainerView!
     
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
+    
+    var saveImage: ((UIView) ->())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,13 @@ class DrawableViewController: UIViewController {
         view.addSubview(canvasContainerView)
         
         pencilStrokeRecognizer = setupStrokeGestureRecognizer(isForPencil: true)
+        
+        //single tap handler
+        
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
+        singleTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        view.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,7 +88,6 @@ class DrawableViewController: UIViewController {
             if strokeGesture.state == .began ||
                 (strokeGesture.state == .ended && strokeCollection.activeStroke == nil) {
                 strokeCollection.activeStroke = stroke
-                //leftRingControl.cancelInteraction()
             }
         } else {
             strokeCollection.activeStroke = nil
@@ -103,6 +111,9 @@ class DrawableViewController: UIViewController {
     
     
 
+    @objc func handleSingleTap(_ sender: Any) {
+        saveImage?(view)
+    }
     
     // MARK: Pencil Recognition and UI Adjustments
     /*

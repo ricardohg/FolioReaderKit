@@ -69,7 +69,7 @@ class ToolBarViewController: UIViewController {
     // MARK - Actions
     
     @objc func pencilPressed(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
+        //sender.isSelected = !sender.isSelected
         self.toolSelected?(.pencil)
     }
 

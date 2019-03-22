@@ -42,6 +42,8 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
     /// The index of the current page. Note: The index start at 1!
     open var pageNumber: Int!
     open var webView: FolioReaderWebView?
+    
+    open var drawImageView: UIImageView!
 
     fileprivate var colorView: UIView!
     fileprivate var shouldShowBar = true
@@ -94,6 +96,13 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             webView?.scrollView.addSubview(colorView)
         }
 
+        if drawImageView == nil {
+            drawImageView = UIImageView(frame: webViewFrame())
+            drawImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            drawImageView.contentMode = .center
+            self.contentView.addSubview(drawImageView)
+        }
+        
         // Remove all gestures before adding new one
         webView?.gestureRecognizers?.forEach({ gesture in
             webView?.removeGestureRecognizer(gesture)
@@ -423,6 +432,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         
         if let isShowing = self.folioReader.readerCenter?.isShowingToolBar, isShowing {
             self.folioReader.readerCenter?.toggleToolBar()
+
         }
     }
     
