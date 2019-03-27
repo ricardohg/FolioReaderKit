@@ -16,6 +16,12 @@ class DrawableViewController: UIViewController {
     
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
+    var currentImage: UIImage? {
+        didSet {
+            currentImageView?.image = currentImage
+        }
+    }
+    
     var saveImage: ((UIView) ->())?
     
     // property to store previous drawed image
@@ -48,6 +54,8 @@ class DrawableViewController: UIViewController {
         let currentImageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: -topOffset), size: CGSize(width: maxScreenDimension, height: maxScreenDimension)))
         currentImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         currentImageView.contentMode = .center
+        
+        currentImageView.image = currentImage
         
         self.currentImageView = currentImageView
         view.addSubview(currentImageView)

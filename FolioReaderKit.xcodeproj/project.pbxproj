@@ -102,6 +102,7 @@
 		3A27F0C71FD9C33A00D84A57 /* Highlight+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F211D397BE900D56699 /* Highlight+Helper.swift */; };
 		3A27F0C81FD9C33A00D84A57 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F231D397BE900D56699 /* Highlight.swift */; };
 		3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */; };
+		8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0775CA224BE739005CB6EC /* Drawing.swift */; };
 		8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89022272A830027C17F /* DrawableViewController.swift */; };
 		8C5AE89B2228749F0027C17F /* Layers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5AE89A2228749F0027C17F /* Layers.storyboard */; };
 		8C5AE89D22287A0B0027C17F /* LayersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */; };
@@ -191,6 +192,7 @@
 		3A27F08A1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderUserDefaults.swift; sourceTree = "<group>"; };
 		3A27F08B1FD9BE5800D84A57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderWebView.swift; sourceTree = "<group>"; };
+		8C0775CA224BE739005CB6EC /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		8C5AE89022272A830027C17F /* DrawableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableViewController.swift; sourceTree = "<group>"; };
 		8C5AE89A2228749F0027C17F /* Layers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Layers.storyboard; sourceTree = "<group>"; };
 		8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersTableViewController.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 			children = (
 				1A958F211D397BE900D56699 /* Highlight+Helper.swift */,
 				1A958F231D397BE900D56699 /* Highlight.swift */,
+				8C0775CA224BE739005CB6EC /* Drawing.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -632,6 +635,7 @@
 				8C8389682225BA31007C6153 /* ToolBarViewController.swift in Sources */,
 				3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */,
 				1A958FA41D397BE900D56699 /* FolioReaderKit.swift in Sources */,
+				8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */,
 				1A65DDD71DA7450A0033C277 /* FolioReaderQuoteShare.swift in Sources */,
 				3A27F08C1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift in Sources */,
 				1A958FA21D397BE900D56699 /* FolioReaderHighlightList.swift in Sources */,
