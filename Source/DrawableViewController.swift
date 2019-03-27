@@ -17,6 +17,9 @@ class DrawableViewController: UIViewController {
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var saveImage: ((UIView) ->())?
+    
+    // property to store previous drawed image
+    var currentImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +42,15 @@ class DrawableViewController: UIViewController {
         self.canvasContainerView = canvasContainerView
         
         view.addSubview(canvasContainerView)
+        
+        let topOffset = 128
+        
+        let currentImageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: -topOffset), size: CGSize(width: maxScreenDimension, height: maxScreenDimension)))
+        currentImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        currentImageView.contentMode = .center
+        
+        self.currentImageView = currentImageView
+        view.addSubview(currentImageView)
         
         pencilStrokeRecognizer = setupStrokeGestureRecognizer(isForPencil: true)
         

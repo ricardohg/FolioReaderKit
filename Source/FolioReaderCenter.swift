@@ -85,6 +85,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     let drawableViewController = DrawableViewController()
     
+    // Dictionary to store images [page number: image]
     var pageDrawings: [Int: UIImage] = [:]
 
     fileprivate var screenBounds: CGRect!
@@ -306,12 +307,21 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             
         }
         
+        
+        
+        if let image = pageDrawings[currentPageNumber] {
+            currentPage?.drawImageView.image = nil
+            drawableViewController.currentImageView.image = image
+        }
+        
         view.addSubview(drawableViewController.view)
         view.bringSubviewToFront(toolBarViewController.view)
         
         drawableViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        drawableViewController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: -10).isActive = true
+        let drawableOffset: CGFloat = 10.0
+        
+        drawableViewController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: -drawableOffset).isActive = true
         drawableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         drawableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         drawableViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
