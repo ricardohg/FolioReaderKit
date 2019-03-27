@@ -286,6 +286,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     private func addCanvasView() {
         
+        drawableViewController.currentImage = nil
+        
         addChild(drawableViewController)
         
         drawableViewController.didMove(toParent: self)
@@ -305,13 +307,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.drawableViewController.removeFromParent()
             self.drawableViewController.view.removeFromSuperview()
             
+            Drawing.store(image: image, page: self.currentPageNumber, bookId: self.book.name ?? "", configuration: self.readerConfig)
+            
         }
         
         
         
         if let image = pageDrawings[currentPageNumber] {
             currentPage?.drawImageView.image = nil
-            drawableViewController.currentImageView.image = image
+            drawableViewController.currentImage = image
         }
         
         view.addSubview(drawableViewController.view)
@@ -545,9 +549,17 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         cell.setup(withReaderContainer: readerContainer)
         cell.pageNumber = indexPath.row+1
         cell.drawImageView.image = nil
+        
         if let image = pageDrawings[cell.pageNumber] {
             cell.drawImageView.image = image
         }
+        else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", page: cell.pageNumber, configuration: readerConfig), let image = drawing.image {
+            
+            pageDrawings[cell.pageNumber] = image
+            cell.drawImageView.image = image
+        }
+            
+        
         
         cell.webView?.scrollView.delegate = self
         if #available(iOS 11.0, *) {
@@ -1561,6 +1573,7 @@ extension FolioReaderCenter: FolioReaderPageDelegate {
         
         // Pass the event to the centers `pageDelegate`
         pageDelegate?.pageDidLoad?(page)
+        
     }
     
     public func pageWillLoad(_ page: FolioReaderPage) {
