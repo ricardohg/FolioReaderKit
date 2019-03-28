@@ -48,6 +48,94 @@ extension CGRect {
     }
 }
 
+extension UIView {
+    
+    @IBInspectable
+    var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+        }
+    }
+    
+    @IBInspectable
+    var borderWidth: CGFloat {
+        get {
+            return layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }
+    
+    @IBInspectable
+    var borderColor: UIColor? {
+        get {
+            if let color = layer.borderColor {
+                return UIColor(cgColor: color)
+            }
+            return nil
+        }
+        set {
+            if let color = newValue {
+                layer.borderColor = color.cgColor
+            } else {
+                layer.borderColor = nil
+            }
+        }
+    }
+    
+    @IBInspectable
+    var shadowRadius: CGFloat {
+        get {
+            return layer.shadowRadius
+        }
+        set {
+            layer.shadowRadius = newValue
+        }
+    }
+    
+    @IBInspectable
+    var shadowOpacity: Float {
+        get {
+            return layer.shadowOpacity
+        }
+        set {
+            layer.shadowOpacity = newValue
+        }
+    }
+    
+    @IBInspectable
+    var shadowOffset: CGSize {
+        get {
+            return layer.shadowOffset
+        }
+        set {
+            layer.shadowOffset = newValue
+        }
+    }
+    
+    @IBInspectable
+    var shadowColor: UIColor? {
+        get {
+            if let color = layer.shadowColor {
+                return UIColor(cgColor: color)
+            }
+            return nil
+        }
+        set {
+            if let color = newValue {
+                layer.shadowColor = color.cgColor
+            } else {
+                layer.shadowColor = nil
+            }
+        }
+    }
+
+}
+
 extension ScrollDirection {
     static func negative(withConfiguration readerConfig: FolioReaderConfig, scrollType: ScrollType = .page) -> ScrollDirection {
         return readerConfig.isDirection(.down, .right, .right)
@@ -127,6 +215,44 @@ internal extension UIColor {
             print("Invalid RGB string, missing '#' as prefix", terminator: "")
         }
         self.init(red:red, green:green, blue:blue, alpha:alpha)
+    }
+    
+    ///Custom colors
+    
+    class func lightBlue() -> UIColor {
+        return UIColor(red: 0.29, green: 0.56, blue: 0.89, alpha: 0.8)
+    }
+    
+    class func lightGreen() -> UIColor {
+        return UIColor(red: 0.32, green: 0.7, blue: 0.39, alpha: 0.8)
+    }
+    
+    class func lightYellow() -> UIColor {
+        return UIColor(red: 0.97, green: 0.81, blue: 0.11, alpha: 0.8)
+    }
+    
+    class func lightOrange() -> UIColor {
+        return UIColor(red: 0.95, green: 0.48, blue: 0.07, alpha: 0.8)
+    }
+    
+    class func lightRed() -> UIColor {
+        return UIColor(red: 0.95, green: 0.28, blue: 0.28, alpha: 0.8)
+    }
+    
+    class func pink() -> UIColor {
+        return UIColor(red: 0.94, green: 0.55, blue: 0.73, alpha: 1)
+    }
+    
+    class func lightPurple() -> UIColor {
+        return UIColor(red: 0.41, green: 0.42, blue: 0.83, alpha: 1)
+    }
+    
+    class func customGray() -> UIColor {
+        return UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 1)
+    }
+    
+    class func lightWhite() -> UIColor {
+        return UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
     }
     
     //
@@ -402,6 +528,29 @@ internal extension UIImage {
         UIGraphicsEndImageContext()
         
         return image!
+    }
+    
+    /**
+     Generates an ellipse with a color
+     
+     - parameter color: The input color
+     - returns: Return a colored ellipse
+     */
+    
+    class func ellipseWithColor(_ color: UIColor, size: CGFloat?) -> UIImage {
+        let layerFrame = CGRect(x: 0, y: 0, width: size ?? 16.0, height: size ?? 16.0)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = CGPath(ellipseIn: layerFrame.insetBy(dx: 1, dy: 1), transform: nil)
+        shapeLayer.fillColor = color.cgColor
+        let darkerColor = color.darkerColor(0.4)
+        shapeLayer.strokeColor = darkerColor.withAlphaComponent(0.65).cgColor
+        
+        let layer = CALayer.init()
+        layer.frame = layerFrame
+        layer.addSublayer(shapeLayer)
+        
+        return UIImage.imageWithLayer(layer)
     }
     
     /**
