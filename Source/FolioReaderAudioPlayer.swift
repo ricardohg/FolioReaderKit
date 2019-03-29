@@ -455,7 +455,11 @@ open class FolioReaderAudioPlayer: NSObject {
 
         // Get book Artwork
         if let coverImage = self.book.coverImage, let artwork = UIImage(contentsOfFile: coverImage.fullHref) {
-            let albumArt = MPMediaItemArtwork(image: artwork)
+            
+            let albumArt = MPMediaItemArtwork.init(boundsSize: artwork.size, requestHandler: { (size) -> UIImage in
+                return artwork
+            })
+            
             songInfo[MPMediaItemPropertyArtwork] = albumArt
         }
 
