@@ -37,7 +37,7 @@ class ColorPickerCollectionViewController: UICollectionViewController {
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return colorPalette?.count ?? 16
+        return colorPalette?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
