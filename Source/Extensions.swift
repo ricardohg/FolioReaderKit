@@ -219,41 +219,23 @@ internal extension UIColor {
     
     ///Custom colors
     
-    class func lightBlue() -> UIColor {
-        return UIColor(red: 0.29, green: 0.56, blue: 0.89, alpha: 0.8)
-    }
+    static let lightBlue = UIColor(red: 0.29, green: 0.56, blue: 0.89, alpha: 0.8)
     
-    class func lightGreen() -> UIColor {
-        return UIColor(red: 0.32, green: 0.7, blue: 0.39, alpha: 0.8)
-    }
+    static let lightGreen = UIColor(red: 0.32, green: 0.7, blue: 0.39, alpha: 0.8)
     
-    class func lightYellow() -> UIColor {
-        return UIColor(red: 0.97, green: 0.81, blue: 0.11, alpha: 0.8)
-    }
+    static let lightYellow = UIColor(red: 0.97, green: 0.81, blue: 0.11, alpha: 0.8)
     
-    class func lightOrange() -> UIColor {
-        return UIColor(red: 0.95, green: 0.48, blue: 0.07, alpha: 0.8)
-    }
+    static let lightOrange = UIColor(red: 0.95, green: 0.48, blue: 0.07, alpha: 0.8)
     
-    class func lightRed() -> UIColor {
-        return UIColor(red: 0.95, green: 0.28, blue: 0.28, alpha: 0.8)
-    }
+    static let lightRed = UIColor(red: 0.95, green: 0.28, blue: 0.28, alpha: 0.8)
     
-    class func pink() -> UIColor {
-        return UIColor(red: 0.94, green: 0.55, blue: 0.73, alpha: 1)
-    }
+    static let pink = UIColor(red: 0.94, green: 0.55, blue: 0.73, alpha: 1)
     
-    class func lightPurple() -> UIColor {
-        return UIColor(red: 0.41, green: 0.42, blue: 0.83, alpha: 1)
-    }
+    static let lightPurple = UIColor(red: 0.41, green: 0.42, blue: 0.83, alpha: 1)
     
-    class func customGray() -> UIColor {
-        return UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 1)
-    }
+    static let customGray = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 1)
     
-    class func lightWhite() -> UIColor {
-        return UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
-    }
+    static let lightWhite = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
     
     //
     /// Hex string of a UIColor instance.

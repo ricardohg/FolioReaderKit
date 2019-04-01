@@ -17,8 +17,8 @@ class ColorCollectionViewCell: UICollectionViewCell {
     
     var colorImage: UIColor? {
         didSet {
-            guard colorImage != nil else { return }
-            setColorImage(with: colorImage!)
+            guard let colorImage = colorImage else { return }
+            setColorImage(with: colorImage)
         }
     }
     

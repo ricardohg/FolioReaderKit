@@ -14,7 +14,6 @@ class ColorPickerCollectionViewController: UICollectionViewController {
     // MARK: - Properties -
     
     var colorPalette: [String]?
-    var cellTag: Int = 0
     var pickedColor: ((UIColor) -> ())?
     
     // MARK: - Initializers -
@@ -44,20 +43,20 @@ class ColorPickerCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCell", for: indexPath) as UICollectionViewCell
+        let section = indexPath.section
         
-        guard let hexColor = colorPalette?[cellTag] else { return cell }
+        guard let hexColor = colorPalette?[(section * 10) + indexPath.row] else { return cell }
         
         cell.backgroundColor = UIColor.hexStringToUIColor(hex: hexColor)
-        cell.tag = cellTag
-        cellTag += 1
         
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        let section = indexPath.section
         
-        let cell: UICollectionViewCell  = collectionView.cellForItem(at: indexPath)! as UICollectionViewCell
-        guard let hexColor = colorPalette?[cell.tag] else { return }
+        guard let hexColor = colorPalette?[(section * 10) + indexPath.row] else { return }
         let color = UIColor.hexStringToUIColor(hex: hexColor)
         pickedColor?(color)
     }
