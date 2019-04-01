@@ -14,6 +14,7 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     
     @IBOutlet weak var strokeTicknessSlider: UISlider!
     @IBOutlet weak var colorCollectionView: UICollectionView!
+    @IBOutlet weak var pickedColorImage: UIImageView!
     
     internal var selectedStrokeThickness: ((Double) -> ())?
     internal var selectedStrokeColor: ((UIColor) -> ())?
@@ -42,6 +43,11 @@ class StrokeFormatMenuTableViewController: UITableViewController {
         
         setThumbImage()
         colorCollectionView.reloadData()
+        
+        selectedStrokeColor = { color in
+            let coloreEllipse = UIImage.ellipseWithColor(color, size: 19)
+            self.pickedColorImage.image = coloreEllipse
+        }
     }
     
     // MARK: - UI Setup -
@@ -60,9 +66,21 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     }
     
     @IBAction func selectCustomColorTouchUpInside(_ sender: Any) {
-        print("Select a custom color")
+        guard let colorPickerViewController = storyboard?.instantiateViewController(withIdentifier: "colorPickerView") as? ColorPickerCollectionViewController else { return }
+        
+        colorPickerViewController.modalPresentationStyle = .popover
+        colorPickerViewController.preferredContentSize = CGSize(width: 220, height: 350)
+        colorPickerViewController.popoverPresentationController?.sourceRect = CGRect(x: 100, y: 0, width: 85, height: 40)
+        colorPickerViewController.popoverPresentationController?.permittedArrowDirections = .any
+        colorPickerViewController.popoverPresentationController?.sourceView = sender as? UIView
+        
+        colorPickerViewController.pickedColor = { color in
+            self.selectedStrokeColor?(color)
+        }
+        
+        present(colorPickerViewController, animated: true, completion: nil)
+        
     }
-    
     
     // MARK: - Table View delegates -
 

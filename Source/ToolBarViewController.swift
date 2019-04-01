@@ -76,8 +76,6 @@ class ToolBarViewController: UIViewController {
     @objc func pencilPressed() {
     //sender.isSelected = !sender.isSelected
     self.toolSelected?(.pencil)
-    
-    showStrokeFormatMenu()
     }
 
     @objc func undoPressed() {
@@ -87,14 +85,5 @@ class ToolBarViewController: UIViewController {
     
     @objc func redoPressed() {
         NotificationCenter.default.post(name: .redoAction, object: nil)
-    }
-    
-    
-    func showStrokeFormatMenu() {
-        guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() else { return }
-        
-        strokeViewController = strokeFormatViewController  as? StrokeFormatMenuTableViewController
-        
-        navigationController?.present(strokeFormatViewController, animated: true, completion: nil)
     }
 }

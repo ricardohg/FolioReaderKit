@@ -125,6 +125,8 @@
 		B45148A62243FF450027B6B6 /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */; };
 		B46E3577224AE3F900910E49 /* StrokeFormatMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */; };
 		B46E357C224BD8F500910E49 /* SF Pro in Resources */ = {isa = PBXBuildFile; fileRef = B46E357B224BD8F500910E49 /* SF Pro */; };
+		B4ACA920224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */; };
+		B4ACA9222251157E002C4CBB /* colorPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4ACA9212251157D002C4CBB /* colorPalette.plist */; };
 		B4DBCD872242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -223,6 +225,8 @@
 		B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StrokeFormatMenu.storyboard; sourceTree = "<group>"; };
 		B46E357B224BD8F500910E49 /* SF Pro */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "SF Pro"; sourceTree = "<group>"; };
+		B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCollectionViewController.swift; sourceTree = "<group>"; };
+		B4ACA9212251157D002C4CBB /* colorPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = colorPalette.plist; sourceTree = "<group>"; };
 		B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeFormatMenuTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -331,6 +335,7 @@
 		1A958F251D397BE900D56699 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B4ACA9212251157D002C4CBB /* colorPalette.plist */,
 				8C5AE8992228747B0027C17F /* LayerSelector */,
 				1A958F271D397BE900D56699 /* Fonts */,
 				1A9590141D397C1300D56699 /* Images.xcassets */,
@@ -503,6 +508,7 @@
 				B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */,
 				B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */,
 				B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */,
+				B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */,
 			);
 			path = StrokeFormatMenu;
 			sourceTree = "<group>";
@@ -614,6 +620,7 @@
 				1A958FB31D397BE900D56699 /* Andada-Regular.otf in Resources */,
 				1A958FB81D397BE900D56699 /* Lora-Bold.ttf in Resources */,
 				1A958FBE1D397BE900D56699 /* Raleway-Italic.ttf in Resources */,
+				B4ACA9222251157E002C4CBB /* colorPalette.plist in Resources */,
 				1A9590151D397C1300D56699 /* Images.xcassets in Resources */,
 				1A958FAF1D397BE900D56699 /* Bridge.js in Resources */,
 				1A958FBC1D397BE900D56699 /* Raleway-Bold.ttf in Resources */,
@@ -656,6 +663,7 @@
 				1A958FA81D397BE900D56699 /* FolioReaderSharingProvider.swift in Sources */,
 				1A958FAB1D397BE900D56699 /* Highlight+Helper.swift in Sources */,
 				8C8389682225BA31007C6153 /* ToolBarViewController.swift in Sources */,
+				B4ACA920224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift in Sources */,
 				3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */,
 				1A958FA41D397BE900D56699 /* FolioReaderKit.swift in Sources */,
 				8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */,

@@ -377,11 +377,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let closeIcon = UIImage(readerImageNamed: "icon-navbar-close")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let tocIcon = UIImage(readerImageNamed: "icon-navbar-toc")?.ignoreSystemTint(withConfiguration: self.readerConfig)
+        let strokeMenuIcon = UIImage(readerImageNamed: "pencil-selected")?.ignoreSystemTint(withConfiguration: self.readerConfig)
 
         let menu = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
         let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
+        let strokeMenu = UIBarButtonItem(image: strokeMenuIcon, style: .plain, target: self, action: #selector(showStrokeFormatMenu(_:)))
 
-        navigationItem.leftBarButtonItems = [menu, toc]
+        navigationItem.leftBarButtonItems = [menu, toc, strokeMenu]
         
         let layerIcon = UIImage(readerImageNamed: "layers-icon")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let layerButton =  UIBarButtonItem(image: layerIcon, style: .plain, target: self, action:#selector(showLayers(_:)))
@@ -1445,6 +1447,17 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         popController?.permittedArrowDirections = .any
         popController?.barButtonItem = sender
 
+    }
+    
+    @objc func showStrokeFormatMenu(_ sender: UIBarButtonItem) {
+        guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() else { return }
+        
+        strokeFormatViewController.modalPresentationStyle = .popover
+        strokeFormatViewController.preferredContentSize = CGSize(width: 250, height: 455)
+        strokeFormatViewController.popoverPresentationController?.permittedArrowDirections = .any
+        strokeFormatViewController.popoverPresentationController?.barButtonItem = sender
+        
+        navigationController?.present(strokeFormatViewController, animated: true, completion: nil)
     }
 
     /**
