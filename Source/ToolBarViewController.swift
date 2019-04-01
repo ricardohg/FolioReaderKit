@@ -20,12 +20,17 @@ class ToolBarViewController: UIViewController {
     let redoButton = UIButton(type: .system)
     
     static let toolbarHeight: CGFloat = 50
+    var strokeViewController: StrokeFormatMenuTableViewController?
     
     var toolSelected: ((Tool) -> ())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        
+        strokeViewController?.selectedStrokeStyle = { style in
+            print(style)
+        }
     }
     
     private func setupView() {
@@ -67,10 +72,10 @@ class ToolBarViewController: UIViewController {
     }
     
     // MARK - Actions
-    
-    @objc func pencilPressed(_ sender: UIButton) {
-        //sender.isSelected = !sender.isSelected
-        self.toolSelected?(.pencil)
+
+    @objc func pencilPressed() {
+    //sender.isSelected = !sender.isSelected
+    self.toolSelected?(.pencil)
     }
 
     @objc func undoPressed() {
@@ -80,6 +85,5 @@ class ToolBarViewController: UIViewController {
     
     @objc func redoPressed() {
         NotificationCenter.default.post(name: .redoAction, object: nil)
-
     }
 }
