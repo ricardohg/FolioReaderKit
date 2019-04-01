@@ -16,8 +16,8 @@ class ToolBarViewController: UIViewController {
     }
     
     let pencilButton = UIButton(type: .custom)
-    let undoButton = UIButton(type: .custom)
-    let redoButton = UIButton(type: .custom)
+    let undoButton = UIButton(type: .system)
+    let redoButton = UIButton(type: .system)
     
     static let toolbarHeight: CGFloat = 50
     

@@ -29,10 +29,6 @@ class DrawableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(undo), name: .undoAction, object: nil)
-        
-         NotificationCenter.default.addObserver(self, selector: #selector(redo), name: .redoAction, object: nil)
 
         view.backgroundColor = .clear
         
@@ -68,6 +64,14 @@ class DrawableViewController: UIViewController {
         singleTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(undo), name: .undoAction, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(redo), name: .redoAction, object: nil)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
