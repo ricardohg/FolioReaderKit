@@ -126,7 +126,7 @@
 		B46E3577224AE3F900910E49 /* StrokeFormatMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */; };
 		B46E357C224BD8F500910E49 /* SF Pro in Resources */ = {isa = PBXBuildFile; fileRef = B46E357B224BD8F500910E49 /* SF Pro */; };
 		B4ACA920224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */; };
-		B4ACA9222251157E002C4CBB /* colorPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4ACA9212251157D002C4CBB /* colorPalette.plist */; };
+		B4ACA9272252AE49002C4CBB /* colorPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4ACA9262252AE49002C4CBB /* colorPalette.plist */; };
 		B4DBCD872242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -226,7 +226,7 @@
 		B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StrokeFormatMenu.storyboard; sourceTree = "<group>"; };
 		B46E357B224BD8F500910E49 /* SF Pro */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "SF Pro"; sourceTree = "<group>"; };
 		B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCollectionViewController.swift; sourceTree = "<group>"; };
-		B4ACA9212251157D002C4CBB /* colorPalette.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = colorPalette.plist; sourceTree = "<group>"; };
+		B4ACA9262252AE49002C4CBB /* colorPalette.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = colorPalette.plist; sourceTree = "<group>"; };
 		B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeFormatMenuTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -335,7 +335,7 @@
 		1A958F251D397BE900D56699 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B4ACA9212251157D002C4CBB /* colorPalette.plist */,
+				B4ACA9262252AE49002C4CBB /* colorPalette.plist */,
 				8C5AE8992228747B0027C17F /* LayerSelector */,
 				1A958F271D397BE900D56699 /* Fonts */,
 				1A9590141D397C1300D56699 /* Images.xcassets */,
@@ -613,6 +613,7 @@
 				1A958FBA1D397BE900D56699 /* Lora-Italic.ttf in Resources */,
 				1A958FB21D397BE900D56699 /* Andada-Italic.otf in Resources */,
 				1A958FBF1D397BE900D56699 /* Raleway-Regular.ttf in Resources */,
+				B4ACA9272252AE49002C4CBB /* colorPalette.plist in Resources */,
 				B46E357C224BD8F500910E49 /* SF Pro in Resources */,
 				8C5AE89B2228749F0027C17F /* Layers.storyboard in Resources */,
 				1A958FBB1D397BE900D56699 /* Lora-Regular.ttf in Resources */,
@@ -620,7 +621,6 @@
 				1A958FB31D397BE900D56699 /* Andada-Regular.otf in Resources */,
 				1A958FB81D397BE900D56699 /* Lora-Bold.ttf in Resources */,
 				1A958FBE1D397BE900D56699 /* Raleway-Italic.ttf in Resources */,
-				B4ACA9222251157E002C4CBB /* colorPalette.plist in Resources */,
 				1A9590151D397C1300D56699 /* Images.xcassets in Resources */,
 				1A958FAF1D397BE900D56699 /* Bridge.js in Resources */,
 				1A958FBC1D397BE900D56699 /* Raleway-Bold.ttf in Resources */,

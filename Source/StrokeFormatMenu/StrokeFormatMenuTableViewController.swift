@@ -20,7 +20,7 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     internal var selectedStrokeColor: ((UIColor) -> ())?
     internal var selectedStrokeStyle: ((StrokeStyleType) -> ())?
 
-    private lazy var strokeColors: [UIColor] = [.lightBlue, .lightGreen, .lightYellow, .lightOrange, .lightRed, .pink, .lightPurple, .customGray, .lightWhite]
+    private let strokeColors: [UIColor] = [.lightBlue, .lightGreen, .lightYellow, .lightOrange, .lightRed, .pink, .lightPurple, .customGray, .lightWhite]
     
     enum StrokeStyleType: Int {
         case basicStroke
