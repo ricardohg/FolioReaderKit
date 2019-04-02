@@ -16,8 +16,10 @@ class ToolBarViewController: UIViewController {
     }
     
     let pencilButton = UIButton(type: .custom)
-    let undoButton = UIButton(type: .system)
-    let redoButton = UIButton(type: .system)
+    let eraserButton = UIButton(type: .custom)
+    
+    let undoButton = UIButton(type: .custom)
+    let redoButton = UIButton(type: .custom)
     
     static let toolbarHeight: CGFloat = 50
     var strokeViewController: StrokeFormatMenuTableViewController?
@@ -40,10 +42,11 @@ class ToolBarViewController: UIViewController {
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil"), for: .normal)
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .highlighted)
+        
         //pencilButton.backgroundColor = .white
         
-        undoButton.setTitle("Undo", for: .normal)
-        redoButton.setTitle("Redo", for: .normal)
+        undoButton.setBackgroundImage(UIImage(readerImageNamed: "undo-icon"), for: .normal)
+        redoButton.setBackgroundImage(UIImage(readerImageNamed: "redo-icon"), for: .normal)
         
         pencilButton.addTarget(self, action: #selector(pencilPressed), for: .touchUpInside)
         undoButton.addTarget(self, action: #selector(undoPressed), for: .touchUpInside)
