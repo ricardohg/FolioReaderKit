@@ -12,6 +12,7 @@ class ToolBarViewController: UIViewController {
     
     enum Tool {
         case pencil
+        case eraser
         case none
     }
     
@@ -43,33 +44,47 @@ class ToolBarViewController: UIViewController {
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .highlighted)
         
-        //pencilButton.backgroundColor = .white
+        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-icon"), for: .normal)
+        
         
         undoButton.setBackgroundImage(UIImage(readerImageNamed: "undo-icon"), for: .normal)
         redoButton.setBackgroundImage(UIImage(readerImageNamed: "redo-icon"), for: .normal)
         
         pencilButton.addTarget(self, action: #selector(pencilPressed), for: .touchUpInside)
+        eraserButton.addTarget(self, action: #selector(eraserPressed), for: .touchUpInside)
         undoButton.addTarget(self, action: #selector(undoPressed), for: .touchUpInside)
         redoButton.addTarget(self, action: #selector(redoPressed), for: .touchUpInside)
-        
-        view.addSubview(pencilButton)
+    
         view.addSubview(undoButton)
         view.addSubview(redoButton)
         
-        pencilButton.translatesAutoresizingMaskIntoConstraints = false
         undoButton.translatesAutoresizingMaskIntoConstraints = false
         redoButton.translatesAutoresizingMaskIntoConstraints = false
         
         let leftPadding: CGFloat = 20
         
-        undoButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: leftPadding).isActive = true
-        undoButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-        redoButton.leadingAnchor.constraint(equalTo: undoButton.trailingAnchor, constant: leftPadding).isActive = true
+        redoButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -leftPadding).isActive = true
         redoButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
-        pencilButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        pencilButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        undoButton.trailingAnchor.constraint(equalTo: redoButton.leadingAnchor, constant: -leftPadding).isActive = true
+        undoButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        // stack view
+        
+        let spacing: CGFloat = 31
+        
+        let stackView = UIStackView(arrangedSubviews: [pencilButton, eraserButton])
+        stackView.alignment = .center
+        stackView.distribution = .equalCentering
+        stackView.spacing = spacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        view.addSubview(stackView)
+        
+        stackView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
         
         
     }
@@ -79,6 +94,10 @@ class ToolBarViewController: UIViewController {
     @objc func pencilPressed() {
     //sender.isSelected = !sender.isSelected
     self.toolSelected?(.pencil)
+    }
+    
+    @objc func eraserPressed(_ sender: UIButton) {
+        self.toolSelected?(.eraser)
     }
 
     @objc func undoPressed() {

@@ -17,6 +17,7 @@ import UIKit
 
 enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
     case calligraphy
+    case eraser
     case ink
     case debug
     
@@ -25,6 +26,7 @@ enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
         case .calligraphy: return "Calligraphy"
         case .ink: return "Ink"
         case .debug: return "Debug"
+        case .eraser: return "Eraser"
         }
     }
 }
@@ -66,7 +68,7 @@ open class StrokeCGView: UIView {
         }
     }
     
-    let strokeColor = UIColor.black
+    open var strokeColor = UIColor.red
     
     // Hold samples when attempting to draw lines that are too short.
     private var heldFromSample: StrokeSample?

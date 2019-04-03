@@ -14,6 +14,12 @@ class DrawableViewController: UIViewController {
     var strokeCollection = StrokeCollection()
     var canvasContainerView: CanvasContainerView!
     
+    var strokeColor: UIColor = .black {
+        didSet {
+            cgView?.strokeColor = self.strokeColor
+        }
+    }
+    
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var currentImage: UIImage? {
@@ -37,6 +43,7 @@ class DrawableViewController: UIViewController {
         
         let cgView = StrokeCGView(frame: CGRect(origin: .zero, size: CGSize(width: maxScreenDimension, height: maxScreenDimension)))
         cgView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        cgView.strokeColor = strokeColor
         self.cgView = cgView
         
         let canvasContainerView = CanvasContainerView(canvasSize: cgView.frame.size)
@@ -82,6 +89,17 @@ class DrawableViewController: UIViewController {
     func receivedAllUpdatesForStroke(_ stroke: Stroke) {
         cgView.setNeedsDisplay(for: stroke)
         stroke.clearUpdateInfo()
+    }
+    
+    func setStrokeColor(for tool: ToolBarViewController.Tool) {
+        switch tool {
+        case .pencil:
+            strokeColor = UIColor.red
+        case .eraser:
+            strokeColor = UIColor.green
+        default:
+            break
+        }
     }
 
     

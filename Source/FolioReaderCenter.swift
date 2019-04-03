@@ -250,8 +250,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         toolBarViewController.didMove(toParent: self)
         
         toolBarViewController.toolSelected = { tool in
-            print(tool)
-            self.addCanvasView()
+            
+            self.addCanvasView(with: tool)
         }
         
         
@@ -284,7 +284,16 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: -- CanvasView For Drawing
     
-    private func addCanvasView() {
+    private func addCanvasView(with tool: ToolBarViewController.Tool) {
+        
+        guard !drawableViewController.isViewLoaded else {
+            
+            drawableViewController.setStrokeColor(for: tool)
+            
+            return
+        }
+        
+        drawableViewController.setStrokeColor(for: tool)
         
         drawableViewController.currentImage = nil
         
@@ -331,6 +340,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         drawableViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
     }
+    
 
     // MARK: Layout
 
