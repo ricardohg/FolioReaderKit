@@ -112,6 +112,8 @@ open class Stroke {
     var hasUpdatesFromStartTo: Int?
     var hasUpdatesAtEndFrom: Int?
     
+    open var color: UIColor = .black
+    
     open var receivedAllNeededUpdatesBlock: (() -> Void)?
     
     func add(sample: StrokeSample) -> Int {

@@ -48,7 +48,7 @@ open class CanvasContainerView: UIView {
         canvasView.backgroundColor = UIColor.clear
         canvasView.layer.shadowOffset = CGSize(width: 0.0, height: 3.0)
         canvasView.layer.shadowRadius = 4.0
-        canvasView.layer.shadowColor = UIColor.darkGray.cgColor
+        canvasView.layer.shadowColor = UIColor.clear.cgColor
         canvasView.layer.shadowOpacity = 1.0
         
         super.init(frame: frame)

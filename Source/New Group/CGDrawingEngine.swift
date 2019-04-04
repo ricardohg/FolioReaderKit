@@ -68,7 +68,7 @@ open class StrokeCGView: UIView {
         }
     }
     
-    open var strokeColor = UIColor.red
+    open var strokeColor = UIColor.black
     
     // Hold samples when attempting to draw lines that are too short.
     private var heldFromSample: StrokeSample?
@@ -484,7 +484,7 @@ private extension StrokeCGView {
     }
     
     func fillColor(in context: CGContext, toSample: StrokeSample, fromSample: StrokeSample) {
-        let fillColorRegular = UIColor.black.cgColor
+        let fillColorRegular = strokeColor.cgColor
         let fillColorCoalesced = UIColor.lightGray.cgColor
         let fillColorPredicted = UIColor.red.cgColor
         
