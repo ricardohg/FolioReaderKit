@@ -33,6 +33,7 @@ enum StrokePhase {
 }
 
 public struct StrokeSample {
+    
     // Always.
     let timestamp: TimeInterval
     let location: CGPoint
@@ -112,7 +113,7 @@ open class Stroke {
     var hasUpdatesFromStartTo: Int?
     var hasUpdatesAtEndFrom: Int?
     
-    open var color: UIColor = .black
+    open var color: UIColor?
     
     open var receivedAllNeededUpdatesBlock: (() -> Void)?
     
@@ -210,6 +211,8 @@ open class StrokeSegment {
     var sampleAfter: StrokeSample?
     var fromSampleIndex: Int
     
+    var color: UIColor?
+    
     var segmentUnitNormal: CGVector {
         return segmentStrokeVector.normal!.normalized!
     }
@@ -242,8 +245,9 @@ open class StrokeSegment {
         }
     }
     
-    public init(sample: StrokeSample) {
+    public init(sample: StrokeSample, color: UIColor?) {
         self.sampleAfter = sample
+        self.color = color
         self.fromSampleIndex = -2
     }
     
@@ -274,7 +278,7 @@ open class StrokeSegmentIterator: IteratorProtocol {
         sampleCount = stroke.samples.count
         predictedSampleCount = stroke.predictedSamples.count
         if (predictedSampleCount + sampleCount) > 1 {
-            segment = StrokeSegment(sample: sampleAt(0)!)
+            segment = StrokeSegment(sample: sampleAt(0)!, color: stroke.color)
             segment.advanceWithSample(incomingSample: sampleAt(1))
         }
     }

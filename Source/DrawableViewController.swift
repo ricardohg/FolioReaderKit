@@ -20,6 +20,12 @@ class DrawableViewController: UIViewController {
         }
     }
     
+    var shouldStartEraser: Bool = false {
+        didSet {
+            cgView?.ereseModeOn = self.shouldStartEraser
+        }
+    }
+    
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var currentImage: UIImage? {
@@ -95,8 +101,10 @@ class DrawableViewController: UIViewController {
         switch tool {
         case .pencil:
             strokeColor = UIColor.red
+            shouldStartEraser = false
         case .eraser:
-            strokeColor = UIColor.green
+            strokeColor = UIColor.clear
+            shouldStartEraser = true
         default:
             break
         }

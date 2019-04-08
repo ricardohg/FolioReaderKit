@@ -69,6 +69,7 @@ open class StrokeCGView: UIView {
     }
     
     open var strokeColor = UIColor.black
+    open var ereseModeOn = false
     
     // Hold samples when attempting to draw lines that are too short.
     private var heldFromSample: StrokeSample?
@@ -183,11 +184,17 @@ extension StrokeCGView {
         if let strokeCollection = strokeCollection {
             for stroke in strokeCollection.strokes {
                 
+                if stroke.color == nil {
+                    stroke.color = strokeColor
+                }
                 draw(stroke: stroke, in: rect)
             }
         }
         
         if let stroke = strokeToDraw {
+            if stroke.color == nil {
+                stroke.color = strokeColor
+            }
             draw(stroke: stroke, in: rect)
         }
     }
@@ -217,7 +224,7 @@ private extension StrokeCGView {
             else { return }
         
         prepareToDraw()
-        lineSettings(in: context)
+        lineSettings(in: context, color: stroke.color ?? .black)
         
         if stroke.samples.count == 1 {
             // Construct a fake segment to draw for a stroke that is only one point.
@@ -245,7 +252,7 @@ private extension StrokeCGView {
                 sample.estimatedProperties,
                 estimatedPropertiesExpectingUpdates: [])
             
-            let segment = StrokeSegment(sample: tempSampleFrom)
+            let segment = StrokeSegment(sample: tempSampleFrom, color: stroke.color)
             segment.advanceWithSample(incomingSample: tempSampleTo)
             segment.advanceWithSample(incomingSample: nil)
             
@@ -273,7 +280,7 @@ private extension StrokeCGView {
             return
         }
         
-        fillColor(in: context, toSample: toSample, fromSample: fromSample)
+        fillColor(in: context, toSample: toSample, fromSample: fromSample, color: segment.color ?? .black)
         draw(segment: segment, in: context, toSample: toSample, fromSample: fromSample)
         drawDebugMarkings(in: context, fromSample: fromSample)
         
@@ -305,9 +312,15 @@ private extension StrokeCGView {
                 if lastEstimatedSample == nil {
                     lastEstimatedSample = (segment.fromSampleIndex + 1, toSample)
                 }
-                forceEstimatedLineSettings(in: context)
+                forceEstimatedLineSettings(in: context, color: segment.color ?? .black)
             } else {
-                lineSettings(in: context)
+                lineSettings(in: context, color: segment.color ?? .black)
+            }
+            
+
+            if ereseModeOn {
+                context.beginTransparencyLayer(auxiliaryInfo: nil)
+                context.setBlendMode(.clear)
             }
             
             context.beginPath()
@@ -319,6 +332,10 @@ private extension StrokeCGView {
                 ])
             context.closePath()
             context.drawPath(using: .fillStroke)
+            
+            if ereseModeOn {
+                context.endTransparencyLayer()
+            }
             
         }
         
@@ -417,25 +434,25 @@ private extension StrokeCGView {
         lockedAzimuthUnitVector = nil
     }
     
-    func lineSettings(in context: CGContext) {
+    func lineSettings(in context: CGContext, color: UIColor) {
         
         if displayOptions == .debug {
             context.setLineWidth(0.5)
             context.setStrokeColor(UIColor.white.cgColor)
         } else {
             context.setLineWidth(0.25)
-            context.setStrokeColor(strokeColor.cgColor)
+            context.setStrokeColor(color.cgColor)
         }
         
     }
     
-    func forceEstimatedLineSettings(in context: CGContext) {
+    func forceEstimatedLineSettings(in context: CGContext, color: UIColor) {
         
         if displayOptions == .debug {
             context.setLineWidth(0.5)
             context.setStrokeColor(UIColor.blue.cgColor)
         } else {
-            lineSettings(in: context)
+            lineSettings(in: context, color: color)
         }
         
     }
@@ -483,8 +500,8 @@ private extension StrokeCGView {
         return forceAccessBlock
     }
     
-    func fillColor(in context: CGContext, toSample: StrokeSample, fromSample: StrokeSample) {
-        let fillColorRegular = strokeColor.cgColor
+    func fillColor(in context: CGContext, toSample: StrokeSample, fromSample: StrokeSample, color: UIColor = .black) {
+        let fillColorRegular = color.cgColor
         let fillColorCoalesced = UIColor.lightGray.cgColor
         let fillColorPredicted = UIColor.red.cgColor
         
