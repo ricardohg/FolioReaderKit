@@ -70,6 +70,7 @@ open class StrokeCGView: UIView {
     
     open var strokeColor = UIColor.black
     open var ereseModeOn = false
+    open var eraserWidth = 5
     
     // Hold samples when attempting to draw lines that are too short.
     private var heldFromSample: StrokeSample?
@@ -317,10 +318,9 @@ private extension StrokeCGView {
                 lineSettings(in: context, color: segment.color ?? .black)
             }
             
-
-            if ereseModeOn {
-                context.beginTransparencyLayer(auxiliaryInfo: nil)
-                context.setBlendMode(.clear)
+            if segment.color == .clear {
+                context.clear(CGRect(origin: fromSample.location, size: CGSize(width: eraserWidth, height: eraserWidth)))
+                return
             }
             
             context.beginPath()
@@ -332,11 +332,7 @@ private extension StrokeCGView {
                 ])
             context.closePath()
             context.drawPath(using: .fillStroke)
-            
-            if ereseModeOn {
-                context.endTransparencyLayer()
-            }
-            
+
         }
         
     }
