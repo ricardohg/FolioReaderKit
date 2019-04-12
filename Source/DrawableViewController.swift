@@ -20,17 +20,14 @@ class DrawableViewController: UIViewController {
         }
     }
     
-    var shouldStartEraser: Bool = false {
-        didSet {
-            cgView?.ereseModeOn = self.shouldStartEraser
-        }
-    }
-    
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var currentImage: UIImage? {
         didSet {
             currentImageView?.image = currentImage
+            if let image = self.currentImage {
+                cgView?.currentImage = image
+            }
         }
     }
     
@@ -67,7 +64,7 @@ class DrawableViewController: UIViewController {
         currentImageView.image = currentImage
         
         self.currentImageView = currentImageView
-        view.addSubview(currentImageView)
+        cgView.currentImage = self.currentImage
         
         pencilStrokeRecognizer = setupStrokeGestureRecognizer(isForPencil: true)
         
@@ -100,11 +97,9 @@ class DrawableViewController: UIViewController {
     func setStrokeColor(for tool: ToolBarViewController.Tool) {
         switch tool {
         case .pencil:
-            strokeColor = UIColor.red
-            shouldStartEraser = false
+            strokeColor = UIColor.black
         case .eraser:
             strokeColor = UIColor.clear
-            shouldStartEraser = true
         default:
             break
         }

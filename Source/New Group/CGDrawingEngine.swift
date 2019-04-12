@@ -68,8 +68,9 @@ open class StrokeCGView: UIView {
         }
     }
     
+    var currentImage: UIImage? 
+    
     open var strokeColor = UIColor.black
-    open var ereseModeOn = false
     open var eraserWidth = 5
     
     // Hold samples when attempting to draw lines that are too short.
@@ -179,6 +180,10 @@ extension StrokeCGView {
     override open func draw(_ rect: CGRect) {
         UIColor.clear.set()
         UIRectFill(rect)
+        
+        if let image = currentImage {
+            image.draw(in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        }
         
         // Optimization opportunity: Draw the existing collection in a different view,
         // and only draw each time we add a stroke.
