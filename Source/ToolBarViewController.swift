@@ -12,6 +12,7 @@ class ToolBarViewController: UIViewController {
     
     enum Tool {
         case pencil
+        case pencilOptions
         case eraser
         case none
     }
@@ -43,6 +44,9 @@ class ToolBarViewController: UIViewController {
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil"), for: .normal)
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .highlighted)
+        
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(pencilOptionsGesture))
+        pencilButton.addGestureRecognizer(longPressGestureRecognizer)
         
         eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-icon"), for: .normal)
         
@@ -90,10 +94,18 @@ class ToolBarViewController: UIViewController {
     }
     
     // MARK - Actions
-
+    
     @objc func pencilPressed() {
-    //sender.isSelected = !sender.isSelected
-    self.toolSelected?(.pencil)
+        //sender.isSelected = !sender.isSelected
+        self.toolSelected?(.pencil)
+    }
+    
+    @objc func pencilOptionsGesture(_ sender: UIGestureRecognizer) {
+        if sender.state == .began {
+            print("long")
+            self.toolSelected?(.pencilOptions)
+            
+        }
     }
     
     @objc func eraserPressed(_ sender: UIButton) {
