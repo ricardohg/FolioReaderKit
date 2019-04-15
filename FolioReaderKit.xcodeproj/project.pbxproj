@@ -127,6 +127,8 @@
 		B46E357C224BD8F500910E49 /* SF Pro in Resources */ = {isa = PBXBuildFile; fileRef = B46E357B224BD8F500910E49 /* SF Pro */; };
 		B4ACA920224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */; };
 		B4ACA9272252AE49002C4CBB /* colorPalette.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4ACA9262252AE49002C4CBB /* colorPalette.plist */; };
+		B4B155D42264E8900087E4E6 /* EraserMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4B155D32264E8900087E4E6 /* EraserMenu.storyboard */; };
+		B4B155D62264ED480087E4E6 /* EraserMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4B155D52264ED480087E4E6 /* EraserMenuViewController.swift */; };
 		B4DBCD872242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -227,6 +229,8 @@
 		B46E357B224BD8F500910E49 /* SF Pro */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "SF Pro"; sourceTree = "<group>"; };
 		B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCollectionViewController.swift; sourceTree = "<group>"; };
 		B4ACA9262252AE49002C4CBB /* colorPalette.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = colorPalette.plist; sourceTree = "<group>"; };
+		B4B155D32264E8900087E4E6 /* EraserMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EraserMenu.storyboard; sourceTree = "<group>"; };
+		B4B155D52264ED480087E4E6 /* EraserMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EraserMenuViewController.swift; sourceTree = "<group>"; };
 		B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeFormatMenuTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -271,6 +275,7 @@
 		1A958F031D397BE900D56699 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B4B155D22264E2C50087E4E6 /* EraserMenu */,
 				B4DBCD832242D038004A5EE8 /* StrokeFormatMenu */,
 				8C829858222470FF004BF531 /* DrawingEngine */,
 				1A958F041D397BE900D56699 /* EPUBCore */,
@@ -502,6 +507,15 @@
 			path = SMSegmentView;
 			sourceTree = "<group>";
 		};
+		B4B155D22264E2C50087E4E6 /* EraserMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B4B155D32264E8900087E4E6 /* EraserMenu.storyboard */,
+				B4B155D52264ED480087E4E6 /* EraserMenuViewController.swift */,
+			);
+			path = EraserMenu;
+			sourceTree = "<group>";
+		};
 		B4DBCD832242D038004A5EE8 /* StrokeFormatMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,6 +634,7 @@
 				1A958FB41D397BE900D56699 /* Lato-Bold.ttf in Resources */,
 				1A958FB31D397BE900D56699 /* Andada-Regular.otf in Resources */,
 				1A958FB81D397BE900D56699 /* Lora-Bold.ttf in Resources */,
+				B4B155D42264E8900087E4E6 /* EraserMenu.storyboard in Resources */,
 				1A958FBE1D397BE900D56699 /* Raleway-Italic.ttf in Resources */,
 				1A9590151D397C1300D56699 /* Images.xcassets in Resources */,
 				1A958FAF1D397BE900D56699 /* Bridge.js in Resources */,
@@ -685,6 +700,7 @@
 				3A27F08E1FD9BE5800D84A57 /* Extensions.swift in Sources */,
 				8C5AE89D22287A0B0027C17F /* LayersTableViewController.swift in Sources */,
 				1A958F9D1D397BE900D56699 /* FolioReaderChapterList.swift in Sources */,
+				B4B155D62264ED480087E4E6 /* EraserMenuViewController.swift in Sources */,
 				B4DBCD872242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift in Sources */,
 				1A958F951D397BE900D56699 /* FRResource.swift in Sources */,
 				1A958F9B1D397BE900D56699 /* FolioReaderAudioPlayer.swift in Sources */,
