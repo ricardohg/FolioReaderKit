@@ -17,6 +17,11 @@ class EraserMenuViewController: UIViewController {
     
     internal var selectedEraserThickness: ((Double) -> ())?
     
+    // MARK: - Constants -
+
+    private struct Constants {
+        static let thumbStandardSize: Float = 16
+    }
     
     // MARK: - Initializers -
     
@@ -29,10 +34,10 @@ class EraserMenuViewController: UIViewController {
     // MARK: - UI Setup -
     
     func setThumbImage() {
-        
-        let thumbSize = (CGFloat(eraserThicknessSlider.value) * 16) + 16
+
+        let thumbSize = (eraserThicknessSlider.value * Constants.thumbStandardSize) + Constants.thumbStandardSize
         selectedEraserThickness?(Double(thumbSize))
-        let thumbImage = UIImage.ellipseWithColor(.black, size: thumbSize)
+        let thumbImage = UIImage.ellipseWithColor(.black, size: CGFloat(thumbSize))
         
         eraserThicknessSlider.setThumbImage(thumbImage, for: .normal)
         eraserThicknessSlider.setThumbImage(thumbImage, for: .highlighted)
