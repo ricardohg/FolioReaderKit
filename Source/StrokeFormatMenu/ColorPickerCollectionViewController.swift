@@ -61,5 +61,7 @@ class ColorPickerCollectionViewController: UICollectionViewController {
         
         let color = UIColor.hexStringToUIColor(hex: hexColor)
         pickedColor?(color)
+        
+        dismiss(animated: true, completion: nil)
     }
 }

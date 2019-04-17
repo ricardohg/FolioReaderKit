@@ -20,6 +20,18 @@ class DrawableViewController: UIViewController {
         }
     }
     
+    var thinkness: Double = 1.0 {
+        didSet {
+            cgView?.strokeWidth = self.thinkness
+        }
+    }
+    
+    var style: StrokeViewDisplayOptions = .ink {
+        didSet {
+            cgView.strokeStyle = self.style
+        }
+    }
+    
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var currentImage: UIImage? {

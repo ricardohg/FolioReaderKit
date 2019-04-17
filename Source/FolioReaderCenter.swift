@@ -251,7 +251,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         toolBarViewController.toolSelected = { tool in
             
-            self.addCanvasView(with: tool)
+            switch tool {
+            case .pencilOptions(let button):
+                self.showPencilOptions(button: button)
+            default:
+                self.addCanvasView(with: tool)
+            }
+            
+            
         }
         
         
@@ -280,6 +287,44 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.view.layoutIfNeeded()
         }
     
+    }
+    
+    // MARK: -- Pencil Options
+    
+    private func showPencilOptions(button: UIButton) {
+       
+        guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() as? StrokeFormatMenuTableViewController else { return }
+    
+        strokeFormatViewController.selectedStrokeColor =  { color in
+            
+            self.drawableViewController.strokeColor = color
+        }
+        
+//        strokeFormatViewController.selectedStrokeThickness = { thickness in
+//            
+//            self.drawableViewController.thinkness = thickness
+//        }
+//        
+//        strokeFormatViewController.selectedStrokeStyle = { style in
+//            
+//            switch style {
+//            case .basicStroke:
+//                self.drawableViewController.style = .ink
+//                
+//            case .curvyStroke:
+//                self.drawableViewController.style = .calligraphy
+//     
+//            }
+//            
+//        }
+        
+        strokeFormatViewController.modalPresentationStyle = .popover
+        strokeFormatViewController.preferredContentSize = CGSize(width: 250, height: 455)
+        strokeFormatViewController.popoverPresentationController?.permittedArrowDirections = .any
+        strokeFormatViewController.popoverPresentationController?.sourceView = button
+        strokeFormatViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        navigationController?.present(strokeFormatViewController, animated: true, completion: nil)
     }
     
     // MARK: -- CanvasView For Drawing

@@ -114,6 +114,9 @@ open class Stroke {
     var hasUpdatesAtEndFrom: Int?
     
     open var color: UIColor?
+    open var width: Double?
+    
+    var strokeDisplay: StrokeViewDisplayOptions?
     
     open var receivedAllNeededUpdatesBlock: (() -> Void)?
     
@@ -213,6 +216,10 @@ open class StrokeSegment {
     
     var color: UIColor?
     
+    var width: Double?
+    
+    var strokeDisplay: StrokeViewDisplayOptions?
+    
     var segmentUnitNormal: CGVector {
         return segmentStrokeVector.normal!.normalized!
     }
@@ -245,9 +252,11 @@ open class StrokeSegment {
         }
     }
     
-    public init(sample: StrokeSample, color: UIColor?) {
+    public init(sample: StrokeSample, color: UIColor?, width: Double, style: StrokeViewDisplayOptions) {
         self.sampleAfter = sample
         self.color = color
+        self.strokeDisplay = style
+        self.width = width
         self.fromSampleIndex = -2
     }
     
@@ -278,7 +287,7 @@ open class StrokeSegmentIterator: IteratorProtocol {
         sampleCount = stroke.samples.count
         predictedSampleCount = stroke.predictedSamples.count
         if (predictedSampleCount + sampleCount) > 1 {
-            segment = StrokeSegment(sample: sampleAt(0)!, color: stroke.color)
+            segment = StrokeSegment(sample: sampleAt(0)!, color: stroke.color, width: stroke.width ?? 0.5, style: stroke.strokeDisplay ?? .ink)
             segment.advanceWithSample(incomingSample: sampleAt(1))
         }
     }

@@ -16,16 +16,14 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     @IBOutlet weak var colorCollectionView: UICollectionView!
     @IBOutlet weak var pickedColorImage: UIImageView!
     
-    internal var selectedStrokeThickness: ((Double) -> ())?
-    internal var selectedStrokeColor: ((UIColor) -> ())?
-    internal var selectedStrokeStyle: ((StrokeStyleType) -> ())?
+    var selectedStrokeThickness: ((Double) -> ())?
+    var selectedStrokeColor: ((UIColor) -> ())?
+    var selectedStrokeStyle: ((StrokeStyleType) -> ())?
 
     private let strokeColors: [UIColor] = [.lightBlue, .lightGreen, .lightYellow, .lightOrange, .lightRed, .pink, .lightPurple, .customGray, .lightWhite]
     
     enum StrokeStyleType: Int {
         case basicStroke
-        case diagonalStroke
-        case oddStroke
         case curvyStroke
     }
     
@@ -44,10 +42,6 @@ class StrokeFormatMenuTableViewController: UITableViewController {
         setThumbImage()
         colorCollectionView.reloadData()
         
-        selectedStrokeColor = { color in
-            let coloreEllipse = UIImage.ellipseWithColor(color, size: 19)
-            self.pickedColorImage.image = coloreEllipse
-        }
     }
     
     // MARK: - UI Setup -
@@ -76,6 +70,8 @@ class StrokeFormatMenuTableViewController: UITableViewController {
         
         colorPickerViewController.pickedColor = { color in
             self.selectedStrokeColor?(color)
+            let coloreEllipse = UIImage.ellipseWithColor(color, size: 19)
+            self.pickedColorImage.image = coloreEllipse
         }
         
         present(colorPickerViewController, animated: true, completion: nil)
@@ -119,5 +115,6 @@ extension StrokeFormatMenuTableViewController: UICollectionViewDataSource, UICol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedStrokeColor?(strokeColors[indexPath.row])
+        dismiss(animated: true, completion: nil)
     }
 }

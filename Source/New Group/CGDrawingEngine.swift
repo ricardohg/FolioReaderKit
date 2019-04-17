@@ -15,13 +15,13 @@ The view that is responsible for the drawing. StrokeCGView can draw a StrokeColl
 
 import UIKit
 
-enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
+public enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
     case calligraphy
     case eraser
     case ink
     case debug
     
-    var description: String {
+    public var description: String {
         switch self {
         case .calligraphy: return "Calligraphy"
         case .ink: return "Ink"
@@ -72,6 +72,12 @@ open class StrokeCGView: UIView {
     
     open var strokeColor = UIColor.black
     open var eraserWidth = 5
+    open var strokeWidth = 0.25
+    var strokeStyle: StrokeViewDisplayOptions = .ink {
+        didSet {
+            displayOptions = self.strokeStyle
+        }
+    }
     
     // Hold samples when attempting to draw lines that are too short.
     private var heldFromSample: StrokeSample?
@@ -193,6 +199,14 @@ extension StrokeCGView {
                 if stroke.color == nil {
                     stroke.color = strokeColor
                 }
+                
+                if stroke.width == nil {
+                    stroke.width = strokeWidth
+                }
+                
+                if stroke.strokeDisplay == nil {
+                    stroke.strokeDisplay = strokeStyle
+                }
                 draw(stroke: stroke, in: rect)
             }
         }
@@ -200,6 +214,14 @@ extension StrokeCGView {
         if let stroke = strokeToDraw {
             if stroke.color == nil {
                 stroke.color = strokeColor
+            }
+            
+            if stroke.width == nil {
+                stroke.width = strokeWidth
+            }
+            
+            if stroke.strokeDisplay == nil {
+                stroke.strokeDisplay = strokeStyle
             }
             draw(stroke: stroke, in: rect)
         }
@@ -258,7 +280,7 @@ private extension StrokeCGView {
                 sample.estimatedProperties,
                 estimatedPropertiesExpectingUpdates: [])
             
-            let segment = StrokeSegment(sample: tempSampleFrom, color: stroke.color)
+            let segment = StrokeSegment(sample: tempSampleFrom, color: stroke.color, width: stroke.width ?? strokeWidth, style: stroke.strokeDisplay ?? strokeStyle)
             segment.advanceWithSample(incomingSample: tempSampleTo)
             segment.advanceWithSample(incomingSample: nil)
             
@@ -303,7 +325,7 @@ private extension StrokeCGView {
         
         let forceAccessBlock = self.forceAccessBlock()
         
-        if displayOptions == .calligraphy {
+        if segment.strokeDisplay == .calligraphy {
             
             drawCalligraphy(in: context, toSample: toSample, fromSample: fromSample, forceAccessBlock: forceAccessBlock)
             
@@ -441,7 +463,7 @@ private extension StrokeCGView {
             context.setLineWidth(0.5)
             context.setStrokeColor(UIColor.white.cgColor)
         } else {
-            context.setLineWidth(0.25)
+            context.setLineWidth(CGFloat(strokeWidth))
             context.setStrokeColor(color.cgColor)
         }
         
