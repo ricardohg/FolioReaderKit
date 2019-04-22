@@ -51,7 +51,7 @@ class ToolBarViewController: UIViewController {
         
         eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-icon"), for: .normal)
         
-        let longPressEraseGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(pencilOptionsGesture))
+        let longPressEraseGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(eraserOptionsGesture(_:)))
         eraserButton.addGestureRecognizer(longPressEraseGestureRecognizer)
         
         undoButton.setBackgroundImage(UIImage(readerImageNamed: "undo-icon"), for: .normal)

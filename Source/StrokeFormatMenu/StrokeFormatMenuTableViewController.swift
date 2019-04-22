@@ -19,6 +19,9 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     var selectedStrokeThickness: ((Double) -> ())?
     var selectedStrokeColor: ((UIColor) -> ())?
     var selectedStrokeStyle: ((StrokeStyleType) -> ())?
+    
+    static let viewHeight = 270
+    static let viewWidth = 250
 
     private let strokeColors: [UIColor] = [.lightBlue, .lightGreen, .lightYellow, .lightOrange, .lightRed, .pink, .lightPurple, .customGray, .lightWhite]
     

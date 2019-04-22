@@ -253,7 +253,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             
             switch tool {
             case .pencilOptions(let button):
-                self.showPencilOptions(button: button)
+                self.showPencilOptions(from: button)
+            case .eraseOptions(let button):
+                self.showEraserOptions(from: button)
             default:
                 self.addCanvasView(with: tool)
             }
@@ -291,7 +293,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: -- Pencil Options
     
-    private func showPencilOptions(button: UIButton) {
+    private func showPencilOptions(from button: UIButton) {
        
         guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() as? StrokeFormatMenuTableViewController else { return }
     
@@ -300,31 +302,41 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.drawableViewController.strokeColor = color
         }
         
-//        strokeFormatViewController.selectedStrokeThickness = { thickness in
-//            
-//            self.drawableViewController.thinkness = thickness
-//        }
-//        
-//        strokeFormatViewController.selectedStrokeStyle = { style in
-//            
-//            switch style {
-//            case .basicStroke:
-//                self.drawableViewController.style = .ink
-//                
-//            case .curvyStroke:
-//                self.drawableViewController.style = .calligraphy
-//     
-//            }
-//            
-//        }
+        strokeFormatViewController.selectedStrokeThickness = { thickness in
+            
+            self.drawableViewController.thinkness = thickness
+        }
+        
         
         strokeFormatViewController.modalPresentationStyle = .popover
-        strokeFormatViewController.preferredContentSize = CGSize(width: 250, height: 455)
+        strokeFormatViewController.preferredContentSize = CGSize(width: StrokeFormatMenuTableViewController.viewWidth, height: StrokeFormatMenuTableViewController.viewHeight)
         strokeFormatViewController.popoverPresentationController?.permittedArrowDirections = .any
         strokeFormatViewController.popoverPresentationController?.sourceView = button
         strokeFormatViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
         
         navigationController?.present(strokeFormatViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: -- Eraser Options
+    
+    private func showEraserOptions(from button: UIButton) {
+        
+        guard let eraserMenuViewController = UIStoryboard(name: "EraserMenu", bundle: Bundle(for: EraserMenuViewController.self)).instantiateInitialViewController() as? EraserMenuViewController else { return }
+        
+        eraserMenuViewController.modalPresentationStyle = .popover
+        eraserMenuViewController.preferredContentSize = CGSize(width: 300, height: 100)
+        eraserMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
+        eraserMenuViewController.popoverPresentationController?.sourceView = button
+        
+        eraserMenuViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        eraserMenuViewController.selectedEraserThickness = { thikness in
+            
+            self.drawableViewController.eraseWidth = thikness
+        }
+        
+        navigationController?.present(eraserMenuViewController, animated: true, completion: nil)
+        
     }
     
     // MARK: -- CanvasView For Drawing

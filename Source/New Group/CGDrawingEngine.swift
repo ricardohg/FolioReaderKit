@@ -71,7 +71,7 @@ open class StrokeCGView: UIView {
     var currentImage: UIImage? 
     
     open var strokeColor = UIColor.black
-    open var eraserWidth = 5
+    open var eraserWidth = 5.0
     open var strokeWidth = 0.25
     var strokeStyle: StrokeViewDisplayOptions = .ink {
         didSet {

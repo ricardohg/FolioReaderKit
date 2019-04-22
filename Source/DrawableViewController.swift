@@ -26,6 +26,12 @@ class DrawableViewController: UIViewController {
         }
     }
     
+    var eraseWidth: Double = 5.0 {
+        didSet {
+            cgView.eraserWidth = self.eraseWidth
+        }
+    }
+    
     var style: StrokeViewDisplayOptions = .ink {
         didSet {
             cgView.strokeStyle = self.style
