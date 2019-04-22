@@ -373,7 +373,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.drawableViewController.removeFromParent()
             self.drawableViewController.view.removeFromSuperview()
             
-            //Drawing.store(image: image, page: self.currentPageNumber, bookId: self.book.name ?? "", configuration: self.readerConfig)
+            Drawing.store(image: image, page: self.currentPageNumber, bookId: self.book.name ?? "", configuration: self.readerConfig)
             
         }
         
@@ -624,11 +624,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let image = pageDrawings[cell.pageNumber] {
             cell.drawImageView.image = image
         }
-//        else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", page: cell.pageNumber, configuration: readerConfig), let image = drawing.image {
-//            
-//            pageDrawings[cell.pageNumber] = image
-//            cell.drawImageView.image = image
-//        }
+        else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", page: cell.pageNumber, configuration: readerConfig), let image = drawing.image {
+            
+            pageDrawings[cell.pageNumber] = image
+            cell.drawImageView.image = image
+        }
             
         
         
