@@ -18,7 +18,7 @@ open class Drawing: Object {
     @objc open dynamic var imageData: Data!
     @objc open dynamic var scale: Double = 1.0
     
-    override open class func primaryKey()-> String {
+    override open class func primaryKey() -> String {
         return "drawId"
     }
     

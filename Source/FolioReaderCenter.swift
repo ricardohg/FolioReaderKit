@@ -259,10 +259,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             default:
                 self.addCanvasView(with: tool)
             }
-            
-            
         }
-        
         
         view.addSubview(toolBarViewController.view)
         
@@ -306,7 +303,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             
             self.drawableViewController.thinkness = thickness
         }
-        
         
         strokeFormatViewController.modalPresentationStyle = .popover
         strokeFormatViewController.preferredContentSize = CGSize(width: StrokeFormatMenuTableViewController.viewWidth, height: StrokeFormatMenuTableViewController.viewHeight)
@@ -629,7 +625,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             pageDrawings[cell.pageNumber] = image
             cell.drawImageView.image = image
         }
-            
         
         
         cell.webView?.scrollView.delegate = self

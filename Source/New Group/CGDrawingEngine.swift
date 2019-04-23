@@ -492,35 +492,46 @@ private extension StrokeCGView {
     
     func forceAccessBlock() -> (_ sample: StrokeSample) -> CGFloat {
         
-        var forceMultiplier = CGFloat(2.0)
-        var forceOffset = CGFloat(0.1)
-        var forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
-            return sample.forceWithDefault
-        }
-        
-        if displayOptions == .ink {
-            forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
-                return sample.perpendicularForce
-            }
-        }
-        
-        // Make the force influence less pronounced for the calligraphy pen.
-        if displayOptions == .calligraphy {
-            let previousGetter = forceAccessBlock
-            forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
-                return max(previousGetter(sample), 1.0)
-            }
-            // make force value less pronounced
-            forceMultiplier = 1.0
-            forceOffset = 10.0
-        }
-        
-        let previousGetter = forceAccessBlock
-        forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
-            return previousGetter(sample) * forceMultiplier + forceOffset
+
+        let forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
+          
+            return CGFloat(1.0)
+            
         }
         
         return forceAccessBlock
+        
+        // disabling this for the moment
+        
+//        var forceMultiplier = CGFloat(2.0)
+//        var forceOffset = CGFloat(0.1)
+//        var forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
+//            return sample.forceWithDefault
+//        }
+//
+//        if displayOptions == .ink {
+//            forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
+//                return sample.perpendicularForce
+//            }
+//        }
+//
+//        // Make the force influence less pronounced for the calligraphy pen.
+//        if displayOptions == .calligraphy {
+//            let previousGetter = forceAccessBlock
+//            forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
+//                return max(previousGetter(sample), 1.0)
+//            }
+//            // make force value less pronounced
+//            forceMultiplier = 1.0
+//            forceOffset = 10.0
+//        }
+//
+//        let previousGetter = forceAccessBlock
+//        forceAccessBlock = {(sample: StrokeSample) -> CGFloat in
+//            return previousGetter(sample) * forceMultiplier + forceOffset
+//        }
+//
+//        return forceAccessBlock
     }
     
     func fillColor(in context: CGContext, toSample: StrokeSample, fromSample: StrokeSample, color: UIColor = .black) {

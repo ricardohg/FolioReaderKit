@@ -118,6 +118,8 @@ extension StrokeFormatMenuTableViewController: UICollectionViewDataSource, UICol
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedStrokeColor?(strokeColors[indexPath.row])
-        dismiss(animated: true, completion: nil)
+        let coloreEllipse = UIImage.ellipseWithColor(strokeColors[indexPath.row], size: 19)
+        self.pickedColorImage.image = coloreEllipse
+        
     }
 }
