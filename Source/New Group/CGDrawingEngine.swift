@@ -72,7 +72,8 @@ open class StrokeCGView: UIView {
     
     open var strokeColor = UIColor.black
     open var eraserWidth = 5.0
-    open var strokeWidth = 0.25
+    open var strokeWidth = 3.0
+    
     var strokeStyle: StrokeViewDisplayOptions = .ink {
         didSet {
             displayOptions = self.strokeStyle
@@ -252,7 +253,7 @@ private extension StrokeCGView {
             else { return }
         
         prepareToDraw()
-        lineSettings(in: context, color: stroke.color ?? .black)
+        //lineSettings(in: context, color: stroke.color ?? .black)
         
         if stroke.samples.count == 1 {
             // Construct a fake segment to draw for a stroke that is only one point.
@@ -342,7 +343,7 @@ private extension StrokeCGView {
                 }
                 forceEstimatedLineSettings(in: context, color: segment.color ?? .black)
             } else {
-                lineSettings(in: context, color: segment.color ?? .black)
+                lineSettings(in: context, segment: segment, color: segment.color ?? .black)
             }
             
             if segment.color == .clear {
@@ -457,13 +458,13 @@ private extension StrokeCGView {
         lockedAzimuthUnitVector = nil
     }
     
-    func lineSettings(in context: CGContext, color: UIColor) {
+    func lineSettings(in context: CGContext, segment: StrokeSegment, color: UIColor) {
         
         if displayOptions == .debug {
             context.setLineWidth(0.5)
             context.setStrokeColor(UIColor.white.cgColor)
         } else {
-            context.setLineWidth(CGFloat(strokeWidth))
+            context.setLineWidth(CGFloat(segment.width ?? 3.0))
             context.setStrokeColor(color.cgColor)
         }
         
@@ -475,7 +476,7 @@ private extension StrokeCGView {
             context.setLineWidth(0.5)
             context.setStrokeColor(UIColor.blue.cgColor)
         } else {
-            lineSettings(in: context, color: color)
+            //lineSettings(in: context, color: color)
         }
         
     }

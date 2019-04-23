@@ -20,13 +20,13 @@ class DrawableViewController: UIViewController {
         }
     }
     
-    var thinkness: Double = 1.0 {
+    var thinkness: Double = 3 {
         didSet {
             cgView?.strokeWidth = self.thinkness
         }
     }
     
-    var eraseWidth: Double = 5.0 {
+    var eraseWidth: Double = 1.5 {
         didSet {
             cgView.eraserWidth = self.eraseWidth
         }
