@@ -339,7 +339,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     private func addCanvasView(with tool: ToolBarViewController.Tool) {
         
-        guard !drawableViewController.isViewLoaded else {
+        guard drawableViewController.viewIfLoaded?.window == nil else {
             
             drawableViewController.setStrokeColor(for: tool)
             
@@ -366,14 +366,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             let strokeCollection = StrokeCollection()
             self.drawableViewController.strokeCollection = strokeCollection
             self.drawableViewController.cgView.strokeCollection = strokeCollection
-            self.drawableViewController.removeFromParent()
+            self.drawableViewController.willMove(toParent: nil)
             self.drawableViewController.view.removeFromSuperview()
+            self.drawableViewController.removeFromParent()
+
             
             Drawing.store(image: image, page: self.currentPageNumber, bookId: self.book.name ?? "", configuration: self.readerConfig)
             
         }
-        
-        
         
         if let image = pageDrawings[currentPageNumber] {
             currentPage?.drawImageView.image = nil

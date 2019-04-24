@@ -10,9 +10,9 @@ import UIKit
 
 class DrawableViewController: UIViewController {
     
-    var cgView: StrokeCGView!
+    weak var cgView: StrokeCGView!
     var strokeCollection = StrokeCollection()
-    var canvasContainerView: CanvasContainerView!
+    weak var canvasContainerView: CanvasContainerView!
     
     var strokeColor: UIColor = .black {
         didSet {
@@ -52,7 +52,7 @@ class DrawableViewController: UIViewController {
     var saveImage: ((UIView) ->())?
     
     // property to store previous drawed image
-    var currentImageView: UIImageView!
+    weak var currentImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
