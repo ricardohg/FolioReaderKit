@@ -252,7 +252,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         toolBarViewController.toolSelected = { tool in
             
             switch tool {
-            case .pencilOptions(let button):
+            case .penOptions(let button):
                 self.showPencilOptions(from: button)
             case .eraseOptions(let button):
                 self.showEraserOptions(from: button)
@@ -304,6 +304,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.drawableViewController.thinkness = thickness
         }
         
+        strokeFormatViewController.currentColor = drawableViewController.strokeColor
+        strokeFormatViewController.currrentThinkness = drawableViewController.thinkness
+        
         strokeFormatViewController.modalPresentationStyle = .popover
         strokeFormatViewController.preferredContentSize = CGSize(width: StrokeFormatMenuTableViewController.viewWidth, height: StrokeFormatMenuTableViewController.viewHeight)
         strokeFormatViewController.popoverPresentationController?.permittedArrowDirections = .any
@@ -348,6 +351,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         drawableViewController.setStrokeColor(for: tool)
         
+        drawableViewController.loadToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+        
         drawableViewController.currentImage = nil
         
         addChild(drawableViewController)
@@ -366,9 +371,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             let strokeCollection = StrokeCollection()
             self.drawableViewController.strokeCollection = strokeCollection
             self.drawableViewController.cgView.strokeCollection = strokeCollection
+            self.drawableViewController.saveToolState(for: self.book.name ?? "", configuration: self.readerConfig)
             self.drawableViewController.willMove(toParent: nil)
             self.drawableViewController.view.removeFromSuperview()
             self.drawableViewController.removeFromParent()
+            self.toolBarViewController.currentTool = .none
 
             
             Drawing.store(image: image, page: self.currentPageNumber, bookId: self.book.name ?? "", configuration: self.readerConfig)

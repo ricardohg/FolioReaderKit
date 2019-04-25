@@ -22,6 +22,9 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     
     static let viewHeight = 270
     static let viewWidth = 250
+    
+    var currentColor: UIColor = .black
+    var currrentThinkness: Double = 3
 
     private let strokeColors: [UIColor] = [.lightBlue, .lightGreen, .lightYellow, .lightOrange, .lightRed, .pink, .lightPurple, .customGray, .lightWhite]
     
@@ -41,6 +44,11 @@ class StrokeFormatMenuTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let coloreEllipse = UIImage.ellipseWithColor(currentColor, size: 19)
+        self.pickedColorImage.image = coloreEllipse
+        
+        self.strokeTicknessSlider.value = Float(currrentThinkness)
         
         setThumbImage()
         colorCollectionView.reloadData()

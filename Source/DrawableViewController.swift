@@ -114,7 +114,7 @@ class DrawableViewController: UIViewController {
     
     func setStrokeColor(for tool: ToolBarViewController.Tool) {
         switch tool {
-        case .pencil:
+        case .pen:
             strokeColor = UIColor.black
         case .eraser:
             strokeColor = UIColor.clear
@@ -122,7 +122,18 @@ class DrawableViewController: UIViewController {
             break
         }
     }
+    
+    func saveToolState(for bookId: String, configuration: FolioReaderConfig) {
+        ToolState.store(color: strokeColor, thickness: thinkness, bookId: bookId, configuration: configuration)
+    }
 
+    func loadToolState(for bookId: String, configuration: FolioReaderConfig) {
+        if let toolState = ToolState.toolState(for: bookId, configuration: configuration) {
+            strokeColor = UIColor.hexStringToUIColor(hex: toolState.colorHex)
+            print(strokeColor)
+            thinkness = Double(toolState.thickness)
+        }
+    }
     
     /// A helper method that creates stroke gesture recognizers.
     /// - Tag: setupStrokeGestureRecognizer

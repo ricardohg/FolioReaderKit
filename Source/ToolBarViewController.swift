@@ -11,8 +11,8 @@ import UIKit
 class ToolBarViewController: UIViewController {
     
     enum Tool {
-        case pencil
-        case pencilOptions(button: UIButton)
+        case pen
+        case penOptions(button: UIButton)
         case eraser
         case eraseOptions(button: UIButton)
         case none
@@ -28,6 +28,26 @@ class ToolBarViewController: UIViewController {
     var strokeViewController: StrokeFormatMenuTableViewController?
     
     var toolSelected: ((Tool) -> ())?
+    
+    var currentTool: Tool = .none {
+        didSet {
+            
+            switch self.currentTool {
+            case .pen:
+                self.pencilButton.isSelected = true
+                self.eraserButton.isSelected = false
+            case .eraser:
+                self.pencilButton.isSelected = false
+                self.eraserButton.isSelected = true
+            case .none:
+                self.pencilButton.isSelected = false
+                self.eraserButton.isSelected = false
+            default:
+                break
+            }
+            
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +70,8 @@ class ToolBarViewController: UIViewController {
         pencilButton.addGestureRecognizer(longPressGestureRecognizer)
         
         eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-icon"), for: .normal)
+        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: .selected)
+        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: .highlighted)
         
         let longPressEraseGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(eraserOptionsGesture(_:)))
         eraserButton.addGestureRecognizer(longPressEraseGestureRecognizer)
@@ -99,23 +121,26 @@ class ToolBarViewController: UIViewController {
     // MARK - Actions
     
     @objc func pencilPressed(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-        self.toolSelected?(.pencil)
+        currentTool = .pen
+        self.toolSelected?(.pen)
     }
     
     @objc func pencilOptionsGesture(_ sender: UIGestureRecognizer) {
         if sender.state == .began {
-            self.toolSelected?(.pencilOptions(button: pencilButton))
+            currentTool = .pen
+            self.toolSelected?(.penOptions(button: pencilButton))
             
         }
     }
     
     @objc func eraserPressed(_ sender: UIButton) {
+        currentTool = .eraser
         self.toolSelected?(.eraser)
     }
     
     @objc func eraserOptionsGesture(_ sender: UIGestureRecognizer) {
         if sender.state == .began {
+            currentTool = .eraser
             self.toolSelected?(.eraseOptions(button: eraserButton))
             
         }
