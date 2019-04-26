@@ -100,7 +100,7 @@ class ToolBarViewController: UIViewController {
         
         // stack view
         
-        let spacing: CGFloat = 31
+        let spacing: CGFloat = 0
         
         let stackView = UIStackView(arrangedSubviews: [pencilButton, eraserButton])
         stackView.alignment = .center
