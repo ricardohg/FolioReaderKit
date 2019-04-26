@@ -294,6 +294,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
        
         guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() as? StrokeFormatMenuTableViewController else { return }
     
+        addCanvasView(with: .pen)
+        
         strokeFormatViewController.selectedStrokeColor =  { color in
             
             self.drawableViewController.strokeColor = color
@@ -332,6 +334,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         guard let eraserMenuViewController = UIStoryboard(name: "EraserMenu", bundle: Bundle(for: EraserMenuViewController.self)).instantiateInitialViewController() as? EraserMenuViewController else { return }
         
+        addCanvasView(with: .eraser)
+        
         eraserMenuViewController.modalPresentationStyle = .popover
         eraserMenuViewController.preferredContentSize = CGSize(width: 300, height: 100)
         eraserMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
@@ -350,18 +354,29 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: -- CanvasView For Drawing
     
+    private func setStateFor(tool: ToolBarViewController.Tool) {
+        
+        switch tool {
+        case .pen:
+            drawableViewController.loadToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+        default:
+            drawableViewController.setStrokeColor(for: tool)
+        }
+        
+    }
+    
     private func addCanvasView(with tool: ToolBarViewController.Tool) {
+        
         
         guard drawableViewController.viewIfLoaded?.window == nil else {
             
-            drawableViewController.setStrokeColor(for: tool)
+            setStateFor(tool: tool)
+            
             
             return
         }
         
-        drawableViewController.setStrokeColor(for: tool)
-        
-        drawableViewController.loadToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+        setStateFor(tool: tool)
         
         drawableViewController.currentImage = nil
         

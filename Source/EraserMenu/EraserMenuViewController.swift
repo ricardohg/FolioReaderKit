@@ -20,7 +20,7 @@ class EraserMenuViewController: UIViewController {
     // MARK: - Constants -
 
     private struct Constants {
-        static let thumbStandardSize: Float = 16
+        static let thumbStandardSize: Float = 8
     }
     
     // MARK: - Initializers -
