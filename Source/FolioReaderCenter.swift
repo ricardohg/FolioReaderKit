@@ -303,15 +303,25 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             
             self.drawableViewController.thinkness = thickness
         }
+    
         
-        strokeFormatViewController.currentColor = drawableViewController.strokeColor
-        strokeFormatViewController.currrentThinkness = drawableViewController.thinkness
+        if let toolSelected = ToolState.toolState(for: self.book.name ?? "", configuration: self.readerConfig) {
+            strokeFormatViewController.currentColor = UIColor.hexStringToUIColor(hex: toolSelected.colorHex)
+            strokeFormatViewController.currrentThinkness = toolSelected.thickness
+            
+        }
         
         strokeFormatViewController.modalPresentationStyle = .popover
         strokeFormatViewController.preferredContentSize = CGSize(width: StrokeFormatMenuTableViewController.viewWidth, height: StrokeFormatMenuTableViewController.viewHeight)
         strokeFormatViewController.popoverPresentationController?.permittedArrowDirections = .any
         strokeFormatViewController.popoverPresentationController?.sourceView = button
         strokeFormatViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        strokeFormatViewController.saveState = { (color, thickness) in
+            
+            ToolState.store(color: color, thickness: thickness, bookId: self.book.name ?? "", configuration: self.readerConfig)
+            
+        }
         
         navigationController?.present(strokeFormatViewController, animated: true, completion: nil)
     }
@@ -447,15 +457,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let closeIcon = UIImage(readerImageNamed: "icon-navbar-close")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let tocIcon = UIImage(readerImageNamed: "icon-navbar-toc")?.ignoreSystemTint(withConfiguration: self.readerConfig)
-        let strokeMenuIcon = UIImage(readerImageNamed: "pencil-selected")?.ignoreSystemTint(withConfiguration: self.readerConfig)
-        let eraserMenuIcon = UIImage(readerImageNamed: "eraser-icon")?.ignoreSystemTint(withConfiguration: self.readerConfig)
 
         let menu = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
         let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
-        let strokeMenu = UIBarButtonItem(image: strokeMenuIcon, style: .plain, target: self, action: #selector(showStrokeFormatMenu(_:)))
-        let eraserMenu = UIBarButtonItem(image: eraserMenuIcon, style: .plain, target: self, action: #selector(showEraserMenu(_:)))
 
-        navigationItem.leftBarButtonItems = [menu, toc, strokeMenu, eraserMenu]
+        navigationItem.leftBarButtonItems = [menu, toc]
         
         let layerIcon = UIImage(readerImageNamed: "layers-icon")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let layerButton =  UIBarButtonItem(image: layerIcon, style: .plain, target: self, action:#selector(showLayers(_:)))
@@ -1518,32 +1524,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         popController?.permittedArrowDirections = .any
         popController?.barButtonItem = sender
 
-    }
-    
-    @objc func showStrokeFormatMenu(_ sender: UIBarButtonItem) {
-        guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() else { return }
-        
-        strokeFormatViewController.modalPresentationStyle = .popover
-        strokeFormatViewController.preferredContentSize = CGSize(width: 300, height: 455)
-        strokeFormatViewController.popoverPresentationController?.permittedArrowDirections = .any
-        strokeFormatViewController.popoverPresentationController?.barButtonItem = sender
-        
-        navigationController?.present(strokeFormatViewController, animated: true, completion: {
-            strokeFormatViewController.view.superview?.layer.cornerRadius = 0
-        })
-    }
-    
-    @objc func showEraserMenu(_ sender: UIBarButtonItem) {
-        guard let eraserMenuViewController = UIStoryboard(name: "EraserMenu", bundle: Bundle(for: EraserMenuViewController.self)).instantiateInitialViewController() else { return }
-        
-        eraserMenuViewController.modalPresentationStyle = .popover
-        eraserMenuViewController.preferredContentSize = CGSize(width: 300, height: 100)
-        eraserMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
-        eraserMenuViewController.popoverPresentationController?.barButtonItem = sender
-        
-        navigationController?.present(eraserMenuViewController, animated: true, completion: {
-            eraserMenuViewController.view.superview?.layer.cornerRadius = 0
-        })
     }
 
     /**

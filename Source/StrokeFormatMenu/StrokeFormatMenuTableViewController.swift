@@ -20,6 +20,8 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     var selectedStrokeColor: ((UIColor) -> ())?
     var selectedStrokeStyle: ((StrokeStyleType) -> ())?
     
+    var saveState: ((UIColor, Double) -> ())?
+    
     static let viewHeight = 270
     static let viewWidth = 250
     
@@ -44,15 +46,18 @@ class StrokeFormatMenuTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         let coloreEllipse = UIImage.ellipseWithColor(currentColor, size: 19)
         self.pickedColorImage.image = coloreEllipse
-        
         self.strokeTicknessSlider.value = Float(currrentThinkness)
         
         setThumbImage()
         colorCollectionView.reloadData()
         
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.saveState?(currentColor, currrentThinkness)
     }
     
     // MARK: - UI Setup -
@@ -67,7 +72,9 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     // MARK: - Actions -
     
     @IBAction func strokeThicknessValueDidChange(_ sender: Any) {
-        self.selectedStrokeThickness?(Double(strokeTicknessSlider.value))
+        let thinkness = Double(strokeTicknessSlider.value)
+        self.selectedStrokeThickness?(thinkness)
+        currrentThinkness = thinkness
     }
     
     @IBAction func selectCustomColorTouchUpInside(_ sender: Any) {
@@ -81,6 +88,7 @@ class StrokeFormatMenuTableViewController: UITableViewController {
         
         colorPickerViewController.pickedColor = { color in
             self.selectedStrokeColor?(color)
+            self.currentColor = color
             let coloreEllipse = UIImage.ellipseWithColor(color, size: 19)
             self.pickedColorImage.image = coloreEllipse
         }
@@ -119,13 +127,17 @@ extension StrokeFormatMenuTableViewController: UICollectionViewDataSource, UICol
             return UICollectionViewCell()
         }
         
-        cell.colorImage = strokeColors[indexPath.row]
+        let color = strokeColors[indexPath.row]
+        cell.colorImage = color
+        currentColor = color
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedStrokeColor?(strokeColors[indexPath.row])
+        let color = strokeColors[indexPath.row]
+        selectedStrokeColor?(color)
+        currentColor = color
         let coloreEllipse = UIImage.ellipseWithColor(strokeColors[indexPath.row], size: 19)
         self.pickedColorImage.image = coloreEllipse
         

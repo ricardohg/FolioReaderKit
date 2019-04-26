@@ -130,7 +130,6 @@ class DrawableViewController: UIViewController {
     func loadToolState(for bookId: String, configuration: FolioReaderConfig) {
         if let toolState = ToolState.toolState(for: bookId, configuration: configuration) {
             strokeColor = UIColor.hexStringToUIColor(hex: toolState.colorHex)
-            print(strokeColor)
             thinkness = Double(toolState.thickness)
         }
     }
