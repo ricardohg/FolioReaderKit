@@ -1531,6 +1531,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
         
+        layersViewController.itemsSelected = { items in
+            
+            print(items)
+            
+        }
+        
         layersViewController.modalPresentationStyle = UIModalPresentationStyle.popover
         layersViewController.preferredContentSize = CGSize(width: 300, height: 200)
         self.navigationController?.present(layersViewController, animated: true, completion: nil)
