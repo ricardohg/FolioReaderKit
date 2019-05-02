@@ -16,22 +16,49 @@ public class LayersTableViewController: UITableViewController {
         case all
         case pens
     }
-
+    
+    struct Items: OptionSet {
+        
+        let rawValue: Int
+        
+        static let all = Items(rawValue: 1 << 0)
+        static let pens = Items(rawValue: 1 << 1)
+        
+    }
+    
+    private let options: [Items] = [.all, .pens]
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         tableView.allowsMultipleSelection = true
         tableView.tableFooterView = UIView()
-        doSelectAll()
+        processAllRows(with: true)
     }
     
-   private func doSelectAll() {
-    let totalRows = tableView.numberOfRows(inSection: 0)
+    private func processAllRows(with selection: Bool) {
+        let totalRows = tableView.numberOfRows(inSection: 0)
         for row in 0..<totalRows {
-            tableView.selectRow(at: NSIndexPath(row: row, section: 0) as IndexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
+            
+            if selection {
+                tableView.selectRow(at: NSIndexPath(row: row, section: 0) as IndexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
+                guard let cell = super.tableView.cellForRow(at: IndexPath(row: row, section: 0)) else { return }
+                cell.accessoryType = .checkmark
+                
+            }
+            else {
+                tableView.deselectRow(at: NSIndexPath(row: row, section: 0) as IndexPath, animated: false)
+                guard let cell = super.tableView.cellForRow(at: IndexPath(row: row, section: 0)) else { return }
+                cell.accessoryType = .none
+            }
         }
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        guard indexPath.row != 0 else {
+            processAllRows(with: true)
+            return
+        }
         
         guard let cell = super.tableView.cellForRow(at: indexPath) else { return }
         cell.accessoryType = .checkmark
@@ -40,6 +67,11 @@ public class LayersTableViewController: UITableViewController {
     }
     
     public override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        guard indexPath.row != 0 else {
+            processAllRows(with: false)
+            return
+        }
         
         guard let cell = super.tableView.cellForRow(at: indexPath) else { return }
         cell.accessoryType = .none
@@ -57,8 +89,8 @@ public class LayersTableViewController: UITableViewController {
         itemsSelected?(selectedItems)
         
     }
-
-
-
-
+    
+    
+    
+    
 }

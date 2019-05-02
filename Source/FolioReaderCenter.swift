@@ -426,6 +426,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
     }
     
+    
+    private func setupDrawableViewController(for items: [LayersTableViewController.Item]) {
+        
+        
+    }
 
     // MARK: Layout
 
@@ -1531,11 +1536,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
         
-        layersViewController.itemsSelected = { items in
-            
-            print(items)
-            
-        }
+//        layersViewController.itemsSelected = { items in
+//            
+//            setupDrawableViewController(for: items)
+//
+//        }
         
         layersViewController.modalPresentationStyle = UIModalPresentationStyle.popover
         layersViewController.preferredContentSize = CGSize(width: 300, height: 200)

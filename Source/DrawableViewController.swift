@@ -38,6 +38,13 @@ class DrawableViewController: UIViewController {
         }
     }
     
+    var layersItem: LayersTableViewController.Item? = nil {
+        didSet {
+            setupLayers()
+        }
+        
+    }
+    
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var currentImage: UIImage? {
@@ -92,6 +99,20 @@ class DrawableViewController: UIViewController {
         singleTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+    
+    private func setupLayers() {
+        
+        guard let layers = layersItem else {
+            self.view.isHidden = true
+            return
+        }
+//        switch layers {
+//        case .all, .pens:
+//           // self.view
+//        default:
+//            break
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
