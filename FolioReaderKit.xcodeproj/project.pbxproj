@@ -103,6 +103,7 @@
 		3A27F0C81FD9C33A00D84A57 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F231D397BE900D56699 /* Highlight.swift */; };
 		3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */; };
 		8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0775CA224BE739005CB6EC /* Drawing.swift */; };
+		8C3CEFCC227C96EB00C17283 /* LayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CEFCB227C96EB00C17283 /* LayerState.swift */; };
 		8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89022272A830027C17F /* DrawableViewController.swift */; };
 		8C5AE89B2228749F0027C17F /* Layers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5AE89A2228749F0027C17F /* Layers.storyboard */; };
 		8C5AE89D22287A0B0027C17F /* LayersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */; };
@@ -202,6 +203,7 @@
 		3A27F08B1FD9BE5800D84A57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderWebView.swift; sourceTree = "<group>"; };
 		8C0775CA224BE739005CB6EC /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
+		8C3CEFCB227C96EB00C17283 /* LayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerState.swift; sourceTree = "<group>"; };
 		8C5AE89022272A830027C17F /* DrawableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableViewController.swift; sourceTree = "<group>"; };
 		8C5AE89A2228749F0027C17F /* Layers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Layers.storyboard; sourceTree = "<group>"; };
 		8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersTableViewController.swift; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 				1A958F231D397BE900D56699 /* Highlight.swift */,
 				8C0775CA224BE739005CB6EC /* Drawing.swift */,
 				8CA2D345226F99D400B707EB /* ToolState.swift */,
+				8C3CEFCB227C96EB00C17283 /* LayerState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -684,6 +687,7 @@
 				B4ACA920224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift in Sources */,
 				3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */,
 				1A958FA41D397BE900D56699 /* FolioReaderKit.swift in Sources */,
+				8C3CEFCC227C96EB00C17283 /* LayerState.swift in Sources */,
 				8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */,
 				1A65DDD71DA7450A0033C277 /* FolioReaderQuoteShare.swift in Sources */,
 				3A27F08C1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift in Sources */,

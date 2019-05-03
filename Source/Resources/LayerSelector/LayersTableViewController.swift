@@ -16,20 +16,41 @@ public class LayersTableViewController: UITableViewController {
         
         let rawValue: Int
         
-        static let all = Items(rawValue: 1 << 0)
-        static let pens = Items(rawValue: 1 << 1)
+        static let none = Items(rawValue: 1 << 0)
+        static let all = Items(rawValue: 1 << 1)
+        static let pens = Items(rawValue: 1 << 2)
         
     }
     
     private let options: [Items] = [.all, .pens]
     
-    private var items: Items = .all
+    var items: Items = .all
     
     override public func viewDidLoad() {
         super.viewDidLoad()
         tableView.allowsMultipleSelection = true
         tableView.tableFooterView = UIView()
-        processAllRows(with: true)
+        proccessRowsWith(items: items)
+    }
+    
+    private func proccessRowsWith(items: Items) {
+        
+        processAllRows(with: false)
+        
+        if items.contains(.all) {
+            processAllRows(with: true)
+        }
+        else if items.contains(.none) {
+            processAllRows(with: false)
+        }
+        else {
+            //select pen
+            tableView.selectRow(at: NSIndexPath(row: 1, section: 0) as IndexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
+            guard let cell = super.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) else { return }
+            cell.accessoryType = .checkmark
+        }
+        
+        
     }
     
     private func processAllRows(with selection: Bool) {
@@ -49,7 +70,7 @@ public class LayersTableViewController: UITableViewController {
                 guard let cell = super.tableView.cellForRow(at: IndexPath(row: row, section: 0)) else { return }
                 cell.accessoryType = .none
                 
-                items = []
+                items = .none
             }
         }
     }
@@ -68,12 +89,13 @@ public class LayersTableViewController: UITableViewController {
     
     private func selectItems(in tableView: UITableView) {
         
-        items = []
+        items = .none
         
         let selectedIndexes = tableView.indexPathsForSelectedRows
         
         selectedIndexes?.forEach { index in
             
+            items.remove(.none)
             items.insert(options[index.row])
             
         }

@@ -90,7 +90,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     // current layers (filters)
     
-    private var items: LayersTableViewController.Items = .all
+    private var items: LayersTableViewController.Items = .none
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -220,6 +220,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         setupToolBar()
+        
+        
+        folioReader.delegate = self
         
     }
 
@@ -1541,9 +1544,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.items = items
             self.currentPage?.applyLayer(items: items)
             self.drawableViewController.layersItem = items
+            
+            LayerState.store(items: items, bookId: self.book.name ?? "", configuration: self.readerConfig)
 
         }
         
+        layersViewController.items = items
         layersViewController.modalPresentationStyle = UIModalPresentationStyle.popover
         layersViewController.preferredContentSize = CGSize(width: 300, height: 200)
         self.navigationController?.present(layersViewController, animated: true, completion: nil)
@@ -1735,4 +1741,14 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
         return bounds
     }
     
+}
+
+extension FolioReaderCenter: FolioReaderDelegate {
+    public func folioReader(_ folioReader: FolioReader, didFinishedLoading book: FRBook) {
+        
+        if let currentItems = LayerState.layerState(for: self.book.name ?? "", configuration: readerConfig) {
+            items = currentItems
+        }
+        
+    }
 }
