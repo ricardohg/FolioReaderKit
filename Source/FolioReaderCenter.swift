@@ -87,6 +87,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     // Dictionary to store images [page number: image]
     var pageDrawings: [Int: UIImage] = [:]
+    
+    // current layers (filters)
+    
+    private var items: LayersTableViewController.Items = .all
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -425,12 +429,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         drawableViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
     }
-    
-    
-    private func setupDrawableViewController(for items: [LayersTableViewController.Item]) {
-        
-        
-    }
 
     // MARK: Layout
 
@@ -649,6 +647,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         cell.setup(withReaderContainer: readerContainer)
         cell.pageNumber = indexPath.row+1
         cell.drawImageView.image = nil
+        
+        cell.applyLayer(items: items)
         
         if let image = pageDrawings[cell.pageNumber] {
             cell.drawImageView.image = image
@@ -1536,11 +1536,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
         
-//        layersViewController.itemsSelected = { items in
-//            
-//            setupDrawableViewController(for: items)
-//
-//        }
+        layersViewController.itemsSelected = { items in
+            
+            self.items = items
+            self.currentPage?.applyLayer(items: items)
+            self.drawableViewController.layersItem = items
+
+        }
         
         layersViewController.modalPresentationStyle = UIModalPresentationStyle.popover
         layersViewController.preferredContentSize = CGSize(width: 300, height: 200)

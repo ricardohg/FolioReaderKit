@@ -10,12 +10,7 @@ import UIKit
 
 public class LayersTableViewController: UITableViewController {
     
-    var itemsSelected: (([Item]?) -> ())?
-    
-    enum Item: Int, CaseIterable {
-        case all
-        case pens
-    }
+    var itemsSelected: ((Items) -> ())?
     
     struct Items: OptionSet {
         
@@ -27,6 +22,8 @@ public class LayersTableViewController: UITableViewController {
     }
     
     private let options: [Items] = [.all, .pens]
+    
+    private var items: Items = .all
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -44,19 +41,52 @@ public class LayersTableViewController: UITableViewController {
                 guard let cell = super.tableView.cellForRow(at: IndexPath(row: row, section: 0)) else { return }
                 cell.accessoryType = .checkmark
                 
+                items = .all
+                
             }
             else {
                 tableView.deselectRow(at: NSIndexPath(row: row, section: 0) as IndexPath, animated: false)
                 guard let cell = super.tableView.cellForRow(at: IndexPath(row: row, section: 0)) else { return }
                 cell.accessoryType = .none
+                
+                items = []
             }
         }
+    }
+    
+    // deselects "all" option
+    
+    private func deselectAllItem(in tableView: UITableView) {
+        
+        tableView.deselectRow(at: NSIndexPath(row: 0, section: 0) as IndexPath, animated: false)
+        guard let cell = super.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) else { return }
+        cell.accessoryType = .none
+        
+        items.remove(.all)
+        
+    }
+    
+    private func selectItems(in tableView: UITableView) {
+        
+        items = []
+        
+        let selectedIndexes = tableView.indexPathsForSelectedRows
+        
+        selectedIndexes?.forEach { index in
+            
+            items.insert(options[index.row])
+            
+        }
+        
+        itemsSelected?(items)
+        
     }
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard indexPath.row != 0 else {
             processAllRows(with: true)
+            selectItems(in: tableView)
             return
         }
         
@@ -70,27 +100,18 @@ public class LayersTableViewController: UITableViewController {
         
         guard indexPath.row != 0 else {
             processAllRows(with: false)
+            selectItems(in: tableView)
             return
         }
         
         guard let cell = super.tableView.cellForRow(at: indexPath) else { return }
         cell.accessoryType = .none
         
+        deselectAllItem(in: tableView)
+        
         selectItems(in: tableView)
         
     }
-    
-    private func selectItems(in tableView: UITableView) {
-        
-        let selectedIndexes = tableView.indexPathsForSelectedRows
-        
-        let selectedItems = selectedIndexes?.map { Item(rawValue: $0.row) }.compactMap { $0 }
-        
-        itemsSelected?(selectedItems)
-        
-    }
-    
-    
     
     
 }

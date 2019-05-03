@@ -38,7 +38,7 @@ class DrawableViewController: UIViewController {
         }
     }
     
-    var layersItem: LayersTableViewController.Item? = nil {
+    var layersItem: LayersTableViewController.Items = .all {
         didSet {
             setupLayers()
         }
@@ -103,16 +103,7 @@ class DrawableViewController: UIViewController {
     
     private func setupLayers() {
         
-        guard let layers = layersItem else {
-            self.view.isHidden = true
-            return
-        }
-//        switch layers {
-//        case .all, .pens:
-//           // self.view
-//        default:
-//            break
-//        }
+        print("setup layers")
     }
     
     override func viewWillAppear(_ animated: Bool) {

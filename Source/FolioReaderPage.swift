@@ -128,7 +128,19 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         
         
     }
-
+    
+    func applyLayer(items: LayersTableViewController.Items) {
+        
+        drawImageView.isHidden = true
+        print(items)
+        if items.contains(.all) {
+            drawImageView.isHidden = false
+        }
+        else if items.contains(.pens) {
+            drawImageView.isHidden = false
+        }
+    }
+    
     required public init?(coder aDecoder: NSCoder) {
         fatalError("storyboards are incompatible with truth and beauty")
     }
