@@ -40,6 +40,8 @@ class TOCViewController: UIViewController {
         embedPageViewController()
         loadBookInfo()
         
+        segmentedControl.removeBorders()
+        
         swipeInteractionController = SwipeInteractionController(viewController: self)
     }
     
@@ -49,9 +51,13 @@ class TOCViewController: UIViewController {
         
         bookTItleLabel.text = book.title
         authorLabel.text = book.authorName
-        
-        print(book.metadata)
+        categoryLabel.text = "Category"
 
+        
+        if let coverImage = book.coverImage, let artwork = UIImage(contentsOfFile: coverImage.fullHref) {
+            
+           bookCoverImageView.image = artwork
+        }
         
     }
     
@@ -65,7 +71,6 @@ class TOCViewController: UIViewController {
         
         pageController.viewControllerOne = chapter
         pageController.viewControllerTwo = highlight
-       // pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
         
         addChild(pageController)
         pageController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -114,5 +119,27 @@ class TOCViewController: UIViewController {
 
     @IBAction func dismiss(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+/// https://stackoverflow.com/questions/31651983/how-to-remove-border-from-segmented-control
+
+extension UISegmentedControl {
+    func removeBorders() {
+        setBackgroundImage(imageWithColor(color: backgroundColor!), for: .normal, barMetrics: .default)
+        setBackgroundImage(imageWithColor(color: tintColor!), for: .selected, barMetrics: .default)
+        setDividerImage(imageWithColor(color: UIColor.clear), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
+    }
+    
+    // create a 1x1 image with this color
+    private func imageWithColor(color: UIColor) -> UIImage {
+        let rect = CGRect(x: 0.0, y: 0.0, width:  1.0, height: 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context!.setFillColor(color.cgColor);
+        context!.fill(rect);
+        let image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return image!
     }
 }

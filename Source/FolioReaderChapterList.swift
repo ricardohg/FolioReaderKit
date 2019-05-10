@@ -56,6 +56,8 @@ class FolioReaderChapterList: UITableViewController {
 
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 50
+        
+        tableView.tableFooterView = UIView()
 
         // Create TOC list
         self.tocItems = self.book.flatTableOfContents
@@ -79,6 +81,11 @@ class FolioReaderChapterList: UITableViewController {
         let isSection = tocReference.children.count > 0
 
         cell.indexLabel?.text = tocReference.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let selectedView = UIView()
+        selectedView.backgroundColor = UIColor.hexStringToUIColor(hex: "2BB2AC")
+        
+        cell.selectedBackgroundView = selectedView
 
         // Add audio duration for Media Ovelay
         if let resource = tocReference.resource {

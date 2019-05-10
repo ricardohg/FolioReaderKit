@@ -34,8 +34,6 @@ class SwipeInteractionController: UIPercentDrivenInteractiveTransition {
         let translation = gestureRecognizer.translation(in: viewController.view)
 
         let progress = max(-translation.x, 0) / viewController.view.bounds.width
-        
-        print(progress)
     
         switch gestureRecognizer.state {
         case .began:
