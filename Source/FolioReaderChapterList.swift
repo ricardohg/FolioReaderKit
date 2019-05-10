@@ -28,6 +28,9 @@ class FolioReaderChapterList: UITableViewController {
     fileprivate var book: FRBook
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
+    
+    private var didLayoutSubviews = false
+    
 
     init(folioReader: FolioReader, readerConfig: FolioReaderConfig, book: FRBook, delegate: FolioReaderChapterListDelegate?) {
         self.readerConfig = readerConfig

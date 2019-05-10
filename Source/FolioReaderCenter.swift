@@ -238,7 +238,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         pagesForCurrentPage(currentPage)
         pageIndicatorView?.reloadView(updateShadow: true)
     }
-
+    
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -1566,16 +1566,26 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     @objc func presentChapterList(_ sender: UIBarButtonItem) {
         folioReader.saveReaderState()
 
-        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
-        let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
-        let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
+        
+       // guard let tocViewController = UIStoryboard(name: "TOC", bundle: Bundle(for: EraserMenuViewController.self)).instantiateInitialViewController() as? TOCViewController else { return }
+        
+        let tocViewController = TOCViewController.create(with: folioReader, config: readerConfig, book: book, chapterDelegate: self)
+        
+        
+//        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
+//        let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
+//        let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
+//
+//        pageController.viewControllerOne = chapter
+//        pageController.viewControllerTwo = highlight
+//        pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
 
-        pageController.viewControllerOne = chapter
-        pageController.viewControllerTwo = highlight
-        pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
-
-        let nav = UINavigationController(rootViewController: pageController)
-        present(nav, animated: true, completion: nil)
+        //let nav = UINavigationController(rootViewController: pageController)
+        
+        tocViewController.book = book
+        tocViewController.modalPresentationStyle = .custom
+        tocViewController.transitioningDelegate = self
+        present(tocViewController, animated: true, completion: nil)
     }
 
     /**
@@ -1750,5 +1760,16 @@ extension FolioReaderCenter: FolioReaderDelegate {
             items = currentItems
         }
         
+    }
+}
+
+extension FolioReaderCenter: UIViewControllerTransitioningDelegate {
+    
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DrawerTransition(withType: .presenting)
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DrawerTransition(withType: .dismissing)
     }
 }

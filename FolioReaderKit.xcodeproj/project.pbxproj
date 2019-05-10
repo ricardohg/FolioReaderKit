@@ -103,10 +103,14 @@
 		3A27F0C81FD9C33A00D84A57 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F231D397BE900D56699 /* Highlight.swift */; };
 		3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */; };
 		8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0775CA224BE739005CB6EC /* Drawing.swift */; };
+		8C126D432284852D002E0786 /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C126D422284852D002E0786 /* SwipeInteractionController.swift */; };
 		8C3CEFCC227C96EB00C17283 /* LayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CEFCB227C96EB00C17283 /* LayerState.swift */; };
+		8C3CEFD32282162D00C17283 /* DrawerTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CEFD22282162D00C17283 /* DrawerTransition.swift */; };
 		8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89022272A830027C17F /* DrawableViewController.swift */; };
 		8C5AE89B2228749F0027C17F /* Layers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5AE89A2228749F0027C17F /* Layers.storyboard */; };
 		8C5AE89D22287A0B0027C17F /* LayersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */; };
+		8C5C72702284B2F500139F0B /* TOC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C5C726F2284B2F500139F0B /* TOC.storyboard */; };
+		8C5C72722284B93100139F0B /* TOCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5C72712284B93100139F0B /* TOCViewController.swift */; };
 		8C82985D2224714A004BF531 /* CGMathExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C8298592224714A004BF531 /* CGMathExtensions.swift */; };
 		8C82985E2224714A004BF531 /* CGDrawingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C82985A2224714A004BF531 /* CGDrawingEngine.swift */; };
 		8C82985F2224714A004BF531 /* StrokeCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C82985B2224714A004BF531 /* StrokeCollection.swift */; };
@@ -203,10 +207,14 @@
 		3A27F08B1FD9BE5800D84A57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderWebView.swift; sourceTree = "<group>"; };
 		8C0775CA224BE739005CB6EC /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
+		8C126D422284852D002E0786 /* SwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
 		8C3CEFCB227C96EB00C17283 /* LayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerState.swift; sourceTree = "<group>"; };
+		8C3CEFD22282162D00C17283 /* DrawerTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerTransition.swift; sourceTree = "<group>"; };
 		8C5AE89022272A830027C17F /* DrawableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableViewController.swift; sourceTree = "<group>"; };
 		8C5AE89A2228749F0027C17F /* Layers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Layers.storyboard; sourceTree = "<group>"; };
 		8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayersTableViewController.swift; sourceTree = "<group>"; };
+		8C5C726F2284B2F500139F0B /* TOC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TOC.storyboard; sourceTree = "<group>"; };
+		8C5C72712284B93100139F0B /* TOCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOCViewController.swift; sourceTree = "<group>"; };
 		8C8298592224714A004BF531 /* CGMathExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGMathExtensions.swift; sourceTree = "<group>"; };
 		8C82985A2224714A004BF531 /* CGDrawingEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGDrawingEngine.swift; sourceTree = "<group>"; };
 		8C82985B2224714A004BF531 /* StrokeCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StrokeCollection.swift; sourceTree = "<group>"; };
@@ -279,6 +287,7 @@
 		1A958F031D397BE900D56699 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				8C5C726E2284B2C200139F0B /* TOC */,
 				B4B155D22264E2C50087E4E6 /* EraserMenu */,
 				B4DBCD832242D038004A5EE8 /* StrokeFormatMenu */,
 				8C829858222470FF004BF531 /* DrawingEngine */,
@@ -310,6 +319,8 @@
 				8C8389672225BA31007C6153 /* ToolBarViewController.swift */,
 				8C8389692226F711007C6153 /* CanvasContainerView.swift */,
 				8C5AE89022272A830027C17F /* DrawableViewController.swift */,
+				8C126D422284852D002E0786 /* SwipeInteractionController.swift */,
+				8C3CEFD22282162D00C17283 /* DrawerTransition.swift */,
 			);
 			path = Source;
 			sourceTree = SOURCE_ROOT;
@@ -419,6 +430,15 @@
 				8C5AE89C22287A0B0027C17F /* LayersTableViewController.swift */,
 			);
 			path = LayerSelector;
+			sourceTree = "<group>";
+		};
+		8C5C726E2284B2C200139F0B /* TOC */ = {
+			isa = PBXGroup;
+			children = (
+				8C5C726F2284B2F500139F0B /* TOC.storyboard */,
+				8C5C72712284B93100139F0B /* TOCViewController.swift */,
+			);
+			path = TOC;
 			sourceTree = "<group>";
 		};
 		8C829858222470FF004BF531 /* DrawingEngine */ = {
@@ -651,6 +671,7 @@
 				1A958FB01D397BE900D56699 /* Andada-Bold.otf in Resources */,
 				1A9590171D397CAF00D56699 /* FolioReaderKit.podspec in Resources */,
 				1A958FB51D397BE900D56699 /* Lato-BoldItalic.ttf in Resources */,
+				8C5C72702284B2F500139F0B /* TOC.storyboard in Resources */,
 				1A958FB61D397BE900D56699 /* Lato-Italic.ttf in Resources */,
 				1A958FBD1D397BE900D56699 /* Raleway-BoldItalic.ttf in Resources */,
 				1A958FB11D397BE900D56699 /* Andada-BoldItalic.otf in Resources */,
@@ -693,12 +714,14 @@
 				3A27F08C1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift in Sources */,
 				1A958FA21D397BE900D56699 /* FolioReaderHighlightList.swift in Sources */,
 				8C83896A2226F711007C6153 /* CanvasContainerView.swift in Sources */,
+				8C5C72722284B93100139F0B /* TOCViewController.swift in Sources */,
 				8C8298602224714A004BF531 /* StrokeGestureRecognizer.swift in Sources */,
 				256AE60B20A1D4DD00EAD746 /* FolioReaderAddHighlightNote.swift in Sources */,
 				1A958FA71D397BE900D56699 /* FolioReaderPlayerMenu.swift in Sources */,
 				1A958F921D397BE900D56699 /* FREpubParser.swift in Sources */,
 				B45148A62243FF450027B6B6 /* ColorCollectionViewCell.swift in Sources */,
 				1A958F9C1D397BE900D56699 /* FolioReaderCenter.swift in Sources */,
+				8C126D432284852D002E0786 /* SwipeInteractionController.swift in Sources */,
 				1A958FAE1D397BE900D56699 /* PageViewController.swift in Sources */,
 				1A958FAD1D397BE900D56699 /* Highlight.swift in Sources */,
 				1A958F981D397BE900D56699 /* FRSmils.swift in Sources */,
@@ -721,6 +744,7 @@
 				1A958F961D397BE900D56699 /* FRResources.swift in Sources */,
 				1A958F991D397BE900D56699 /* FRSpine.swift in Sources */,
 				8C82985D2224714A004BF531 /* CGMathExtensions.swift in Sources */,
+				8C3CEFD32282162D00C17283 /* DrawerTransition.swift in Sources */,
 				1A958FA61D397BE900D56699 /* FolioReaderPageIndicator.swift in Sources */,
 				8CA2D346226F99D400B707EB /* ToolState.swift in Sources */,
 			);
