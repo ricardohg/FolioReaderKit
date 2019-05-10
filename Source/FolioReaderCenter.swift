@@ -1766,10 +1766,25 @@ extension FolioReaderCenter: FolioReaderDelegate {
 extension FolioReaderCenter: UIViewControllerTransitioningDelegate {
     
     public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DrawerTransition(withType: .presenting)
+        return DrawerTransition(withType: .presenting, interactionController: nil)
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DrawerTransition(withType: .dismissing)
+        if let dismissed = dismissed as? TOCViewController {
+            return DrawerTransition(withType: .dismissing, interactionController: dismissed.swipeInteractionController)
+        }
+        return nil
     }
+    
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        
+        guard let animator = animator as? DrawerTransition,
+            let interactionController = animator.interactionController,
+            interactionController.interactionInProgress
+            else {
+                return nil
+        }
+        return interactionController
+    }
+    
 }

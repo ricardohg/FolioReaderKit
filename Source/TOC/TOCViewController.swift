@@ -16,6 +16,7 @@ class TOCViewController: UIViewController {
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var pageContainerView: UIView!
+    @IBOutlet weak var drawerView: UIView!
     
     private var pageController: PageViewController!
     
@@ -47,6 +48,9 @@ class TOCViewController: UIViewController {
         guard let book = book else { return }
         
         bookTItleLabel.text = book.title
+        authorLabel.text = book.authorName
+        
+        print(book.metadata)
 
         
     }
@@ -108,4 +112,7 @@ class TOCViewController: UIViewController {
         
     }
 
+    @IBAction func dismiss(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
 }
