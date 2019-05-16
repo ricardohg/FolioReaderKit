@@ -107,6 +107,20 @@ open class FolioReaderContainer: UIViewController {
 		self.unzipPath = unzipPath
         self.shouldRemoveEpub = removeEpub
     }
+    
+    //TODO: -- presenttion fixed to portrait temporally 
+    
+    open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portrait
+    }
+    
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+    
+    open override var shouldAutorotate: Bool {
+        return false
+    }
 
     // MARK: - View life cicle
 
