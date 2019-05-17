@@ -108,7 +108,7 @@ open class FolioReaderContainer: UIViewController {
         self.shouldRemoveEpub = removeEpub
     }
     
-    //TODO: -- presenttion fixed to portrait temporally 
+    //TODO: -- presenttion fixed to portrait temporally
     
     open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return .portrait
