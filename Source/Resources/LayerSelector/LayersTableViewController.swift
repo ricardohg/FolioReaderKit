@@ -19,10 +19,11 @@ public class LayersTableViewController: UITableViewController {
         static let none = Items(rawValue: 1 << 0)
         static let all = Items(rawValue: 1 << 1)
         static let pens = Items(rawValue: 1 << 2)
+        static let highlights = Items(rawValue: 1 << 3)
         
     }
     
-    private let options: [Items] = [.all, .pens]
+    private let options: [Items] = [.all, .pens, .highlights]
     
     var items: Items = .all
     
@@ -43,12 +44,22 @@ public class LayersTableViewController: UITableViewController {
         else if items.contains(.none) {
             processAllRows(with: false)
         }
-        else {
-            //select pen
+            
+       if items.contains(.pens) {
+            
             tableView.selectRow(at: NSIndexPath(row: 1, section: 0) as IndexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
             guard let cell = super.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) else { return }
             cell.accessoryType = .checkmark
+            
         }
+            
+        if items.contains(.highlights) {
+            tableView.selectRow(at: NSIndexPath(row: 2, section: 0) as IndexPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
+            guard let cell = super.tableView.cellForRow(at: IndexPath(row: 2, section: 0)) else { return }
+            cell.accessoryType = .checkmark
+            
+        }
+        
         
         
     }
@@ -100,6 +111,7 @@ public class LayersTableViewController: UITableViewController {
             
         }
         
+        print(items)
         itemsSelected?(items)
         
     }
@@ -133,6 +145,15 @@ public class LayersTableViewController: UITableViewController {
         
         selectItems(in: tableView)
         
+    }
+    
+    public override func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard indexPath.row > 0 else {
+            processAllRows(with: false)
+            return nil
+        }
+        
+        return indexPath
     }
     
     
