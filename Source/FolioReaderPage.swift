@@ -48,6 +48,8 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
     fileprivate var colorView: UIView!
     fileprivate var shouldShowBar = true
     fileprivate var menuIsVisible = false
+    
+    fileprivate var html: String?
 
     fileprivate var readerConfig: FolioReaderConfig {
         guard let readerContainer = readerContainer else { return FolioReaderConfig() }
@@ -132,12 +134,17 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
     func applyLayer(items: LayersTableViewController.Items) {
         
         drawImageView.isHidden = true
-        print(items)
         if items.contains(.all) {
             drawImageView.isHidden = false
         }
         else if items.contains(.pens) {
             drawImageView.isHidden = false
+        }
+        
+        if !items.contains(.highlights) {
+            webView?.js("hideHighlights()")
+        } else {
+            webView?.js("showHighlights()")
         }
     }
     
@@ -176,11 +183,14 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             height: self.readerConfig.isDirection(bounds.height - navTotal, bounds.height - navTotal - paddingTop - paddingBottom, bounds.height - navTotal)
         )
     }
+    
 
     func loadHTMLString(_ htmlContent: String!, baseURL: URL!) {
         // Insert the stored highlights to the HTML
+        html = htmlContent
         let tempHtmlContent = htmlContentWithInsertHighlights(htmlContent)
         // Load the html into the webview
+        print(tempHtmlContent)
         webView?.alpha = 0
         webView?.loadHTMLString(tempHtmlContent, baseURL: baseURL)
     }
