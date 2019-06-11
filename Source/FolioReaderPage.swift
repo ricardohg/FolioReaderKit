@@ -431,7 +431,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
                 return
             }
 
-            let delay = 0.4 * Double(NSEC_PER_SEC) // 0.4 seconds * nanoseconds per seconds
+            let delay = 0.1 * Double(NSEC_PER_SEC) // 0.4 seconds * nanoseconds per seconds
             let dispatchTime = (DispatchTime.now() + (Double(Int64(delay)) / Double(NSEC_PER_SEC)))
             
             DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {

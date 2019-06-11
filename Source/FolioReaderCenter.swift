@@ -616,14 +616,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard let readerContainer = readerContainer else { return }
         readerContainer.shouldHideStatusBar = shouldHide
 
-        UIView.animate(withDuration: 0.25, animations: {
-            readerContainer.setNeedsStatusBarAppearanceUpdate()
-
-            // Show minutes indicator
-            if (shouldShowIndicator == true) {
-                self.pageIndicatorView?.minutesLabel.alpha = shouldHide ? 0 : 1
-            }
-        })
+//        UIView.animate(withDuration: 0.25, animations: {
+//            readerContainer.setNeedsStatusBarAppearanceUpdate()
+//
+//            // Show minutes indicator
+//            if (shouldShowIndicator == true) {
+//                self.pageIndicatorView?.minutesLabel.alpha = shouldHide ? 0 : 1
+//            }
+//        })
         self.navigationController?.setNavigationBarHidden(shouldHide, animated: true)
     }
 
