@@ -155,6 +155,8 @@ open class FolioReaderWebView: UIWebView {
                 let bookId = (self.book.name as NSString?)?.deletingPathExtension else {
                     return
             }
+            
+            selectHighlightLayer()
 
             let pageNumber = folioReader.readerCenter?.currentPageNumber ?? 0
             let match = Highlight.MatchingHighlight(text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
@@ -182,6 +184,8 @@ open class FolioReaderWebView: UIWebView {
             guard let identifier = dic["id"] else { return }
             guard let bookId = (self.book.name as NSString?)?.deletingPathExtension else { return }
             
+            selectHighlightLayer()
+            
             let pageNumber = folioReader.readerCenter?.currentPageNumber ?? 0
             let match = Highlight.MatchingHighlight(text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
             if let highlight = Highlight.matchHighlight(match) {
@@ -194,8 +198,24 @@ open class FolioReaderWebView: UIWebView {
     
     @objc func updateHighlightNote (_ sender: UIMenuController?) {
         guard let highlightId = js("getHighlightId()") else { return }
+        selectHighlightLayer()
         guard let highlightNote = Highlight.getById(withConfiguration: readerConfig, highlightId: highlightId) else { return }
         self.folioReader.readerCenter?.presentAddHighlightNote(highlightNote, edit: true)
+    }
+    
+    private func selectHighlightLayer() {
+        
+        if var items = LayerState.layerState(for: book.name ?? "", configuration: readerConfig) {
+            
+            items.insert(.highlights)
+            
+            LayerState.store(items: items, bookId: book.name ?? "", configuration: readerConfig)
+            
+            
+        }
+        
+        js("showHighlights")
+        
     }
 
     @objc func define(_ sender: UIMenuController?) {

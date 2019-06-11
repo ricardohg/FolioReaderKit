@@ -37,7 +37,7 @@ public class LayersTableViewController: UITableViewController {
     private func proccessRowsWith(items: Items) {
         
         processAllRows(with: false)
-        
+    
         if items.contains(.all) {
             processAllRows(with: true)
         }
@@ -111,7 +111,6 @@ public class LayersTableViewController: UITableViewController {
             
         }
         
-        print(items)
         itemsSelected?(items)
         
     }

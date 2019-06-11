@@ -62,7 +62,7 @@
                                             <constraint firstAttribute="height" constant="103" id="e1b-R9-FJW"/>
                                         </constraints>
                                     </stackView>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Ldg-Qu-alm">
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Ldg-Qu-alm">
                                         <rect key="frame" x="0.0" y="230" width="310" height="61"/>
                                         <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
