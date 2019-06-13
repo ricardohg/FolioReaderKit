@@ -15,11 +15,14 @@ class ToolBarViewController: UIViewController {
         case penOptions(button: UIButton)
         case eraser
         case eraseOptions(button: UIButton)
+        case highlighter
+        case highlightOptions(button: UIButton)
         case none
     }
     
     let pencilButton = UIButton(type: .custom)
     let eraserButton = UIButton(type: .custom)
+    let highlightButton = UIButton(type: .custom)
     
     let undoButton = UIButton(type: .custom)
     let redoButton = UIButton(type: .custom)
@@ -36,12 +39,19 @@ class ToolBarViewController: UIViewController {
             case .pen:
                 self.pencilButton.isSelected = true
                 self.eraserButton.isSelected = false
+                self.highlightButton.isSelected = false
             case .eraser:
-                self.pencilButton.isSelected = false
                 self.eraserButton.isSelected = true
+                self.pencilButton.isSelected = false
+                self.highlightButton.isSelected = false
+            case .highlighter:
+                self.highlightButton.isSelected = true
+                self.pencilButton.isSelected = false
+                self.eraserButton.isSelected = false
             case .none:
                 self.pencilButton.isSelected = false
                 self.eraserButton.isSelected = false
+                self.highlightButton.isSelected = false
             default:
                 break
             }
@@ -63,24 +73,30 @@ class ToolBarViewController: UIViewController {
         view.backgroundColor = UIColor(rgba: "#2BB2AC")
         
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil"), for: .normal)
-        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
-        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .highlighted)
+        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: [.selected, .highlighted])
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(pencilOptionsGesture))
         pencilButton.addGestureRecognizer(longPressGestureRecognizer)
         
         eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-icon"), for: .normal)
-        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: .selected)
-        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: .highlighted)
+        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: [.selected, .highlighted])
         
         let longPressEraseGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(eraserOptionsGesture(_:)))
         eraserButton.addGestureRecognizer(longPressEraseGestureRecognizer)
+        
+        highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon"), for: .normal)
+        highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon-selected"), for: [.selected, .highlighted])
+        
+        let longPressHighlightGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(highlightOptionsGesture(_:)))
+        highlightButton.addGestureRecognizer(longPressHighlightGestureRecognizer)
         
         undoButton.setBackgroundImage(UIImage(readerImageNamed: "undo-icon"), for: .normal)
         redoButton.setBackgroundImage(UIImage(readerImageNamed: "redo-icon"), for: .normal)
         
         pencilButton.addTarget(self, action: #selector(pencilPressed), for: .touchUpInside)
         eraserButton.addTarget(self, action: #selector(eraserPressed), for: .touchUpInside)
+        highlightButton.addTarget(self, action: #selector(highlighterPressed(_:)), for: .touchUpInside)
+        
         undoButton.addTarget(self, action: #selector(undoPressed), for: .touchUpInside)
         redoButton.addTarget(self, action: #selector(redoPressed), for: .touchUpInside)
     
@@ -102,7 +118,7 @@ class ToolBarViewController: UIViewController {
         
         let spacing: CGFloat = 0
         
-        let stackView = UIStackView(arrangedSubviews: [pencilButton, eraserButton])
+        let stackView = UIStackView(arrangedSubviews: [pencilButton, eraserButton, highlightButton])
         stackView.alignment = .center
         stackView.distribution = .equalCentering
         stackView.spacing = spacing
@@ -144,6 +160,15 @@ class ToolBarViewController: UIViewController {
             self.toolSelected?(.eraseOptions(button: eraserButton))
             
         }
+    }
+    
+    @objc func highlighterPressed(_ sender: UIButton) {
+        currentTool = .highlighter
+        self.toolSelected?(.highlighter)
+    }
+    
+    @objc func highlightOptionsGesture(_ sender: UIGestureRecognizer) {
+        
     }
 
     @objc func undoPressed() {
