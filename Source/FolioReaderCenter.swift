@@ -263,6 +263,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 self.showPencilOptions(from: button)
             case .eraseOptions(let button):
                 self.showEraserOptions(from: button)
+            case .highlightOptions(button: let button):
+                self.showHighlighterOptions(from: button)
             default:
                 self.addCanvasView(with: tool)
             }
@@ -358,6 +360,24 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         navigationController?.present(eraserMenuViewController, animated: true, completion: nil)
         
     }
+    
+    // MARK: - Highlighter Options -
+    
+    private func showHighlighterOptions(from button: UIButton) {
+        guard let highlighterMenuViewController = UIStoryboard(name: "HighlighterMenu", bundle: Bundle(for: HighlighterMenuViewController.self)).instantiateInitialViewController() as? HighlighterMenuViewController else { return }
+        
+        addCanvasView(with: .highlighter)
+        
+        highlighterMenuViewController.modalPresentationStyle = .popover
+        highlighterMenuViewController.preferredContentSize = CGSize(width: HighlighterMenuViewController.Constants.viewWidth, height: HighlighterMenuViewController.Constants.viewHeight)
+        highlighterMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
+        highlighterMenuViewController.popoverPresentationController?.sourceView = button
+        
+        highlighterMenuViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        navigationController?.present(highlighterMenuViewController, animated: true, completion: nil)
+    }
+
     
     // MARK: -- CanvasView For Drawing
     

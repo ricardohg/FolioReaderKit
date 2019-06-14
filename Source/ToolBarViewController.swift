@@ -118,7 +118,7 @@ class ToolBarViewController: UIViewController {
         
         let spacing: CGFloat = 0
         
-        let stackView = UIStackView(arrangedSubviews: [pencilButton, eraserButton, highlightButton])
+        let stackView = UIStackView(arrangedSubviews: [pencilButton, highlightButton, eraserButton])
         stackView.alignment = .center
         stackView.distribution = .equalCentering
         stackView.spacing = spacing
@@ -129,9 +129,6 @@ class ToolBarViewController: UIViewController {
         stackView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        
-        
     }
     
     // MARK - Actions
@@ -168,7 +165,10 @@ class ToolBarViewController: UIViewController {
     }
     
     @objc func highlightOptionsGesture(_ sender: UIGestureRecognizer) {
-        
+        if sender.state == .began {
+            currentTool = .highlighter
+            self.toolSelected?(.highlightOptions(button: highlightButton))
+        }
     }
 
     @objc func undoPressed() {
