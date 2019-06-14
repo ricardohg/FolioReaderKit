@@ -375,6 +375,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         highlighterMenuViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
         
+        highlighterMenuViewController.selectedColor = { color in
+            self.drawableViewController.strokeColor = color
+        }
+        
         navigationController?.present(highlighterMenuViewController, animated: true, completion: nil)
     }
 

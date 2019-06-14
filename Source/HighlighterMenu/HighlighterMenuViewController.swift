@@ -17,6 +17,7 @@ class HighlighterMenuViewController: UITableViewController {
     @IBOutlet weak var pickedColorImage: UIImageView!
     
     var selectedColor: ((UIColor) -> ())?
+    var currentColor: UIColor = .lightWhite
     
     // MARK: - Constants -
     
@@ -36,6 +37,8 @@ class HighlighterMenuViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let coloredEllipse = UIImage.ellipseWithColor(currentColor, size: 19)
+        self.pickedColorImage.image = coloredEllipse
         colorCollectionView.reloadData()
     }
 
@@ -52,6 +55,7 @@ class HighlighterMenuViewController: UITableViewController {
         
         colorPickerViewController.pickedColor = { color in
             let coloredEllipse = UIImage.ellipseWithColor(color, size: 19)
+            self.selectedColor?(color.withAlphaComponent(0.04))
             self.pickedColorImage.image = coloredEllipse
         }
         
@@ -75,15 +79,15 @@ extension HighlighterMenuViewController: UICollectionViewDelegate, UICollectionV
         
         let color = strokeColors[indexPath.row]
         cell.colorImage = color
-//        currentColor = color
+        currentColor = color
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let color = strokeColors[indexPath.row]
+        let color = strokeColors[indexPath.row].withAlphaComponent(0.04)
         selectedColor?(color)
-//        currentColor = color
+        currentColor = color
         let coloreEllipse = UIImage.ellipseWithColor(strokeColors[indexPath.row], size: 19)
         self.pickedColorImage.image = coloreEllipse
         

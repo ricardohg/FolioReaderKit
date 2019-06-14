@@ -127,10 +127,11 @@ class DrawableViewController: UIViewController {
     func setStrokeColor(for tool: ToolBarViewController.Tool) {
         switch tool {
         case .pen:
-    
             strokeColor = UIColor.black
         case .eraser:
             strokeColor = UIColor.clear
+        case .highlighter:
+            strokeColor = UIColor.lightGray.withAlphaComponent(0.04)
         default:
             break
         }
