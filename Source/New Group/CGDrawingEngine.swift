@@ -33,6 +33,7 @@ public enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
 
 open class StrokeCGView: UIView {
     
+    
     var displayOptions = StrokeViewDisplayOptions.ink {
         didSet {
             if strokeCollection != nil {
@@ -196,15 +197,15 @@ extension StrokeCGView {
         // and only draw each time we add a stroke.
         if let strokeCollection = strokeCollection {
             for stroke in strokeCollection.strokes {
-                
+
                 if stroke.color == nil {
                     stroke.color = strokeColor
                 }
-                
+
                 if stroke.width == nil {
                     stroke.width = strokeWidth
                 }
-                
+
                 if stroke.strokeDisplay == nil {
                     stroke.strokeDisplay = strokeStyle
                 }
@@ -213,6 +214,7 @@ extension StrokeCGView {
         }
         
         if let stroke = strokeToDraw {
+            
             if stroke.color == nil {
                 stroke.color = strokeColor
             }
@@ -324,7 +326,10 @@ private extension StrokeCGView {
               toSample: StrokeSample,
               fromSample: StrokeSample) {
         
+        
         let forceAccessBlock = self.forceAccessBlock()
+        
+        context.setBlendMode(.color)
         
         if segment.strokeDisplay == .calligraphy {
             
@@ -345,10 +350,12 @@ private extension StrokeCGView {
             } else {
                 lineSettings(in: context, segment: segment, color: segment.color ?? .black)
             }
-            
-            if segment.color == .clear {
-                context.clear(CGRect(origin: fromSample.location, size: CGSize(width: eraserWidth, height: eraserWidth)))
-                return
+            let startTime = CFAbsoluteTimeGetCurrent()
+            if segment.color?.hexString(true) == UIColor.clear.hexString(true) {
+                
+                 let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+                context.setBlendMode(.clear)
+                print("Time elapsed for \("erase"): \(timeElapsed) s.")
             }
             
             context.beginPath()
