@@ -15,7 +15,7 @@ class TOCViewController: UIViewController {
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var contentsButton: UIButton!
-    @IBOutlet weak var bookmarksButton: UIButton!
+    @IBOutlet weak var highlightsButton: UIButton!
     @IBOutlet weak var pageContainerView: UIView!
     @IBOutlet weak var drawerView: UIView!
     
@@ -35,6 +35,8 @@ class TOCViewController: UIViewController {
         
         index = reader?.currentMenuIndex ?? 0
         
+        contentsButton.isSelected = index == 0 ? true : false
+        highlightsButton.isSelected = index == 1 ? true : false
         embedPageViewController()
         loadBookInfo()
         
@@ -86,14 +88,14 @@ class TOCViewController: UIViewController {
     // MARK: - Actions -
     
     @IBAction func bookmarksTouchUpInside(_ sender: UIButton) {
-        bookmarksButton.isSelected = true
+        highlightsButton.isSelected = true
         contentsButton.isSelected = false
         pageController.didSwitchMenu(sender)
     }
     
     @IBAction func contentsTouchUpInside(_ sender: UIButton) {
         contentsButton.isSelected = true
-        bookmarksButton.isSelected = false
+        highlightsButton.isSelected = false
         pageController.didSwitchMenu(sender)
     }
 

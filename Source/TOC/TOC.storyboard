@@ -128,7 +128,7 @@
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" name="SFProDisplay-Bold" family="SF Pro Display" pointSize="16"/>
                                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <state key="normal" title="Bookmarks">
+                                                        <state key="normal" title="Highlights">
                                                             <color key="titleColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
                                                         <state key="selected">
@@ -202,10 +202,10 @@
                         <outlet property="authorLabel" destination="EvK-No-wWt" id="9I1-Ya-Dl9"/>
                         <outlet property="bookCoverImageView" destination="ryV-tj-FsC" id="RQz-rR-zM2"/>
                         <outlet property="bookTItleLabel" destination="vPI-tZ-Qzd" id="BJF-im-4AJ"/>
-                        <outlet property="bookmarksButton" destination="vO3-sf-GQJ" id="URh-F3-9RM"/>
                         <outlet property="categoryLabel" destination="baw-cu-X6O" id="dML-ir-umb"/>
                         <outlet property="contentsButton" destination="Sp3-yC-Y8H" id="djg-HH-xT2"/>
                         <outlet property="drawerView" destination="AH9-dR-Tjm" id="zqM-ep-9h4"/>
+                        <outlet property="highlightsButton" destination="vO3-sf-GQJ" id="URh-F3-9RM"/>
                         <outlet property="pageContainerView" destination="S0m-vH-36L" id="cop-XX-q2x"/>
                     </connections>
                 </viewController>
