@@ -128,6 +128,8 @@
 		B0D69CD21D0388EF003B4CCD /* FontBlaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0D69CCC1D0388EF003B4CCD /* FontBlaster.framework */; };
 		B0D69CD51D0388EF003B4CCD /* ZFDragableModalTransition.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0D69CCF1D0388EF003B4CCD /* ZFDragableModalTransition.framework */; };
 		B0D69CD61D0388EF003B4CCD /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0D69CD01D0388EF003B4CCD /* ZipArchive.framework */; };
+		B444288C22B3FC72005AA564 /* HighlighterMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B444288B22B3FC72005AA564 /* HighlighterMenu.storyboard */; };
+		B444288E22B3FDCE005AA564 /* HighlighterMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B444288D22B3FDCE005AA564 /* HighlighterMenuViewController.swift */; };
 		B45148A62243FF450027B6B6 /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */; };
 		B46E3577224AE3F900910E49 /* StrokeFormatMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */; };
 		B46E357C224BD8F500910E49 /* SF Pro in Resources */ = {isa = PBXBuildFile; fileRef = B46E357B224BD8F500910E49 /* SF Pro */; };
@@ -237,6 +239,8 @@
 		B0D69CCD1D0388EF003B4CCD /* JSQWebViewController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSQWebViewController.framework; path = Carthage/Build/iOS/JSQWebViewController.framework; sourceTree = "<group>"; };
 		B0D69CCF1D0388EF003B4CCD /* ZFDragableModalTransition.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZFDragableModalTransition.framework; path = Carthage/Build/iOS/ZFDragableModalTransition.framework; sourceTree = "<group>"; };
 		B0D69CD01D0388EF003B4CCD /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
+		B444288B22B3FC72005AA564 /* HighlighterMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HighlighterMenu.storyboard; sourceTree = "<group>"; };
+		B444288D22B3FDCE005AA564 /* HighlighterMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlighterMenuViewController.swift; sourceTree = "<group>"; };
 		B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StrokeFormatMenu.storyboard; sourceTree = "<group>"; };
 		B46E357B224BD8F500910E49 /* SF Pro */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "SF Pro"; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 		1A958F031D397BE900D56699 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				B444288A22B3FC03005AA564 /* HighlighterMenu */,
 				8C5C726E2284B2C200139F0B /* TOC */,
 				B4B155D22264E2C50087E4E6 /* EraserMenu */,
 				B4DBCD832242D038004A5EE8 /* StrokeFormatMenu */,
@@ -536,6 +541,15 @@
 			path = SMSegmentView;
 			sourceTree = "<group>";
 		};
+		B444288A22B3FC03005AA564 /* HighlighterMenu */ = {
+			isa = PBXGroup;
+			children = (
+				B444288B22B3FC72005AA564 /* HighlighterMenu.storyboard */,
+				B444288D22B3FDCE005AA564 /* HighlighterMenuViewController.swift */,
+			);
+			path = HighlighterMenu;
+			sourceTree = "<group>";
+		};
 		B4B155D22264E2C50087E4E6 /* EraserMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -677,6 +691,7 @@
 				1A958FB51D397BE900D56699 /* Lato-BoldItalic.ttf in Resources */,
 				8C5C72702284B2F500139F0B /* TOC.storyboard in Resources */,
 				1A958FB61D397BE900D56699 /* Lato-Italic.ttf in Resources */,
+				B444288C22B3FC72005AA564 /* HighlighterMenu.storyboard in Resources */,
 				1A958FBD1D397BE900D56699 /* Raleway-BoldItalic.ttf in Resources */,
 				1A958FB11D397BE900D56699 /* Andada-BoldItalic.otf in Resources */,
 				1A958FB91D397BE900D56699 /* Lora-BoldItalic.ttf in Resources */,
@@ -713,6 +728,7 @@
 				3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */,
 				1A958FA41D397BE900D56699 /* FolioReaderKit.swift in Sources */,
 				8C3CEFCC227C96EB00C17283 /* LayerState.swift in Sources */,
+				B444288E22B3FDCE005AA564 /* HighlighterMenuViewController.swift in Sources */,
 				8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */,
 				1A65DDD71DA7450A0033C277 /* FolioReaderQuoteShare.swift in Sources */,
 				3A27F08C1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift in Sources */,
@@ -948,7 +964,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.folioreader.FolioReaderKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -974,7 +990,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.folioreader.FolioReaderKit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

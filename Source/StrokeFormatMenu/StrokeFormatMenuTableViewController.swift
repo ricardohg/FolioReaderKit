@@ -47,8 +47,8 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        let coloreEllipse = UIImage.ellipseWithColor(currentColor, size: 19)
-        self.pickedColorImage.image = coloreEllipse
+        let coloredEllipse = UIImage.ellipseWithColor(currentColor, size: 19)
+        self.pickedColorImage.image = coloredEllipse
         self.strokeTicknessSlider.value = Float(currrentThinkness)
         
         setThumbImage()

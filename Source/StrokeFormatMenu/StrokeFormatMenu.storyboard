@@ -147,6 +147,7 @@
                                                                 <color key="titleColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                             </state>
                                                             <connections>
+                                                                <action selector="selectCustomColorTouchUpInside:" destination="4In-LP-1u3" eventType="touchUpInside" id="QqE-cU-CnX"/>
                                                                 <action selector="selectCustomColorTouchUpInside:" destination="oLD-qr-LPa" eventType="touchUpInside" id="hiN-O2-CPO"/>
                                                             </connections>
                                                         </button>
@@ -207,6 +208,7 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gr7-2n-N32" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="4In-LP-1u3" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="737.60000000000002" y="5.8470764617691158"/>
         </scene>
