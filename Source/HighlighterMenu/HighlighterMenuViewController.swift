@@ -14,53 +14,22 @@ class HighlighterMenuViewController: UITableViewController {
     // MARK: - Properties -
     
     @IBOutlet weak var colorCollectionView: UICollectionView!
-    @IBOutlet weak var pickedColorImage: UIImageView!
     
-    var selectedColor: ((UIColor) -> ())?
-    var currentColor: UIColor = .lightWhite
+    var selectedColor: ((HighlightStyle) -> ())?
+    var currentColor: HighlightStyle = .yellow
     
     // MARK: - Constants -
     
     struct Constants {
         static let colorPickerStoryboardName = "StrokeFormatMenu"
         static let colorPickerViewControllerIdentifier = "colorPickerView"
-        static let viewHeight = 124
-        static let viewWidth = 250
+        static let viewHeight = 70
+        static let viewWidth = 140
         static let fontName = "SFProDisplay-Regular"
         static let fontSize: CGFloat = 18
     }
     
-    private let strokeColors: [UIColor] = [.lightBlue, .lightGreen, .lightYellow, .lightOrange, .lightRed, .pink, .lightPurple, .customGray, .lightWhite]
-
-    // MARK: - Initializers -
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let coloredEllipse = UIImage.ellipseWithColor(currentColor, size: 19)
-        self.pickedColorImage.image = coloredEllipse
-        colorCollectionView.reloadData()
-    }
-
-
-    @IBAction func selectCustomColorTouchUpInside(_ sender: Any) {
-        guard let colorPickerViewController = UIStoryboard(name: Constants.colorPickerStoryboardName, bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateViewController(withIdentifier: Constants.colorPickerViewControllerIdentifier) as? ColorPickerCollectionViewController else { return }
-        
-        colorPickerViewController.modalPresentationStyle = .popover
-        colorPickerViewController.preferredContentSize = CGSize(width: 220, height: 350)
-        
-        colorPickerViewController.popoverPresentationController?.sourceRect = CGRect(x: 100, y: 0, width: 85, height: 40)
-        colorPickerViewController.popoverPresentationController?.permittedArrowDirections = .any
-        colorPickerViewController.popoverPresentationController?.sourceView = sender as? UIView
-        
-        colorPickerViewController.pickedColor = { color in
-            let coloredEllipse = UIImage.ellipseWithColor(color, size: 19)
-            self.selectedColor?(color.withAlphaComponent(0.04))
-            self.pickedColorImage.image = coloredEllipse
-        }
-        
-        present(colorPickerViewController, animated: true, completion: nil)
-    }
+    private let highlightColors: [HighlightStyle] = [.yellow, .green, .blue, .pink]
 }
 
 extension HighlighterMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -68,7 +37,7 @@ extension HighlighterMenuViewController: UICollectionViewDelegate, UICollectionV
     // MARK: - Collection View delegates -
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return strokeColors.count
+        return highlightColors.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -77,19 +46,15 @@ extension HighlighterMenuViewController: UICollectionViewDelegate, UICollectionV
             return UICollectionViewCell()
         }
         
-        let color = strokeColors[indexPath.row]
-        cell.colorImage = color
-        currentColor = color
+        let color = highlightColors[indexPath.row]
+        
+        cell.highlightStyle = color
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let color = strokeColors[indexPath.row].withAlphaComponent(0.04)
+        let color = highlightColors[indexPath.row]
         selectedColor?(color)
-        currentColor = color
-        let coloreEllipse = UIImage.ellipseWithColor(strokeColors[indexPath.row], size: 19)
-        self.pickedColorImage.image = coloreEllipse
-        
     }
 }

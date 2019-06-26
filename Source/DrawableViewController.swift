@@ -130,8 +130,6 @@ class DrawableViewController: UIViewController {
             strokeColor = UIColor.black
         case .eraser:
             strokeColor = UIColor.clear
-        case .highlighter:
-            strokeColor = UIColor.lightGray.withAlphaComponent(0.04)
         default:
             break
         }

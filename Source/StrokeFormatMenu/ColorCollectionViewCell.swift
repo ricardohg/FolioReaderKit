@@ -22,6 +22,13 @@ class ColorCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    var highlightStyle: HighlightStyle? {
+        didSet {
+            guard let highlightStyle = highlightStyle else { return }
+            setImage(for: highlightStyle)
+        }
+    }
+    
     // MARK: - Constants -
 
     internal struct Constants {
@@ -30,9 +37,23 @@ class ColorCollectionViewCell: UICollectionViewCell {
     
     // MARK: - UI Setup -
     
-    func setColorImage(with color: UIColor) {
+    private func setColorImage(with color: UIColor) {
         let coloredEllipse = UIImage.ellipseWithColor(color, size: 19)
         colorEllipse.image = coloredEllipse
     }
-
+    
+    private func setImage(for color: HighlightStyle) {
+        switch color {
+        case .yellow:
+            colorEllipse.image = UIImage(readerImageNamed: "yellow-marker")
+        case .green:
+            colorEllipse.image = UIImage(readerImageNamed: "green-marker")
+        case .blue:
+            colorEllipse.image = UIImage(readerImageNamed: "blue-marker")
+        case .pink:
+            colorEllipse.image = UIImage(readerImageNamed: "pink-marker")
+        case .underline:
+            break
+        }
+    }
 }
