@@ -182,6 +182,35 @@ open class Stroke {
         return ranges
     }
     
+    func containSamples(in stroke:Stroke) -> Bool {
+        
+        for sample in stroke.samples {
+            
+           return samples.filter { compare(ls: sample, rs: $0) }.count > 0
+            
+        }
+        
+        return false
+        
+    }
+    
+    private func compare(ls: StrokeSample, rs: StrokeSample) -> Bool {
+        
+        let delta: CGFloat = 10
+    
+        let dxlrHigh = rs.location.x + delta
+        let dxlrLow = rs.location.x - delta
+        
+        let dylrHigh = rs.location.y + delta
+        let dylrLow = rs.location.y - delta
+        
+        let x = ls.location.x
+        let y = ls.location.y
+        
+        return  (x >= dxlrLow && x <= dxlrHigh) && (y >= dylrLow && y <= dylrHigh)
+        
+    }
+    
 }
 
 extension Stroke: Sequence {

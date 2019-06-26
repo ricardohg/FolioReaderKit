@@ -166,6 +166,7 @@ class DrawableViewController: UIViewController {
     func strokeUpdated(_ strokeGesture: StrokeGestureRecognizer) {
         
         guard style != .eraser else {
+            cgView.eraseStroke = strokeGesture.stroke
             return
         }
         

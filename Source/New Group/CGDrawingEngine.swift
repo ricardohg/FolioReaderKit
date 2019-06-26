@@ -83,6 +83,14 @@ open class StrokeCGView: UIView {
         }
     }
     
+    var eraseStroke: Stroke? {
+        didSet {
+            if let stroke = self.eraseStroke {
+                eraseStrokeCollectionWithin(stroke: stroke)
+            }
+        }
+    }
+    
     // Hold samples when attempting to draw lines that are too short.
     private var heldFromSample: StrokeSample?
     private var heldFromSampleUnitVector: CGVector?
@@ -552,6 +560,20 @@ private extension StrokeCGView {
                 context.setFillColor(fillColorRegular)
             }
         }
+    }
+    
+    
+    // MARK - Erase Stroke
+    
+    func eraseStrokeCollectionWithin(stroke: Stroke) {
+        
+        if let strokeCollection = strokeCollection {
+            for str in strokeCollection.strokes {
+                
+                print(str.containSamples(in: stroke))
+            }
+        }
+        
     }
     
 }
