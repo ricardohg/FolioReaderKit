@@ -14,7 +14,8 @@ class TOCViewController: UIViewController {
     @IBOutlet weak var bookTItleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var contentsButton: UIButton!
+    @IBOutlet weak var highlightsButton: UIButton!
     @IBOutlet weak var pageContainerView: UIView!
     @IBOutlet weak var drawerView: UIView!
     
@@ -33,14 +34,11 @@ class TOCViewController: UIViewController {
         super.viewDidLoad()
         
         index = reader?.currentMenuIndex ?? 0
-    
-        segmentedControl.addTarget(self, action: #selector(didSwitchMenu(_:)), for: UIControl.Event.valueChanged)
-        segmentedControl.selectedSegmentIndex = index
         
+        contentsButton.isSelected = index == 0 ? true : false
+        highlightsButton.isSelected = index == 1 ? true : false
         embedPageViewController()
         loadBookInfo()
-        
-        segmentedControl.removeBorders()
         
         swipeInteractionController = SwipeInteractionController(viewController: self)
     }
@@ -87,10 +85,18 @@ class TOCViewController: UIViewController {
         
     }
     
-    @objc func didSwitchMenu(_ sender: UISegmentedControl) {
-        
+    // MARK: - Actions -
+    
+    @IBAction func bookmarksTouchUpInside(_ sender: UIButton) {
+        highlightsButton.isSelected = true
+        contentsButton.isSelected = false
         pageController.didSwitchMenu(sender)
-
+    }
+    
+    @IBAction func contentsTouchUpInside(_ sender: UIButton) {
+        contentsButton.isSelected = true
+        highlightsButton.isSelected = false
+        pageController.didSwitchMenu(sender)
     }
 
     
@@ -119,27 +125,5 @@ class TOCViewController: UIViewController {
 
     @IBAction func dismiss(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-    }
-}
-
-/// https://stackoverflow.com/questions/31651983/how-to-remove-border-from-segmented-control
-
-extension UISegmentedControl {
-    func removeBorders() {
-        setBackgroundImage(imageWithColor(color: backgroundColor!), for: .normal, barMetrics: .default)
-        setBackgroundImage(imageWithColor(color: tintColor!), for: .selected, barMetrics: .default)
-        setDividerImage(imageWithColor(color: UIColor.clear), forLeftSegmentState: .normal, rightSegmentState: .normal, barMetrics: .default)
-    }
-    
-    // create a 1x1 image with this color
-    private func imageWithColor(color: UIColor) -> UIImage {
-        let rect = CGRect(x: 0.0, y: 0.0, width:  1.0, height: 1.0)
-        UIGraphicsBeginImageContext(rect.size)
-        let context = UIGraphicsGetCurrentContext()
-        context!.setFillColor(color.cgColor);
-        context!.fill(rect);
-        let image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        return image!
     }
 }

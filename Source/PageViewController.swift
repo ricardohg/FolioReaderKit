@@ -82,8 +82,8 @@ class PageViewController: UIPageViewController {
 
     // MARK: - Segmented control changes
 
-    @objc func didSwitchMenu(_ sender: UISegmentedControl) {
-        self.index = sender.selectedSegmentIndex
+    @objc func didSwitchMenu(_ sender: UIButton) {
+        self.index = sender.tag
         let direction: UIPageViewController.NavigationDirection = (index == 0 ? .reverse : .forward)
         setViewControllers([viewList[index]], direction: direction, animated: true, completion: nil)
         self.folioReader.currentMenuIndex = index

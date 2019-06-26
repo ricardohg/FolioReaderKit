@@ -22,7 +22,7 @@ class FolioReaderChapterListCell: UITableViewCell {
         self.indexLabel?.lineBreakMode = .byWordWrapping
         self.indexLabel?.numberOfLines = 0
         self.indexLabel?.translatesAutoresizingMaskIntoConstraints = false
-        self.indexLabel?.font = UIFont(name: "Avenir-Light", size: 17)
+        self.indexLabel?.font = UIFont(name: "SFProDisplay-Bold", size: 16)
         self.indexLabel?.textColor = readerConfig.menuTextColor
 
         if let label = self.indexLabel {
@@ -32,7 +32,7 @@ class FolioReaderChapterListCell: UITableViewCell {
             var constraints = [NSLayoutConstraint]()
             let views = ["label": label]
 
-            NSLayoutConstraint.constraints(withVisualFormat: "H:|-15-[label]-15-|", options: [], metrics: nil, views: views).forEach {
+            NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[label]-15-|", options: [], metrics: nil, views: views).forEach {
                 constraints.append($0 as NSLayoutConstraint)
             }
 
