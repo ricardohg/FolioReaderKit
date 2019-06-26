@@ -33,7 +33,6 @@ public enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
 
 open class StrokeCGView: UIView {
     
-    
     var displayOptions = StrokeViewDisplayOptions.ink {
         didSet {
             if strokeCollection != nil {
@@ -63,6 +62,9 @@ open class StrokeCGView: UIView {
                 setNeedsDisplay()
             } else {
                 if let stroke = strokeToDraw {
+                    if stroke.strokeDisplay == .eraser {
+                        return
+                    }
                     setNeedsDisplay(for: stroke)
                 }
             }
@@ -329,7 +331,6 @@ private extension StrokeCGView {
         
         let forceAccessBlock = self.forceAccessBlock()
         
-        context.setBlendMode(.color)
         
         if segment.strokeDisplay == .calligraphy {
             
@@ -349,13 +350,6 @@ private extension StrokeCGView {
                 forceEstimatedLineSettings(in: context, color: segment.color ?? .black)
             } else {
                 lineSettings(in: context, segment: segment, color: segment.color ?? .black)
-            }
-            let startTime = CFAbsoluteTimeGetCurrent()
-            if segment.color?.hexString(true) == UIColor.clear.hexString(true) {
-                
-                 let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-                context.setBlendMode(.clear)
-                print("Time elapsed for \("erase"): \(timeElapsed) s.")
             }
             
             context.beginPath()

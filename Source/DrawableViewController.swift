@@ -34,7 +34,7 @@ class DrawableViewController: UIViewController {
     
     var style: StrokeViewDisplayOptions = .ink {
         didSet {
-            cgView.strokeStyle = self.style
+            cgView?.strokeStyle = self.style
         }
     }
     
@@ -127,9 +127,10 @@ class DrawableViewController: UIViewController {
     func setStrokeColor(for tool: ToolBarViewController.Tool) {
         switch tool {
         case .pen:
-    
             strokeColor = UIColor.black
+            self.style = .ink
         case .eraser:
+            self.style = .eraser
             strokeColor = UIColor.clear
         default:
             break
@@ -163,6 +164,10 @@ class DrawableViewController: UIViewController {
     /// - Tag: strokeUpdate
     @objc
     func strokeUpdated(_ strokeGesture: StrokeGestureRecognizer) {
+        
+        guard style != .eraser else {
+            return
+        }
         
         if strokeGesture === pencilStrokeRecognizer {
             lastSeenPencilInteraction = Date()
