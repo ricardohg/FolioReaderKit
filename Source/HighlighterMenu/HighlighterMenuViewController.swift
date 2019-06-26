@@ -48,7 +48,11 @@ extension HighlighterMenuViewController: UICollectionViewDelegate, UICollectionV
         
         let color = highlightColors[indexPath.row]
         
-        cell.highlightStyle = color
+        if color == currentColor {
+            cell.isSelected = true
+        }
+        
+        cell.colorImage = HighlightStyle.colorForStyle(color.rawValue)
         
         return cell
     }
@@ -56,5 +60,15 @@ extension HighlighterMenuViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let color = highlightColors[indexPath.row]
         selectedColor?(color)
+        currentColor = color
+        
+        if let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell {
+            cell.isSelected = true
+            let color = highlightColors[indexPath.row]
+            
+            cell.colorImage = HighlightStyle.colorForStyle(color.rawValue)
+        }
+        
+        self.dismiss()
     }
 }
