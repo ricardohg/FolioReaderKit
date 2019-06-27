@@ -201,8 +201,6 @@ class DrawableViewController: UIViewController {
         
     }
     
-    
-
     @objc func handleSingleTap(_ sender: Any) {
         saveImage?(view)
     }

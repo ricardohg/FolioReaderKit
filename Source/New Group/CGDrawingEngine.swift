@@ -46,7 +46,8 @@ open class StrokeCGView: UIView {
     
     open var strokeCollection: StrokeCollection? {
         didSet {
-            if oldValue !== strokeCollection {
+            
+            if oldValue !== strokeCollection || strokeStyle == .eraser {
                 setNeedsDisplay()
             }
             if let lastStroke = strokeCollection?.strokes.last {
@@ -62,9 +63,6 @@ open class StrokeCGView: UIView {
                 setNeedsDisplay()
             } else {
                 if let stroke = strokeToDraw {
-                    if stroke.strokeDisplay == .eraser {
-                        return
-                    }
                     setNeedsDisplay(for: stroke)
                 }
             }
@@ -567,12 +565,18 @@ private extension StrokeCGView {
     
     func eraseStrokeCollectionWithin(stroke: Stroke) {
         
+        let currentCollection = strokeCollection
         if let strokeCollection = strokeCollection {
-            for str in strokeCollection.strokes {
+            for (index, str) in strokeCollection.strokes.enumerated() {
                 
-                print(str.containSamples(in: stroke))
+                if str.containSamples(in: stroke), let _ = currentCollection?.strokes[index] {
+                    currentCollection?.strokes.remove(at: index)
+                    break
+                }
             }
         }
+        
+        strokeCollection = currentCollection
         
     }
     
