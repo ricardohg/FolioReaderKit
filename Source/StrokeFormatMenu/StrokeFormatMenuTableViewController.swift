@@ -47,7 +47,7 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        let coloredEllipse = UIImage.ellipseWithColor(currentColor, size: 19)
+        let coloredEllipse = UIImage.ellipseWithColor(currentColor, size: 19, border: nil)
         self.pickedColorImage.image = coloredEllipse
         self.strokeTicknessSlider.value = Float(currrentThinkness)
         
@@ -63,7 +63,7 @@ class StrokeFormatMenuTableViewController: UITableViewController {
     // MARK: - UI Setup -
 
     func setThumbImage() {
-        let thumbImage = UIImage.ellipseWithColor(.black, size: nil)
+        let thumbImage = UIImage.ellipseWithColor(.black, size: nil, border: nil)
         
         strokeTicknessSlider.setThumbImage(thumbImage, for: .normal)
         strokeTicknessSlider.setThumbImage(thumbImage, for: .highlighted)
@@ -89,7 +89,7 @@ class StrokeFormatMenuTableViewController: UITableViewController {
         colorPickerViewController.pickedColor = { color in
             self.selectedStrokeColor?(color)
             self.currentColor = color
-            let coloreEllipse = UIImage.ellipseWithColor(color, size: 19)
+            let coloreEllipse = UIImage.ellipseWithColor(color, size: 19, border: nil)
             self.pickedColorImage.image = coloreEllipse
         }
         
@@ -138,7 +138,7 @@ extension StrokeFormatMenuTableViewController: UICollectionViewDataSource, UICol
         let color = strokeColors[indexPath.row]
         selectedStrokeColor?(color)
         currentColor = color
-        let coloreEllipse = UIImage.ellipseWithColor(strokeColors[indexPath.row], size: 19)
+        let coloreEllipse = UIImage.ellipseWithColor(strokeColors[indexPath.row], size: 19, border: nil)
         self.pickedColorImage.image = coloreEllipse
         
     }

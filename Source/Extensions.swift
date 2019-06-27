@@ -543,14 +543,20 @@ internal extension UIImage {
      - returns: Return a colored ellipse
      */
     
-    class func ellipseWithColor(_ color: UIColor, size: CGFloat?) -> UIImage {
+    class func ellipseWithColor(_ color: UIColor, size: CGFloat?, border: UIColor?) -> UIImage {
         let layerFrame = CGRect(x: 0, y: 0, width: size ?? 16.0, height: size ?? 16.0)
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = CGPath(ellipseIn: layerFrame.insetBy(dx: 1, dy: 1), transform: nil)
         shapeLayer.fillColor = color.cgColor
-        let darkerColor = color.darkerColor(0.4)
-        shapeLayer.strokeColor = darkerColor.withAlphaComponent(0.65).cgColor
+        
+        if let border = border {
+            let darkerColor = border
+            shapeLayer.strokeColor = darkerColor.withAlphaComponent(0.8).cgColor
+        } else {
+            let darkerColor = color.darkerColor(0.4)
+            shapeLayer.strokeColor = darkerColor.withAlphaComponent(0.65).cgColor
+        }
         
         let layer = CALayer.init()
         layer.frame = layerFrame

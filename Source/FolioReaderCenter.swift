@@ -368,6 +368,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         addCanvasView(with: .highlighter)
         
+        highlighterMenuViewController.currentColor = HighlightStyle(rawValue: folioReader.currentHighlightStyle) ?? .yellow
         highlighterMenuViewController.modalPresentationStyle = .popover
         highlighterMenuViewController.preferredContentSize = CGSize(width: HighlighterMenuViewController.Constants.viewWidth, height: HighlighterMenuViewController.Constants.viewHeight)
         highlighterMenuViewController.popoverPresentationController?.permittedArrowDirections = .any

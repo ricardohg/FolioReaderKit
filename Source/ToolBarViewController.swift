@@ -87,9 +87,6 @@ class ToolBarViewController: UIViewController {
         highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon"), for: .normal)
         highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon-selected"), for: [.selected, .highlighted])
         
-        let longPressHighlightGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(highlightOptionsGesture(_:)))
-        highlightButton.addGestureRecognizer(longPressHighlightGestureRecognizer)
-        
         undoButton.setBackgroundImage(UIImage(readerImageNamed: "undo-icon"), for: .normal)
         redoButton.setBackgroundImage(UIImage(readerImageNamed: "redo-icon"), for: .normal)
         
@@ -161,14 +158,7 @@ class ToolBarViewController: UIViewController {
     
     @objc func highlighterPressed(_ sender: UIButton) {
         currentTool = .highlighter
-        self.toolSelected?(.highlighter)
-    }
-    
-    @objc func highlightOptionsGesture(_ sender: UIGestureRecognizer) {
-        if sender.state == .began {
-            currentTool = .highlighter
-            self.toolSelected?(.highlightOptions(button: highlightButton))
-        }
+        self.toolSelected?(.highlightOptions(button: highlightButton))
     }
 
     @objc func undoPressed() {

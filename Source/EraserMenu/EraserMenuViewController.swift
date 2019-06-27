@@ -37,7 +37,7 @@ class EraserMenuViewController: UIViewController {
 
         let thumbSize = (eraserThicknessSlider.value * Constants.thumbStandardSize) + Constants.thumbStandardSize
         selectedEraserThickness?(Double(thumbSize))
-        let thumbImage = UIImage.ellipseWithColor(.black, size: CGFloat(thumbSize))
+        let thumbImage = UIImage.ellipseWithColor(.black, size: CGFloat(thumbSize), border: nil)
         
         eraserThicknessSlider.setThumbImage(thumbImage, for: .normal)
         eraserThicknessSlider.setThumbImage(thumbImage, for: .highlighted)
