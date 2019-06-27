@@ -391,6 +391,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         switch tool {
         case .pen:
             drawableViewController.loadToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+            drawableViewController.style = .ink
         default:
             drawableViewController.setStrokeColor(for: tool)
         }

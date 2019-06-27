@@ -33,7 +33,6 @@ public enum StrokeViewDisplayOptions: CaseIterable, CustomStringConvertible {
 
 open class StrokeCGView: UIView {
     
-    
     var displayOptions = StrokeViewDisplayOptions.ink {
         didSet {
             if strokeCollection != nil {
@@ -47,7 +46,8 @@ open class StrokeCGView: UIView {
     
     open var strokeCollection: StrokeCollection? {
         didSet {
-            if oldValue !== strokeCollection {
+            
+            if oldValue !== strokeCollection || strokeStyle == .eraser {
                 setNeedsDisplay()
             }
             if let lastStroke = strokeCollection?.strokes.last {
@@ -78,6 +78,14 @@ open class StrokeCGView: UIView {
     var strokeStyle: StrokeViewDisplayOptions = .ink {
         didSet {
             displayOptions = self.strokeStyle
+        }
+    }
+    
+    var eraseStroke: Stroke? {
+        didSet {
+            if let stroke = self.eraseStroke {
+                eraseStrokeCollectionWithin(stroke: stroke)
+            }
         }
     }
     
@@ -329,7 +337,6 @@ private extension StrokeCGView {
         
         let forceAccessBlock = self.forceAccessBlock()
         
-        context.setBlendMode(.color)
         
         if segment.strokeDisplay == .calligraphy {
             
@@ -349,13 +356,6 @@ private extension StrokeCGView {
                 forceEstimatedLineSettings(in: context, color: segment.color ?? .black)
             } else {
                 lineSettings(in: context, segment: segment, color: segment.color ?? .black)
-            }
-            let startTime = CFAbsoluteTimeGetCurrent()
-            if segment.color?.hexString(true) == UIColor.clear.hexString(true) {
-                
-                 let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
-                context.setBlendMode(.clear)
-                print("Time elapsed for \("erase"): \(timeElapsed) s.")
             }
             
             context.beginPath()
@@ -558,6 +558,26 @@ private extension StrokeCGView {
                 context.setFillColor(fillColorRegular)
             }
         }
+    }
+    
+    
+    // MARK - Erase Stroke
+    
+    func eraseStrokeCollectionWithin(stroke: Stroke) {
+        
+        let currentCollection = strokeCollection
+        if let strokeCollection = strokeCollection {
+            for (index, str) in strokeCollection.strokes.enumerated() {
+                
+                if str.containSamples(in: stroke), let _ = currentCollection?.strokes[index] {
+                    currentCollection?.strokes.remove(at: index)
+                    break
+                }
+            }
+        }
+        
+        strokeCollection = currentCollection
+        
     }
     
 }
