@@ -17,6 +17,13 @@ public struct StrokeCollectionPersisted: Codable {
         
         self.strokes = strokeCollection.strokes.map { StrokePersisted(stroke: $0) }
     }
+    
+    func strokeCollection() -> StrokeCollection? {
+        let strokeCollection = StrokeCollection()
+        strokeCollection.strokes = strokes.map { $0.stroke() }
+        return strokeCollection
+    }
+    
 }
 
 public struct StrokePersisted: Codable {
@@ -28,6 +35,12 @@ public struct StrokePersisted: Codable {
         self.samples = stroke.samples.map { StrokeSamplePersisted(sample: $0) }
         
     }
+    
+    func stroke() -> Stroke {
+        let stroke = Stroke()
+        stroke.samples = samples.map { $0.strokeSample() }
+        return stroke
+    }
 }
 
 public struct StrokeSamplePersisted: Codable {
@@ -38,6 +51,10 @@ public struct StrokeSamplePersisted: Codable {
     init(sample: StrokeSample) {
         self.timestamp = sample.timestamp
         self.location = sample.location
+    }
+    
+    func strokeSample() -> StrokeSample {
+        return StrokeSample(timestamp: self.timestamp, location: self.location, coalesced: false)
     }
 }
 
