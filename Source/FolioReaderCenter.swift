@@ -419,6 +419,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         drawableViewController.saveImage = { view in
             
+            
+            let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
+            try? persisted.save(for: self.book.name ?? "")
+            
             let image = UIImage.imageWithLayer(view.layer)
             self.currentPage?.drawImageView.image = image
 

@@ -10,18 +10,38 @@ import Foundation
 
 /// struct to persist strokes
 
-public class StrokePersisted: Codable {
+public struct StrokeCollectionPersisted: Codable {
+    var strokes: [StrokePersisted] = []
+    
+    init(strokeCollection: StrokeCollection) {
+        
+        self.strokes = strokeCollection.strokes.map { StrokePersisted(stroke: $0) }
+    }
+}
+
+public struct StrokePersisted: Codable {
     
     var samples: [StrokeSamplePersisted] = []
+    
+    init(stroke: Stroke) {
+        
+        self.samples = stroke.samples.map { StrokeSamplePersisted(sample: $0) }
+        
+    }
 }
 
 public struct StrokeSamplePersisted: Codable {
     
     let timestamp: TimeInterval
     let location: CGPoint
+    
+    init(sample: StrokeSample) {
+        self.timestamp = sample.timestamp
+        self.location = sample.location
+    }
 }
 
-extension StrokePersisted {
+extension StrokeCollectionPersisted {
     
     func save(for bookId: String) throws {
         do {
@@ -34,11 +54,11 @@ extension StrokePersisted {
         }
     }
     
-    static func retreiveStrokes(for bookId: String) throws -> StrokePersisted? {
+    static func retreiveStrokes(for bookId: String) throws -> StrokeCollectionPersisted? {
         
         if let stroke = UserDefaults.standard.data(forKey: bookId) {
             let decoder = JSONDecoder()
-            let decoded = try? decoder.decode(StrokePersisted.self, from: stroke)
+            let decoded = try? decoder.decode(StrokeCollectionPersisted.self, from: stroke)
             return decoded
         }
         
