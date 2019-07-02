@@ -11,7 +11,12 @@ import UIKit
 class DrawableViewController: UIViewController {
     
     weak var cgView: StrokeCGView!
-    var strokeCollection = StrokeCollection()
+    var strokeCollection = StrokeCollection() {
+        didSet {
+            cgView?.strokeCollection = self.strokeCollection
+        }
+    }
+    
     weak var canvasContainerView: CanvasContainerView!
     
     var strokeColor: UIColor = .black {
@@ -38,21 +43,13 @@ class DrawableViewController: UIViewController {
         }
     }
     
-    var layersItem: LayersTableViewController.Items = .all {
-        didSet {
-            setupLayers()
-        }
-        
-    }
+    var layersItem: LayersTableViewController.Items = .all
     
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var currentImage: UIImage? {
         didSet {
             currentImageView?.image = currentImage
-            if let image = self.currentImage {
-                cgView?.currentImage = image
-            }
         }
     }
     
@@ -89,7 +86,8 @@ class DrawableViewController: UIViewController {
         currentImageView.image = currentImage
         
         self.currentImageView = currentImageView
-        cgView.currentImage = self.currentImage
+        
+        cgView.strokeCollection = self.strokeCollection
         
         pencilStrokeRecognizer = setupStrokeGestureRecognizer(isForPencil: true)
         
@@ -99,11 +97,6 @@ class DrawableViewController: UIViewController {
         singleTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(singleTapGestureRecognizer)
-    }
-    
-    private func setupLayers() {
-        
-        print("setup layers")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,7 +124,6 @@ class DrawableViewController: UIViewController {
             self.style = .ink
         case .eraser:
             self.style = .eraser
-            strokeColor = UIColor.clear
         default:
             break
         }

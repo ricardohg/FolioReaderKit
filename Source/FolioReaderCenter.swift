@@ -419,9 +419,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         drawableViewController.saveImage = { view in
             
-            
             let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
-            try? persisted.save(for: self.book.name ?? "")
+            try? persisted.save(bookId: self.book.name ?? "", page: self.currentPageNumber)
             
             let image = UIImage.imageWithLayer(view.layer)
             self.currentPage?.drawImageView.image = image
@@ -460,6 +459,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         drawableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         drawableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         drawableViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: self.currentPageNumber)
+        
+        if let strokeCollection = strokes?.strokeCollection() {
+            drawableViewController.strokeCollection = strokeCollection
+        }
+        
         
     }
 
@@ -686,12 +692,19 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let image = pageDrawings[cell.pageNumber] {
             cell.drawImageView.image = image
         }
+
         else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", page: cell.pageNumber, configuration: readerConfig), let image = drawing.image {
-            
+
             pageDrawings[cell.pageNumber] = image
             cell.drawImageView.image = image
         }
+
         
+        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: cell.pageNumber)
+        
+        if let strokeCollection = strokes?.strokeCollection() {
+            drawableViewController.strokeCollection = strokeCollection
+        }
         
         cell.webView?.scrollView.delegate = self
         if #available(iOS 11.0, *) {

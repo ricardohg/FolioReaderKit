@@ -60,20 +60,23 @@ public struct StrokeSamplePersisted: Codable {
 
 extension StrokeCollectionPersisted {
     
-    func save(for bookId: String) throws {
+    func save(bookId: String, page: Int) throws {
         do {
             let encoder = JSONEncoder()
             let encoded = try encoder.encode(self)
-            UserDefaults.standard.set(encoded, forKey: bookId)
+            let key = bookId + "_" + "\(page)"
+            UserDefaults.standard.set(encoded, forKey: key)
         }
         catch {
             throw error
         }
     }
     
-    static func retreiveStrokes(for bookId: String) throws -> StrokeCollectionPersisted? {
+    static func retreiveStrokes(for bookId: String, page: Int) throws -> StrokeCollectionPersisted? {
         
-        if let stroke = UserDefaults.standard.data(forKey: bookId) {
+        let key = bookId + "_" + "\(page)"
+        
+        if let stroke = UserDefaults.standard.data(forKey: key) {
             let decoder = JSONDecoder()
             let decoded = try? decoder.decode(StrokeCollectionPersisted.self, from: stroke)
             return decoded

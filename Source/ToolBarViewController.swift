@@ -73,19 +73,22 @@ class ToolBarViewController: UIViewController {
         view.backgroundColor = UIColor(rgba: "#2BB2AC")
         
         pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil"), for: .normal)
-        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: [.selected, .highlighted])
+        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .selected)
+        pencilButton.setBackgroundImage(UIImage(readerImageNamed: "pencil-selected"), for: .highlighted)
         
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(pencilOptionsGesture))
         pencilButton.addGestureRecognizer(longPressGestureRecognizer)
         
         eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-icon"), for: .normal)
-        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: [.selected, .highlighted])
+        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: .selected)
+        eraserButton.setBackgroundImage(UIImage(readerImageNamed: "eraser-selected"), for: .highlighted)
         
         let longPressEraseGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(eraserOptionsGesture(_:)))
         eraserButton.addGestureRecognizer(longPressEraseGestureRecognizer)
         
         highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon"), for: .normal)
-        highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon-selected"), for: [.selected, .highlighted])
+        highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon-selected"), for: .selected)
+        highlightButton.setBackgroundImage(UIImage(readerImageNamed: "highlight-icon-selected"), for: .highlighted)
         
         undoButton.setBackgroundImage(UIImage(readerImageNamed: "undo-icon"), for: .normal)
         redoButton.setBackgroundImage(UIImage(readerImageNamed: "redo-icon"), for: .normal)

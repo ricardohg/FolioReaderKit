@@ -69,7 +69,9 @@ open class StrokeCGView: UIView {
         }
     }
     
-    var currentImage: UIImage? 
+    var currentStrokes: StrokeCollection?
+    
+    var hasDrawingStored = false
     
     open var strokeColor = UIColor.black
     open var eraserWidth = 5.0
@@ -181,6 +183,7 @@ open class StrokeCGView: UIView {
         }
         dirtyRectViews = [dirtyRectView(), dirtyRectView()]
         
+        
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -197,13 +200,11 @@ extension StrokeCGView {
         UIColor.clear.set()
         UIRectFill(rect)
         
-        if let image = currentImage {
-            image.draw(in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        }
         
         // Optimization opportunity: Draw the existing collection in a different view,
         // and only draw each time we add a stroke.
         if let strokeCollection = strokeCollection {
+            
             for stroke in strokeCollection.strokes {
 
                 if stroke.color == nil {
