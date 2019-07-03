@@ -11,7 +11,12 @@ import UIKit
 class DrawableViewController: UIViewController {
     
     weak var cgView: StrokeCGView!
-    var strokeCollection = StrokeCollection()
+    var strokeCollection = StrokeCollection() {
+        didSet {
+            cgView?.strokeCollection = self.strokeCollection
+        }
+    }
+    
     weak var canvasContainerView: CanvasContainerView!
     
     var strokeColor: UIColor = .black {
@@ -34,25 +39,17 @@ class DrawableViewController: UIViewController {
     
     var style: StrokeViewDisplayOptions = .ink {
         didSet {
-            cgView.strokeStyle = self.style
+            cgView?.strokeStyle = self.style
         }
     }
     
-    var layersItem: LayersTableViewController.Items = .all {
-        didSet {
-            setupLayers()
-        }
-        
-    }
+    var layersItem: LayersTableViewController.Items = .all
     
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
     
     var currentImage: UIImage? {
         didSet {
             currentImageView?.image = currentImage
-            if let image = self.currentImage {
-                cgView?.currentImage = image
-            }
         }
     }
     
@@ -89,7 +86,8 @@ class DrawableViewController: UIViewController {
         currentImageView.image = currentImage
         
         self.currentImageView = currentImageView
-        cgView.currentImage = self.currentImage
+        
+        cgView.strokeCollection = self.strokeCollection
         
         pencilStrokeRecognizer = setupStrokeGestureRecognizer(isForPencil: true)
         
@@ -99,11 +97,6 @@ class DrawableViewController: UIViewController {
         singleTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         view.addGestureRecognizer(singleTapGestureRecognizer)
-    }
-    
-    private func setupLayers() {
-        
-        print("setup layers")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,8 +121,9 @@ class DrawableViewController: UIViewController {
         switch tool {
         case .pen:
             strokeColor = UIColor.black
+            self.style = .ink
         case .eraser:
-            strokeColor = UIColor.clear
+            self.style = .eraser
         default:
             break
         }
@@ -163,6 +157,11 @@ class DrawableViewController: UIViewController {
     @objc
     func strokeUpdated(_ strokeGesture: StrokeGestureRecognizer) {
         
+        guard style != .eraser else {
+            cgView.eraseStroke = strokeGesture.stroke
+            return
+        }
+        
         if strokeGesture === pencilStrokeRecognizer {
             lastSeenPencilInteraction = Date()
         }
@@ -194,8 +193,6 @@ class DrawableViewController: UIViewController {
         
     }
     
-    
-
     @objc func handleSingleTap(_ sender: Any) {
         saveImage?(view)
     }
