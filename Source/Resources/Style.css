@@ -31,20 +31,20 @@ footer, header, hgroup, menu, nav, section {
 }
 
 /* ePUB */
-html {
-    -webkit-text-size-adjust: none; /* Never autoresize text */
-    padding: 0 0 !important;
-    overflow: hidden;
-}
-
-body {
-    padding: 40px 20px !important;
-    overflow: hidden !important;
-}
-
-* {
-    page-break-before: initial !important; /* Reset page breaks to default */
-}
+/*html {*/
+/*    -webkit-text-size-adjust: none; /* Never autoresize text */*/
+/*    padding: 0 0 !important;*/
+/*    overflow: hidden;*/
+/*}*/
+/**/
+/*body {*/
+/*    padding: 40px 20px !important;*/
+/*    overflow: hidden !important;*/
+/*}*/
+/**/
+/** {*/
+/*    page-break-before: initial !important; /* Reset page breaks to default */*/
+/*}*/
 
 /* Custom padding for tablets */
 @media only screen and (min-device-width: 768px){
@@ -66,14 +66,14 @@ td, th, tr {
     vertical-align: inherit !important;
 }
 
-/* List */
-dd, dir, menu, ol, ul { margin-left: 30px !important; }
-ol { list-style-type: decimal !important; }
-li { display: list-item !important; }
-ol ol, ol ul, ul ol, ul ul {
-    margin-bottom: 0 !important;
-    margin-top: 0 !important;
-}
+/*/* List */*/
+/*dd, dir, menu, ol, ul { margin-left: 30px !important; }*/
+/*ol { list-style-type: decimal !important; }*/
+/*li { display: list-item !important; }*/
+/*ol ol, ol ul, ul ol, ul ul {*/
+/*    margin-bottom: 0 !important;*/
+/*    margin-top: 0 !important;*/
+/*}*/
 
 /* Links */
 a { -webkit-touch-callout: none; } /* Disable link callback */
@@ -87,56 +87,56 @@ p {
 
 b, strong, th {font-weight: bolder !important;}
 
-/* Forced font overrides */
-code, kbd, pre, samp, tt {
-    font-family: monospace, monospace !important;
-    font-size: 1em;
-}
-button, input, select, textarea { display: inline-block !important; }
-/*h1, h2, h3, h4, h5, h6 { font-weight: 400!important; }*/
-del, s, strike { text-decoration: line-through!important; }
-hr {
-    background-color: rgba(0,0,0,.1) !important;
-    border: none !important;
-    height: 1px !important;
-}
+/*/* Forced font overrides */*/
+/*code, kbd, pre, samp, tt {*/
+/*    font-family: monospace, monospace !important;*/
+/*    font-size: 1em;*/
+/*}*/
+/*button, input, select, textarea { display: inline-block !important; }*/
+/*/*h1, h2, h3, h4, h5, h6 { font-weight: 400!important; }*/*/
+/*del, s, strike { text-decoration: line-through!important; }*/
+/*hr {*/
+/*    background-color: rgba(0,0,0,.1) !important;*/
+/*    border: none !important;*/
+/*    height: 1px !important;*/
+/*}*/
 
 
-/* Sub and Super */
-big { font-size: 1.15em !important; }
-small, sub, sup { font-size: .65em !important; }
-sub { vertical-align: sub !important; }
-sup {
-    font-family: monospace !important;
-    vertical-align: super !important;
-}
+/*/* Sub and Super */*/
+/*big { font-size: 1.15em !important; }*/
+/*small, sub, sup { font-size: .65em !important; }*/
+/*sub { vertical-align: sub !important; }*/
+/*sup {*/
+/*    font-family: monospace !important;*/
+/*    vertical-align: super !important;*/
+/*}*/
 
 
-/* iBooks like */
-a { text-decoration: none; }
-pre { white-space: pre-wrap; }
-@page { margin: 0 0 !important; }
-table, ol, il { text-align: -webkit-auto; }
-h1 ,h2 ,h3 ,h4 ,h5 ,h6 {
-    text-align: -webkit-auto;
-    text-rendering: optimizelegibility;
-}
-
-/* allow breaking of words on headers and anchors as they tend to be larger font size or contain longer words */
-a, h1, h2, h3, h4, h5, h6 {
-    word-break: break-word !important;
-    -webkit-hyphens: none !important;
-    hyphens: none !important;
-}
-
-/* Begin Ted */
-img, svg, audio, video {
-    max-height: 95% !important;
-    max-width: 100% !important;
-    box-sizing: border-box;
-    object-fit: contain;
-    page-break-inside: avoid;
-}
+/*/* iBooks like */*/
+/*a { text-decoration: none; }*/
+/*pre { white-space: pre-wrap; }*/
+/*@page { margin: 0 0 !important; }*/
+/*table, ol, il { text-align: -webkit-auto; }*/
+/*h1 ,h2 ,h3 ,h4 ,h5 ,h6 {*/
+/*    text-align: -webkit-auto;*/
+/*    text-rendering: optimizelegibility;*/
+/*}*/
+/**/
+/*/* allow breaking of words on headers and anchors as they tend to be larger font size or contain longer words */*/
+/*a, h1, h2, h3, h4, h5, h6 {*/
+/*    word-break: break-word !important;*/
+/*    -webkit-hyphens: none !important;*/
+/*    hyphens: none !important;*/
+/*}*/
+/**/
+/*/* Begin Ted */*/
+/*img, svg, audio, video {*/
+/*    max-height: 95% !important;*/
+/*    max-width: 100% !important;*/
+/*    box-sizing: border-box;*/
+/*    object-fit: contain;*/
+/*    page-break-inside: avoid;*/
+/*}*/
 
 /* End Ted */
 
@@ -198,95 +198,207 @@ html .highlight-yellow, html .highlight-green, html .highlight-blue, html .highl
  *
  */
 
-html, body {
-    -webkit-transition: all 0.6s ease;
+/*html, body {*/
+/*    -webkit-transition: all 0.6s ease;*/
+/*}*/
+/**/
+/*html {*/
+/*    background-color: #FFFFFF !important;*/
+/*}*/
+/**/
+/*body {*/
+/*    background-color: transparent !important;*/
+/*}*/
+/**/
+/*html.nightMode, html.nightMode body {*/
+/*    background-color: #131313 !important;*/
+/*}*/
+/**/
+/*.nightMode p, .nightMode div, .nightMode span:not(.epub-media-overlay-playing) {*/
+/*    color: #767676 !important;*/
+/*    background-color: transparent !important;*/
+/*}*/
+/**/
+/*.nightMode h1, .nightMode h2, .nightMode h3, .nightMode h4, .nightMode h5, .nightMode h6 {*/
+/*    color: #848484 !important;*/
+/*}*/
+/**/
+/*html.nightMode .highlight-yellow {background:rgba(255, 235, 107, 0.9)}*/
+/*html.nightMode .highlight-green {background:rgba(192, 237, 114, 0.9)}*/
+/*html.nightMode .highlight-blue {background:rgba(173, 216, 255, 0.9)}*/
+/*html.nightMode .highlight-pink {background:rgba(255, 176, 202, 0.9)}*/
+/*html.nightMode .highlight-underline {border-bottom: 2px solid rgba(240, 40, 20, 0.6)}*/
+
+
+
+/* unvisited link */
+a:link {
+    color: initial;
 }
 
-html {
-    background-color: #FFFFFF !important;
+/* visited link */
+a:visited {
+    color: initial;
 }
 
-body {
-    background-color: transparent !important;
+/* mouse over link */
+a:hover {
+    color: initial;
 }
 
-html.nightMode, html.nightMode body {
-    background-color: #131313 !important;
+/* selected link */
+a:active {
+    color: initial;
 }
 
-.nightMode p, .nightMode div, .nightMode span:not(.epub-media-overlay-playing) {
-    color: #767676 !important;
-    background-color: transparent !important;
+a{
+    text-decoration: none;
+}
+h1{
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: normal;
+    font-size: 22.0px;
+    font-family: "Avenir Next";
+    color: #4D4D4D;
+    letter-spacing: 0.000em;
+    font-variant: normal;
+    text-transform: none;
+    text-align: left;
+    text-indent: 0;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -webkit-text-stroke-color: initial;
+    -webkit-text-stroke-width: initial;
+    text-shadow: none;
+}
+p{
+    margin: 0px;
+}
+sub{
+    vertical-align: -10%;
+    font-size: 67%;
+}
+sup{
+    vertical-align: 33%;
+    font-size: 67%;
+}
+td{
+    overflow: hidden;
+}
+.p1{
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: normal;
+    font-size: 22.0px;
+    font-family: "Avenir Next";
+    color: #B7491A;
+    letter-spacing: 0.000em;
+    text-transform: none;
+    font-variant: normal;
+    text-align: left;
+    text-indent: 0;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -webkit-text-stroke-color: initial;
+    -webkit-text-stroke-width: initial;
+    text-shadow: none;
+}
+.p2{
+    font-style: normal;
+    font-weight: 700;
+    font-stretch: normal;
+    font-size: 70.0px;
+    font-family: "Avenir Next";
+    color: #4D4D4D;
+    letter-spacing: -0.030em;
+    text-transform: none;
+    font-variant: normal;
+    text-align: left;
+    text-indent: 0;
+    break-after: page;
+    page-break-after: always;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -webkit-text-stroke-color: initial;
+    -webkit-text-stroke-width: initial;
+    text-shadow: none;
+}
+.p3{
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: normal;
+    font-size: 22.0px;
+    font-family: "Avenir Next";
+    color: #4D4D4D;
+    letter-spacing: 0.000em;
+    text-transform: none;
+    font-variant: normal;
+    text-align: left;
+    text-indent: 0;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -webkit-text-stroke-color: initial;
+    -webkit-text-stroke-width: initial;
+    text-shadow: none;
+}
+.p4{
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-size: 16.0px;
+    font-family: "Avenir Next";
+    color: #000000;
+    letter-spacing: 0.000em;
+    text-transform: none;
+    font-variant: normal;
+    text-align: left;
+    text-indent: 0;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -webkit-text-stroke-color: initial;
+    -webkit-text-stroke-width: initial;
+    text-shadow: none;
+}
+.p5{
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+    font-size: 16.0px;
+    font-family: "Avenir Next";
+    color: #000000;
+    letter-spacing: 0.000em;
+    text-transform: none;
+    font-variant: normal;
+    text-align: left;
+    text-indent: 0;
+    break-after: page;
+    page-break-after: always;
+    hyphens: none;
+    -webkit-hyphens: none;
+    -webkit-text-stroke-color: initial;
+    -webkit-text-stroke-width: initial;
+    text-shadow: none;
+}
+.body {
+}
+.underline {
+    text-decoration: underline;
+}
+.orientation-opposed .underline {
+    text-decoration: overline;
+}
+.strikethrough {
+    text-decoration: line-through;
+}
+.underline-strikethrough {
+    text-decoration: underline line-through;
+}
+.orientation-opposed .underline-strikethrough {
+    text-decoration: overline line-through;
 }
 
-.nightMode h1, .nightMode h2, .nightMode h3, .nightMode h4, .nightMode h5, .nightMode h6 {
-    color: #848484 !important;
-}
-
-html.nightMode .highlight-yellow {background:rgba(255, 235, 107, 0.9)}
-html.nightMode .highlight-green {background:rgba(192, 237, 114, 0.9)}
-html.nightMode .highlight-blue {background:rgba(173, 216, 255, 0.9)}
-html.nightMode .highlight-pink {background:rgba(255, 176, 202, 0.9)}
-html.nightMode .highlight-underline {border-bottom: 2px solid rgba(240, 40, 20, 0.6)}
-
-
-/*
- *
- * Font classes
- *
- */
-
-.andada, .andada p, .andada span, .andada div { font-family: "Andada", sans-serif !important; }
-.lato, .lato p, .lato span, .lato div { font-family: "Lato", serif !important; }
-.lora, .lora p, .lora span, .lora div { font-family: "Lora", serif !important; }
-.raleway, .raleway p, .raleway span, .raleway div { font-family: "Raleway", sans-serif !important; }
-
-html.textSizeOne, .textSizeOne body { font-size: 13px !important; }
-html.textSizeTwo, .textSizeTwo body { font-size: 15px !important; }
-html.textSizeThree, .textSizeThree body { font-size: 17px !important; }
-html.textSizeFour, .textSizeFour body { font-size: 19px !important; }
-html.textSizeFive, .textSizeFive body { font-size: 21px !important; }
-
-h1 {
-    font-size: 2em;
-    line-height: 1.2;
-}
-h2 {
-    font-size: 1.5em;
-    line-height: 1.2;
-}
-h3 {
-    font-size: 1.17em;
-    line-height: 1.2;
-}
-h4 {
-    font-size: 1em;
-    line-height: 1.2;
-}
-h5 {
-    font-size: 0.83em;
-    line-height: 1.2;
-}
-h6 {
-    font-size: 0.67em;
-    line-height: 1.2;
-}
-body {
-    word-break: break-word !important;
-    -webkit-hyphens: auto !important;
-    hyphens: auto !important;
-}
-p, span, div {
-    font-size: 1em;
-    line-height: 1.5 !important;
-}
-@media only screen and (min-device-width: 600px) {
-    div {
-        font-size: 1em;
-        line-height: 1.438em !important;
-    }
-    body {
-        -webkit-hyphens: none !important;
-        hyphens: none !important;
-    }
-}
