@@ -759,7 +759,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        var size = CGSize(width: collectionView.bounds.width, height: collectionView.bounds.width - view.safeAreaInsets.bottom - view.safeAreaInsets.top - collectionView.safeAreaInsets.bottom - collectionView.safeAreaInsets.top - 100)
         
         if #available(iOS 11.0, *) {
             let orientation = UIDevice.current.orientation
