@@ -766,7 +766,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             
             if orientation == .portrait || orientation == .portraitUpsideDown {
                 if readerConfig.scrollDirection == .horizontal {
-                    size.height = size.height - view.safeAreaInsets.bottom
+                   // size.height = size.height - view.safeAreaInsets.bottom
                 }
             }
         }

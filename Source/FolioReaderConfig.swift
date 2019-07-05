@@ -145,7 +145,7 @@ open class FolioReaderConfig: NSObject {
     open var displayTitle = false
 
     /// Hide the page indicator
-    open var hidePageIndicator = false
+    open var hidePageIndicator = true
 
     /// Go to saved position when open a book
     open var loadSavedPositionForCurrentBook = true
