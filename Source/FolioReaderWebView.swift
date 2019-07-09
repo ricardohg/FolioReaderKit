@@ -391,7 +391,7 @@ open class FolioReaderWebView: UIWebView {
             break
         case .horizontal:
             scrollView.isPagingEnabled = true
-            paginationMode = .leftToRight
+            paginationMode = .unpaginated
             paginationBreakingMode = .page
             scrollView.bounces = false
             break

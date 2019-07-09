@@ -208,6 +208,7 @@ class FREpubParser: NSObject, SSZipArchiveDelegate {
 
         // Read Spine
         let spine = xmlDoc.root["spine"]
+        
         book.spine = readSpine(spine.children)
 
         // Page progress direction `ltr` or `rtl`
