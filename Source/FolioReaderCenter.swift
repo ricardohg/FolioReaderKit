@@ -759,7 +759,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        let size = CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         
         if #available(iOS 11.0, *) {
             let orientation = UIDevice.current.orientation
@@ -1610,20 +1610,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         folioReader.saveReaderState()
 
         
-       // guard let tocViewController = UIStoryboard(name: "TOC", bundle: Bundle(for: EraserMenuViewController.self)).instantiateInitialViewController() as? TOCViewController else { return }
-        
         let tocViewController = TOCViewController.create(with: folioReader, config: readerConfig, book: book, chapterDelegate: self)
-        
-        
-//        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
-//        let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
-//        let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
-//
-//        pageController.viewControllerOne = chapter
-//        pageController.viewControllerTwo = highlight
-//        pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
-
-        //let nav = UINavigationController(rootViewController: pageController)
         
         tocViewController.book = book
         tocViewController.modalPresentationStyle = .custom

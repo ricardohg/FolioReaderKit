@@ -8,9 +8,9 @@
 
 import UIKit
 
-final class DrawerTransition: NSObject {
+final public class DrawerTransition: NSObject {
     
-    enum TransitionType {
+    public enum TransitionType {
         case presenting
         case dismissing
     }
@@ -18,9 +18,9 @@ final class DrawerTransition: NSObject {
     fileprivate let transitionDuration = 0.3
     fileprivate let viewWidth: CGFloat = 310
     fileprivate var type: TransitionType
-     let interactionController: SwipeInteractionController?
+    public let interactionController: SwipeInteractionController?
     
-    init(withType type: TransitionType, interactionController: SwipeInteractionController?) {
+    public init(withType type: TransitionType, interactionController: SwipeInteractionController?) {
         self.type = type
         self.interactionController = interactionController
         super.init()
@@ -29,11 +29,11 @@ final class DrawerTransition: NSObject {
 
 extension DrawerTransition: UIViewControllerAnimatedTransitioning {
     
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return self.transitionDuration
     }
     
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         switch self.type {
         case .presenting:
