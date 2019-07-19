@@ -279,7 +279,7 @@ open class FolioReaderWebView: UIWebView {
         isShare = options
 
         let colors = UIImage(readerImageNamed: "colors-marker")
-        let share = UIImage(readerImageNamed: "share-marker")
+        //let share = UIImage(readerImageNamed: "share-marker")
         let remove = UIImage(readerImageNamed: "no-marker")
         let yellow = UIImage(readerImageNamed: "yellow-marker")
         let green = UIImage(readerImageNamed: "green-marker")
@@ -297,9 +297,9 @@ open class FolioReaderWebView: UIWebView {
         let colorsItem = UIMenuItem(title: "C", image: colors) { [weak self] _ in
             self?.colors(menuController)
         }
-        let shareItem = UIMenuItem(title: "S", image: share) { [weak self] _ in
-            self?.share(menuController)
-        }
+//        let shareItem = UIMenuItem(title: "S", image: share) { [weak self] _ in
+//            self?.share(menuController)
+//        }
         let removeItem = UIMenuItem(title: "R", image: remove) { [weak self] _ in
             self?.remove(menuController)
         }
@@ -326,7 +326,7 @@ open class FolioReaderWebView: UIWebView {
             menuItems = [colorsItem, editNoteItem, removeItem]
             
             if (self.readerConfig.allowSharing == true) {
-                menuItems.append(shareItem)
+               // menuItems.append(shareItem)
             }
             
             isShare = false
@@ -342,7 +342,7 @@ open class FolioReaderWebView: UIWebView {
             }
 
             if (self.readerConfig.allowSharing == true) {
-                menuItems.append(shareItem)
+               // menuItems.append(shareItem)
             }
         }
         
