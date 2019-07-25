@@ -176,6 +176,7 @@ open class FolioReaderContainer: UIViewController {
             do {
                 let parsedBook = try FREpubParser().readEpub(epubPath: self.epubPath, removeEpub: self.shouldRemoveEpub, unzipPath: self.unzipPath)
                 self.book = parsedBook
+                self.book.categories = self.categories
                 self.folioReader.isReaderOpen = true
 
                 // Reload data

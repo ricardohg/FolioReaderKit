@@ -23,6 +23,7 @@ open class FRBook: NSObject {
     public var resources = FRResources()
     public var tableOfContents: [FRTocReference]!
     public var flatTableOfContents: [FRTocReference]!
+    public var categories: [String]?
 
     var hasAudio: Bool {
         return smils.smils.count > 0

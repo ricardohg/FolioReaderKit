@@ -49,8 +49,9 @@ class TOCViewController: UIViewController {
         
         bookTItleLabel.text = book.title
         authorLabel.text = book.authorName
-        categoryLabel.text = "Category"
-
+        
+        categoryLabel.text = book.categories?.joined(separator: "-")
+        
         
         if let coverImage = book.coverImage, let artwork = UIImage(contentsOfFile: coverImage.fullHref) {
             
