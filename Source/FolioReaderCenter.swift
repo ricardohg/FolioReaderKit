@@ -81,6 +81,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         return toolBarAnchor?.constant == 0
     }
     
+    var pageIds: [String] {
+        
+        return book.spine.spineReferences.map { $0.resource.id }.compactMap { $0 }
+    }
+    
     // drawable
     
     let drawableViewController = DrawableViewController()
@@ -440,9 +445,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.drawableViewController.view.removeFromSuperview()
             self.drawableViewController.removeFromParent()
             self.toolBarViewController.currentTool = .none
-
             
-            Drawing.store(image: image, page: self.currentPageNumber, bookId: self.book.name ?? "", configuration: self.readerConfig)
+            Drawing.store(image: image, pageId: self.pageIds[self.currentPageNumber], bookId: self.book.name ?? "", configuration: self.readerConfig)
             
         }
         
@@ -536,7 +540,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func reloadData() {
         self.loadingView.stopAnimating()
         self.totalPages = book.spine.spineReferences.count
-
         self.collectionView.reloadData()
         self.configureNavBarButtons()
         self.setCollectionViewProgressiveDirection()
@@ -696,7 +699,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             cell.drawImageView.image = image
         }
 
-        else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", page: cell.pageNumber, configuration: readerConfig), let image = drawing.image {
+        else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", pageId: pageIds[cell.pageNumber], configuration: readerConfig), let image = drawing.image {
 
             pageDrawings[cell.pageNumber] = image
             cell.drawImageView.image = image

@@ -38,7 +38,7 @@ extension Drawing {
     ///   - page: page number
     ///   - bookId: book unique identifier (name)
     ///   - configuration: realm configuration
-    static func store(image: UIImage, page: Int, bookId: String, configuration: FolioReaderConfig) {
+    static func store(image: UIImage, pageId: String, bookId: String, configuration: FolioReaderConfig) {
         
         do {
             let realm = try Realm(configuration: configuration.realmConfiguration)
@@ -46,7 +46,7 @@ extension Drawing {
             if let imageData = image.pngData() {
                 
                 let drawing = Drawing()
-                drawing.drawId = bookId + "_" + "\(page)"
+                drawing.drawId = bookId + "_" + pageId
                 drawing.imageData = imageData
                 drawing.scale = Double(image.scale)
                 
@@ -71,12 +71,12 @@ extension Drawing {
     ///   - page: page number
     ///   - configuration: realm configuration
     /// - Returns: a drawing object
-    static func drawing(bookId: String, page: Int, configuration: FolioReaderConfig) -> Drawing? {
+    static func drawing(bookId: String, pageId: String, configuration: FolioReaderConfig) -> Drawing? {
         
         do {
             let realm = try Realm(configuration: configuration.realmConfiguration)
             
-            let drawId = bookId + "_" + "\(page)"
+            let drawId = bookId + "_" + pageId
             let predicate = NSPredicate(format:"drawId = %@", drawId)
             
             let drawing = realm.objects(Drawing.self).filter(predicate).first
