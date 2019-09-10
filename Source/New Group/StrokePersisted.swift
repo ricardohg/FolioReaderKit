@@ -29,16 +29,18 @@ public struct StrokeCollectionPersisted: Codable {
 public struct StrokePersisted: Codable {
     
     var samples: [StrokeSamplePersisted] = []
+    var colorHexValue: String
     
     init(stroke: Stroke) {
         
         self.samples = stroke.samples.map { StrokeSamplePersisted(sample: $0) }
-        
+        self.colorHexValue = stroke.color?.hexString(false) ?? ""
     }
     
     func stroke() -> Stroke {
         let stroke = Stroke()
         stroke.samples = samples.map { $0.strokeSample() }
+        stroke.color = UIColor.hexStringToUIColor(hex: colorHexValue)
         return stroke
     }
 }
