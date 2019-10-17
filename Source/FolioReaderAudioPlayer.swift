@@ -64,7 +64,7 @@ open class FolioReaderAudioPlayer: NSObject {
             object: session
         )
 
-        self.updateNowPlayingInfo()
+        //self.updateNowPlayingInfo()
     }
 
     deinit {
