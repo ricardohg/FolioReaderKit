@@ -164,6 +164,7 @@ extension FolioReader {
         Bool = true, categories: [String]) {
         let readerContainer = FolioReaderContainer(withConfig: config, folioReader: self, epubPath: epubPath, unzipPath: unzipPath, removeEpub: shouldRemoveEpub, categories: categories)
         self.readerContainer = readerContainer
+        readerContainer.modalPresentationStyle = .fullScreen
         parentViewController.present(readerContainer, animated: animated, completion: nil)
         addObservers()
     }
