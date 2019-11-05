@@ -259,12 +259,27 @@ private extension StrokeCGView {
         
         stroke.clearUpdateInfo()
         
-        guard stroke.samples.isEmpty == false,
-            let context = UIGraphicsGetCurrentContext()
-            else { return }
+        guard let context = UIGraphicsGetCurrentContext() else {
+            return
+        }
+        
+        if let shape = stroke.shape {
+            context.setFillColor(shape.backgroundColor.cgColor)
+            context.setStrokeColor(shape.borderColor.cgColor)
+            context.setLineWidth(CGFloat(shape.borderWidth))
+            context.beginPath()
+            context.addPath(shape.path.cgPath)
+            context.closePath()
+            context.drawPath(using: .fillStroke)
+            return
+        }
         
         prepareToDraw()
         //lineSettings(in: context, color: stroke.color ?? .black)
+        
+        guard stroke.samples.isEmpty == false else {
+            return
+        }
         
         if stroke.samples.count == 1 {
             // Construct a fake segment to draw for a stroke that is only one point.
@@ -569,8 +584,12 @@ private extension StrokeCGView {
         let currentCollection = strokeCollection
         if let strokeCollection = strokeCollection {
             for (index, str) in strokeCollection.strokes.enumerated() {
+                let strokesContainsIndex = currentCollection?.strokes.indices.contains(index) ?? false
+                if str.shape != nil, str.shapeContainSamples(in: stroke) , strokesContainsIndex {
+                    currentCollection?.strokes.remove(at: index)
+                }
                 
-                if str.containSamples(in: stroke), let _ = currentCollection?.strokes[index] {
+                if str.containSamples(in: stroke), strokesContainsIndex {
                     currentCollection?.strokes.remove(at: index)
                     break
                 }

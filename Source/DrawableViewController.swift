@@ -54,6 +54,7 @@ class DrawableViewController: UIViewController {
     }
     
     var saveImage: ((UIView) ->())?
+    private var currentShape: ShapeView?
     
     // property to store previous drawed image
     weak var currentImageView: UIImageView!
@@ -194,6 +195,7 @@ class DrawableViewController: UIViewController {
     }
     
     @objc func handleSingleTap(_ sender: Any) {
+        drawExistingShapes()
         saveImage?(view)
     }
     
@@ -243,3 +245,67 @@ extension DrawableViewController {
 }
 
 
+// MARK: - Shape Operations -
+extension DrawableViewController {
+    func drawShape(viewModel: ShapeViewModel) {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.shapeSelected))
+        let shape: ShapeView
+        switch viewModel.type {
+        case .circle:
+            shape = Circle(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
+        case .rectangle:
+            shape = Rectangle(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
+        case .triangle:
+            shape = Triangle(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
+        case .arrow:
+            shape = Arrow(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
+        }
+        shape.addGestureRecognizer(tapGesture)
+        self.view.addSubview(shape)
+        self.currentShape = shape
+    }
+    
+    func modifyCurrentShape(viewModel: ShapeViewModel) {
+        guard let shape = self.currentShape else {
+            drawShape(viewModel: viewModel)
+            return
+        }
+        shape.change(lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
+    }
+    
+    func deselectCurrentShape() {
+        currentShape = nil
+    }
+    
+    @objc private func shapeSelected(sender: UITapGestureRecognizer) {
+        currentShape = sender.view as? ShapeView
+    }
+    
+    private func drawExistingShapes() {
+        currentShape = nil
+        let views = view.subviews.compactMap({ $0 as? ShapeView })
+        views.forEach({
+            draw(shape: $0)
+            $0.removeFromSuperview()
+        })
+    }
+    
+    private func draw(shape: ShapeView) {
+        let shapePath = Shape(
+            path: shape.path,
+            backgroundColor: shape.fillColor,
+            borderColor: shape.shapeBorderColor,
+            borderWidth: shape.lineWidth
+        )
+        
+        let stroke = Stroke(shape: shapePath)
+        let originFrameSample = StrokeSample(timestamp: Date().timeIntervalSinceNow, location: shape.frame.origin, coalesced: true)
+        let frameSample = StrokeSample(timestamp: Date().timeIntervalSinceNow, location: CGPoint(x:shape.frame.origin.x + shape.frame.width, y: shape.frame.origin.y + shape.frame.height), coalesced: false)
+        stroke.samples.append(originFrameSample)
+        stroke.samples.append(frameSample)
+        strokeCollection.activeStroke = stroke
+        strokeCollection.takeActiveStroke()
+        cgView.strokeCollection = strokeCollection
+        cgView.setNeedsDisplay()
+    }
+}
