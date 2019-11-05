@@ -249,17 +249,7 @@ extension DrawableViewController {
 extension DrawableViewController {
     func drawShape(viewModel: ShapeViewModel) {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.shapeSelected))
-        let shape: ShapeView
-        switch viewModel.type {
-        case .circle:
-            shape = Circle(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
-        case .rectangle:
-            shape = Rectangle(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
-        case .triangle:
-            shape = Triangle(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
-        case .arrow:
-            shape = Arrow(origin: self.view.center, lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
-        }
+        let shape: ShapeView = ShapeView(origin: self.view.center, viewModel: viewModel)
         shape.addGestureRecognizer(tapGesture)
         self.view.addSubview(shape)
         self.currentShape = shape
@@ -270,7 +260,7 @@ extension DrawableViewController {
             drawShape(viewModel: viewModel)
             return
         }
-        shape.change(lineWidth: viewModel.borderWidth, fillColor: viewModel.backgroundColor, shapeBorderColor: viewModel.borderColor)
+        shape.change(lineWidth: viewModel.borderWidth, fillColor: viewModel.fillColor, shapeBorderColor: viewModel.borderColor)
     }
     
     func deselectCurrentShape() {

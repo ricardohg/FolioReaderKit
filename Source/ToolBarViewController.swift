@@ -43,18 +43,22 @@ class ToolBarViewController: UIViewController {
                 self.pencilButton.isSelected = true
                 self.eraserButton.isSelected = false
                 self.highlightButton.isSelected = false
+                self.shapeButton.isSelected = false
             case .eraser:
                 self.eraserButton.isSelected = true
                 self.pencilButton.isSelected = false
                 self.highlightButton.isSelected = false
+                self.shapeButton.isSelected = false
             case .highlighter:
                 self.highlightButton.isSelected = true
                 self.pencilButton.isSelected = false
                 self.eraserButton.isSelected = false
+                self.shapeButton.isSelected = false
             case .none:
                 self.pencilButton.isSelected = false
                 self.eraserButton.isSelected = false
                 self.highlightButton.isSelected = false
+                self.shapeButton.isSelected = false
             case .shape:
                 self.pencilButton.isSelected = false
                 self.eraserButton.isSelected = false

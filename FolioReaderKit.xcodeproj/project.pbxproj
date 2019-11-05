@@ -105,6 +105,8 @@
 		4596A67C23709ED700631A9F /* ShapePersisted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A67B23709ED700631A9F /* ShapePersisted.swift */; };
 		4596A67F23712C6400631A9F /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */; };
 		4596A68023712C6400631A9F /* ColorCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */; };
+		4596A6822371D7AF00631A9F /* ShapeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A6812371D7AF00631A9F /* ShapeViewModel.swift */; };
+		4596A68A2371DE8800631A9F /* PathFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A6892371DE8800631A9F /* PathFactory.swift */; };
 		45D1CE7D236A918A00D28EC1 /* ShapeMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */; };
 		45D1CE81236A955D00D28EC1 /* ShapeMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1CE80236A955D00D28EC1 /* ShapeMenuViewController.swift */; };
 		45D1CE84236A95DE00D28EC1 /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */; };
@@ -220,6 +222,8 @@
 		4596A67B23709ED700631A9F /* ShapePersisted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapePersisted.swift; sourceTree = "<group>"; };
 		4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorCollectionViewCell.xib; sourceTree = "<group>"; };
+		4596A6812371D7AF00631A9F /* ShapeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeViewModel.swift; sourceTree = "<group>"; };
+		4596A6892371DE8800631A9F /* PathFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathFactory.swift; sourceTree = "<group>"; };
 		45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShapeMenu.storyboard; sourceTree = "<group>"; };
 		45D1CE80236A955D00D28EC1 /* ShapeMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeMenuViewController.swift; sourceTree = "<group>"; };
 		45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPickerView.xib; sourceTree = "<group>"; };
@@ -456,16 +460,58 @@
 			path = Persistance;
 			sourceTree = "<group>";
 		};
-		45D1CE7B236A917600D28EC1 /* ShapeMenu */ = {
+		4596A6842371D7D600631A9F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4596A6862371D7FA00631A9F /* ColorCollectionViewCell */,
+				4596A6852371D7E900631A9F /* ColorPickerView */,
+				45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */,
+				45D1CE86236AA75C00D28EC1 /* ShapeView.swift */,
+				4596A6892371DE8800631A9F /* PathFactory.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4596A6852371D7E900631A9F /* ColorPickerView */ = {
 			isa = PBXGroup;
 			children = (
 				45D1CE83236A95DE00D28EC1 /* ColorPickerView.swift */,
 				45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */,
-				45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */,
-				45D1CE80236A955D00D28EC1 /* ShapeMenuViewController.swift */,
-				45D1CE86236AA75C00D28EC1 /* ShapeView.swift */,
+			);
+			path = ColorPickerView;
+			sourceTree = "<group>";
+		};
+		4596A6862371D7FA00631A9F /* ColorCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
 				4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */,
 				4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */,
+			);
+			path = ColorCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		4596A6872371D82600631A9F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				4596A6812371D7AF00631A9F /* ShapeViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		4596A6882371D83300631A9F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				45D1CE80236A955D00D28EC1 /* ShapeMenuViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		45D1CE7B236A917600D28EC1 /* ShapeMenu */ = {
+			isa = PBXGroup;
+			children = (
+				4596A6882371D83300631A9F /* ViewControllers */,
+				4596A6872371D82600631A9F /* ViewModels */,
+				4596A6842371D7D600631A9F /* Views */,
 			);
 			path = ShapeMenu;
 			sourceTree = "<group>";
@@ -760,6 +806,7 @@
 				1A958F9F1D397BE900D56699 /* FolioReaderConfig.swift in Sources */,
 				1A958FA51D397BE900D56699 /* FolioReaderPage.swift in Sources */,
 				8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */,
+				4596A6822371D7AF00631A9F /* ShapeViewModel.swift in Sources */,
 				8C82985F2224714A004BF531 /* StrokeCollection.swift in Sources */,
 				B0D69CC91D0387F7003B4CCD /* SMSegment.swift in Sources */,
 				B0D69CCA1D0387F7003B4CCD /* SMSegmentView.swift in Sources */,
@@ -811,6 +858,7 @@
 				1A65DDD51DA744410033C277 /* QuoteImage.swift in Sources */,
 				1A958F961D397BE900D56699 /* FRResources.swift in Sources */,
 				1A958F991D397BE900D56699 /* FRSpine.swift in Sources */,
+				4596A68A2371DE8800631A9F /* PathFactory.swift in Sources */,
 				8C82985D2224714A004BF531 /* CGMathExtensions.swift in Sources */,
 				8C3CEFD32282162D00C17283 /* DrawerTransition.swift in Sources */,
 				1A958FA61D397BE900D56699 /* FolioReaderPageIndicator.swift in Sources */,

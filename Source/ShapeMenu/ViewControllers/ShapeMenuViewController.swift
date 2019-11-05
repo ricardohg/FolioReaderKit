@@ -8,16 +8,6 @@
 
 import UIKit
 
-struct ShapeViewModel {
-    enum ShapeType {
-        case circle, triangle, rectangle, arrow
-    }
-    var `type`: ShapeType = .circle
-    var backgroundColor: UIColor = .black
-    var borderColor: UIColor = .clear
-    var borderWidth: CGFloat = 0
-}
-
 class ShapeMenuViewController: UIViewController {
     
     // MARK: - IBOutlets -
@@ -97,7 +87,7 @@ class ShapeMenuViewController: UIViewController {
 extension ShapeMenuViewController: ColorPickerViewDelegate {
     func colorPickerView(_ colorPickerView: ColorPickerView, didSelect color: UIColor) {
         if colorPickerView === backgroundColorPickerView {
-            viewModel.backgroundColor = color
+            viewModel.fillColor = color
         } else if colorPickerView === borderColorPickerView {
             viewModel.borderColor = color
         }
