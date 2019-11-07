@@ -290,10 +290,10 @@ open class FolioReaderWebView: UIWebView {
         let menuController = UIMenuController.shared
 
         let highlightItem = UIMenuItem(title: self.readerConfig.localizedHighlightMenu, action: #selector(highlight(_:)))
-        let highlightNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(highlightWithNote(_:)))
-        let editNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(updateHighlightNote(_:)))
-        let playAudioItem = UIMenuItem(title: self.readerConfig.localizedPlayMenu, action: #selector(play(_:)))
-        let defineItem = UIMenuItem(title: self.readerConfig.localizedDefineMenu, action: #selector(define(_:)))
+//        let highlightNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(highlightWithNote(_:)))
+//        let editNoteItem = UIMenuItem(title: self.readerConfig.localizedHighlightNote, action: #selector(updateHighlightNote(_:)))
+//        let playAudioItem = UIMenuItem(title: self.readerConfig.localizedPlayMenu, action: #selector(play(_:)))
+//        let defineItem = UIMenuItem(title: self.readerConfig.localizedDefineMenu, action: #selector(define(_:)))
         let colorsItem = UIMenuItem(title: "C", image: colors) { [weak self] _ in
             self?.colors(menuController)
         }
@@ -323,27 +323,32 @@ open class FolioReaderWebView: UIWebView {
 
         // menu on existing highlight
         if isShare {
-            menuItems = [colorsItem, editNoteItem, removeItem]
-            
+            /* Remove the comment out to enable default sharing options
+             menuItems = [colorsItem, editNoteItem, removeItem]
             if (self.readerConfig.allowSharing == true) {
-               // menuItems.append(shareItem)
+               menuItems.append(shareItem)
             }
-            
+            */
+            menuItems = [colorsItem, removeItem]
             isShare = false
         } else if isColors {
             // menu for selecting highlight color
             menuItems = [yellowItem, greenItem, blueItem, pinkItem, underlineItem]
         } else {
-            // default menu
-            menuItems = [highlightItem, defineItem, highlightNoteItem]
-
-            if self.book.hasAudio || self.readerConfig.enableTTS {
-                menuItems.insert(playAudioItem, at: 0)
-            }
-
-            if (self.readerConfig.allowSharing == true) {
+            /* Remove the comment out to enable default options
+             // default menu
+                menuItems = [highlightItem, defineItem, highlightNoteItem]
+             
+             if self.book.hasAudio || self.readerConfig.enableTTS {
+                 menuItems.insert(playAudioItem, at: 0)
+             }
+             */
+            
+            menuItems = [highlightItem]
+            
+//            if (self.readerConfig.allowSharing == true) {
                // menuItems.append(shareItem)
-            }
+//            }
         }
         
         menuController.menuItems = menuItems
