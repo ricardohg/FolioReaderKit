@@ -408,16 +408,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     private func addCanvasView(with tool: ToolBarViewController.Tool) {
         
-        
         guard drawableViewController.viewIfLoaded?.window == nil else {
-            
             setStateFor(tool: tool)
-            
-            
             return
         }
-        
-        setStateFor(tool: tool)
         
         drawableViewController.currentImage = nil
         
@@ -473,7 +467,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             drawableViewController.strokeCollection = strokeCollection
         }
         
-        
+        setStateFor(tool: tool)
     }
 
     // MARK: Layout
