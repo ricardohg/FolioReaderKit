@@ -463,6 +463,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: self.currentPageNumber)
         
+        drawableViewController.strokeCollection = StrokeCollection()
+        
         if let strokeCollection = strokes?.strokeCollection() {
             drawableViewController.strokeCollection = strokeCollection
         }
@@ -700,7 +702,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
 
         
-        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: cell.pageNumber)
+        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: cell.pageNumber - 1)
         
         if let strokeCollection = strokes?.strokeCollection() {
             drawableViewController.strokeCollection = strokeCollection
