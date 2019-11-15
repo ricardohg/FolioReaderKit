@@ -210,7 +210,6 @@ open class FolioReaderContainer: UIViewController {
                     self.folioReader.delegate?.folioReader?(self.folioReader, didFinishedLoading: self.book)
                 }
             } catch {
-                self.errorOnLoad = true
                 self.alert(message: error.localizedDescription)
             }
         }
