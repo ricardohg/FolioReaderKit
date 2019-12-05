@@ -191,8 +191,11 @@ open class FolioReaderContainer: UIViewController {
             return
         }
 
-        DispatchQueue.global(qos: .userInitiated).async {
-
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
             do {
                 let parsedBook = try FREpubParser().readEpub(epubPath: self.epubPath, removeEpub: self.shouldRemoveEpub, unzipPath: self.unzipPath)
                 self.book = parsedBook
@@ -210,7 +213,9 @@ open class FolioReaderContainer: UIViewController {
                     self.folioReader.delegate?.folioReader?(self.folioReader, didFinishedLoading: self.book)
                 }
             } catch {
-                self.alert(message: error.localizedDescription)
+                DispatchQueue.main.async {
+                    self.alert(message: error.localizedDescription)
+                }
             }
         }
     }
