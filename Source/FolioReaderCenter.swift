@@ -119,6 +119,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard let readerContainer = readerContainer else { return FolioReader() }
         return readerContainer.folioReader
     }
+    
+    private var viewPortSize: CGSize?
 
     // MARK: - Init
 
@@ -713,7 +715,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             cell.webView?.scrollView.contentInsetAdjustmentBehavior = .never
         }
         cell.webView?.setupScrollDirection()
-        cell.webView?.frame = cell.webViewFrame()
+        let webViewFrame = cell.webViewFrame()
+        cell.webView?.frame = webViewFrame
         cell.delegate = self
         cell.backgroundColor = .clear
 
@@ -724,7 +727,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard var html = try? String(contentsOfFile: resource.fullHref, encoding: String.Encoding.utf8) else {
             return cell
         }
-
+        setViewPortSizeFromHtml(html)
         let mediaOverlayStyleColors = "\"\(self.readerConfig.mediaOverlayColor.hexString(false))\", \"\(self.readerConfig.mediaOverlayColor.highlightColor().hexString(false))\""
 
         // Inject CSS
@@ -755,7 +758,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let modifiedHtmlContent = self.delegate?.htmlContentForPage?(cell, htmlContent: html) {
             html = modifiedHtmlContent
         }
-
+        
+        cell.viewPortSize = viewPortSize ?? webViewFrame.size
         cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: resource.fullHref.deletingLastPathComponent))
         return cell
     }
@@ -1687,6 +1691,29 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         nav.modalPresentationStyle = .formSheet
         
         present(nav, animated: true, completion: nil)
+    }
+    
+    /**
+     Calculates the viewPortSize coming in the meta tag on the html
+     */
+    private func setViewPortSizeFromHtml(_ html: String) {
+        guard viewPortSize == nil else {
+            return
+        }
+        
+        guard let viewPortStartIndex = html.range(of: "<meta")?.lowerBound,
+            let viewPortEndIndex = html[viewPortStartIndex..<html.endIndex].firstIndex(of: ">") else {
+                return
+        }
+        
+        let viewPortTag = html[viewPortStartIndex...viewPortEndIndex]
+        let range = viewPortTag.startIndex..<viewPortTag.endIndex
+        let regex = "[^\\d,+]"
+        let viewPortSizeString = viewPortTag.replacingOccurrences(of: regex, with: "", options: .regularExpression, range: range)
+        let viewPortSizeComponents = viewPortSizeString.split(separator: ",").compactMap{( Double($0) )}
+        if let width = viewPortSizeComponents.first, let height = viewPortSizeComponents.last {
+            viewPortSize = CGSize(width: width, height: height)
+        }
     }
 }
 

@@ -65,6 +65,8 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         guard let readerContainer = readerContainer else { return FolioReader() }
         return readerContainer.folioReader
     }
+    
+    var viewPortSize: CGSize = .zero
 
     // MARK: - View life cicle
 
@@ -82,7 +84,8 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         guard let readerContainer = self.readerContainer else { return }
 
         if webView == nil {
-            webView = FolioReaderWebView(frame: webViewFrame(), readerContainer: readerContainer)
+            let frame = webViewFrame()
+            webView = FolioReaderWebView(frame: frame, readerContainer: readerContainer)
             webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             webView?.dataDetectorTypes = .link
             webView?.scrollView.showsVerticalScrollIndicator = false
@@ -127,8 +130,6 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         singleTapGestureRecognizer.delegate = self
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         webView?.addGestureRecognizer(singleTapGestureRecognizer)
-        
-        
     }
     
     func applyLayer(items: LayersTableViewController.Items) {
@@ -274,6 +275,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             webView.js("hideHighlights()")
         }
         
+        scalePageToFitDeviceScreen()
         delegate?.pageDidLoad?(self)
     }
 
@@ -493,6 +495,27 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
                 self.webView?.scrollView.setContentOffset(bottomOffset, animated: false)
             }
         }
+    }
+    
+    /**
+     Scales webView page to fit device screen using the viewPort meta tag coming in the html
+     */
+    private func scalePageToFitDeviceScreen() {
+        guard let webView = self.webView else {
+            return
+        }
+        
+        let zoomScale: CGFloat = 1 * ((webView.frame.width) / viewPortSize.width)
+        if zoomScale >= 1 {
+            webView.paginationMode = .unpaginated
+            webView.paginationBreakingMode = .page
+        } else {
+            webView.paginationMode = .leftToRight
+            webView.paginationBreakingMode = .page
+        }
+        
+        let zoomScript = "document.body.style.zoom = \(zoomScale);"
+        webView.js(zoomScript)
     }
 
     /**
