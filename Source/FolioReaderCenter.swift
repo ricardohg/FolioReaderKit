@@ -1700,18 +1700,26 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard viewPortSize == nil else {
             return
         }
-        
-        guard let viewPortStartIndex = html.range(of: "<meta")?.lowerBound,
+        let html = html.lowercased()
+        guard let viewPortStartIndex = html.lowercased().range(of: "<meta name=\"viewport\"")?.lowerBound,
             let viewPortEndIndex = html[viewPortStartIndex..<html.endIndex].firstIndex(of: ">") else {
                 return
         }
         
         let viewPortTag = html[viewPortStartIndex...viewPortEndIndex]
-        let range = viewPortTag.startIndex..<viewPortTag.endIndex
-        let regex = "[^\\d,+]"
-        let viewPortSizeString = viewPortTag.replacingOccurrences(of: regex, with: "", options: .regularExpression, range: range)
+        
+        
+        guard let contentStartIndex = viewPortTag.range(of: "content=\"")?.upperBound,
+            let contentEndIndex = viewPortTag[contentStartIndex..<viewPortTag.endIndex].firstIndex(of: "\"") else {
+                return
+        }
+        let range = contentStartIndex..<contentEndIndex
+        let regex = "[^\\d.,+]"
+        let viewPortSizeString = viewPortTag[range].replacingOccurrences(of: regex, with: "", options: .regularExpression, range: nil)
         let viewPortSizeComponents = viewPortSizeString.split(separator: ",").compactMap{( Double($0) )}
-        if let width = viewPortSizeComponents.first, let height = viewPortSizeComponents.last {
+        if viewPortSizeComponents.count > 1 {
+            let width = viewPortSizeComponents[0]
+            let height = viewPortSizeComponents[1]
             viewPortSize = CGSize(width: width, height: height)
         }
     }
