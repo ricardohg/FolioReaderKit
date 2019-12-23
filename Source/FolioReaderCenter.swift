@@ -118,9 +118,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     fileprivate var folioReader: FolioReader {
         guard let readerContainer = readerContainer else { return FolioReader() }
         return readerContainer.folioReader
-    }
-    
-    private var viewPortSize: CGSize?
+    }        
 
     // MARK: - Init
 
@@ -723,11 +721,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         setPageProgressiveDirection(cell)
 
         // Configure the cell
-        let resource = self.book.spine.spineReferences[indexPath.row].resource
-        guard var html = try? String(contentsOfFile: resource.fullHref, encoding: String.Encoding.utf8) else {
+        let spine = self.book.spine.spineReferences[indexPath.row]
+        guard var html = spine.html else {
             return cell
         }
-        setViewPortSizeFromHtml(html)
         let mediaOverlayStyleColors = "\"\(self.readerConfig.mediaOverlayColor.hexString(false))\", \"\(self.readerConfig.mediaOverlayColor.highlightColor().hexString(false))\""
 
         // Inject CSS
@@ -759,8 +756,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             html = modifiedHtmlContent
         }
         
-        cell.viewPortSize = viewPortSize ?? webViewFrame.size
-        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: resource.fullHref.deletingLastPathComponent))
+        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: spine.resource.fullHref.deletingLastPathComponent))
         return cell
     }
 
@@ -1691,37 +1687,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         nav.modalPresentationStyle = .formSheet
         
         present(nav, animated: true, completion: nil)
-    }
-    
-    /**
-     Calculates the viewPortSize coming in the meta tag on the html
-     */
-    private func setViewPortSizeFromHtml(_ html: String) {
-        guard viewPortSize == nil else {
-            return
-        }
-        let html = html.lowercased()
-        guard let viewPortStartIndex = html.lowercased().range(of: "<meta name=\"viewport\"")?.lowerBound,
-            let viewPortEndIndex = html[viewPortStartIndex..<html.endIndex].firstIndex(of: ">") else {
-                return
-        }
-        
-        let viewPortTag = html[viewPortStartIndex...viewPortEndIndex]
-        
-        
-        guard let contentStartIndex = viewPortTag.range(of: "content=\"")?.upperBound,
-            let contentEndIndex = viewPortTag[contentStartIndex..<viewPortTag.endIndex].firstIndex(of: "\"") else {
-                return
-        }
-        let range = contentStartIndex..<contentEndIndex
-        let regex = "[^\\d.,+]"
-        let viewPortSizeString = viewPortTag[range].replacingOccurrences(of: regex, with: "", options: .regularExpression, range: nil)
-        let viewPortSizeComponents = viewPortSizeString.split(separator: ",").compactMap{( Double($0) )}
-        if viewPortSizeComponents.count > 1 {
-            let width = viewPortSizeComponents[0]
-            let height = viewPortSizeComponents[1]
-            viewPortSize = CGSize(width: width, height: height)
-        }
     }
 }
 

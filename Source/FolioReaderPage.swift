@@ -65,8 +65,6 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         guard let readerContainer = readerContainer else { return FolioReader() }
         return readerContainer.folioReader
     }
-    
-    var viewPortSize: CGSize = .zero
 
     // MARK: - View life cicle
 
@@ -496,7 +494,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         guard let webView = self.webView else {
             return
         }
-        
+        let viewPortSize = book.viewPortSize ?? webView.frame.size
         let zoomScale: CGFloat = 1 * ((webView.frame.width) / viewPortSize.width)
         if zoomScale >= 1 {
             webView.paginationMode = .unpaginated
