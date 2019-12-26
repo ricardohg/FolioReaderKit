@@ -118,7 +118,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     fileprivate var folioReader: FolioReader {
         guard let readerContainer = readerContainer else { return FolioReader() }
         return readerContainer.folioReader
-    }
+    }        
 
     // MARK: - Init
 
@@ -713,18 +713,18 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             cell.webView?.scrollView.contentInsetAdjustmentBehavior = .never
         }
         cell.webView?.setupScrollDirection()
-        cell.webView?.frame = cell.webViewFrame()
+        let webViewFrame = cell.webViewFrame()
+        cell.webView?.frame = webViewFrame
         cell.delegate = self
         cell.backgroundColor = .clear
 
         setPageProgressiveDirection(cell)
 
         // Configure the cell
-        let resource = self.book.spine.spineReferences[indexPath.row].resource
-        guard var html = try? String(contentsOfFile: resource.fullHref, encoding: String.Encoding.utf8) else {
+        let spine = self.book.spine.spineReferences[indexPath.row]
+        guard var html = spine.html else {
             return cell
         }
-
         let mediaOverlayStyleColors = "\"\(self.readerConfig.mediaOverlayColor.hexString(false))\", \"\(self.readerConfig.mediaOverlayColor.highlightColor().hexString(false))\""
 
         // Inject CSS
@@ -755,8 +755,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let modifiedHtmlContent = self.delegate?.htmlContentForPage?(cell, htmlContent: html) {
             html = modifiedHtmlContent
         }
-
-        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: resource.fullHref.deletingLastPathComponent))
+        
+        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: spine.resource.fullHref.deletingLastPathComponent))
         return cell
     }
 

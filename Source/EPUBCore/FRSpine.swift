@@ -11,10 +11,12 @@ import UIKit
 struct Spine {
     var linear: Bool
     var resource: FRResource
+    var html: String?
 
     init(resource: FRResource, linear: Bool = true) {
         self.resource = resource
         self.linear = linear
+        self.html = try? String(contentsOfFile: resource.fullHref, encoding: String.Encoding.utf8)
     }
 }
 
