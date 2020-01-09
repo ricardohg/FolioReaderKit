@@ -51,7 +51,7 @@ extension Drawing {
                 drawing.scale = Double(image.scale)
                 
                 try realm.write {
-                    realm.add(drawing, update: true)
+                    realm.add(drawing, update: .modified)
                 }
             }
             else {

@@ -31,7 +31,7 @@ extension LayerState {
             layerState.bookId = bookId
             
             try realm.write {
-                realm.add(layerState, update: true)
+                realm.add(layerState, update: .modified)
             }
             
         }

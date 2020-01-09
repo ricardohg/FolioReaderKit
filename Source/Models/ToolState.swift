@@ -34,7 +34,7 @@ extension ToolState {
             toolState.bookId = bookId
             
             try realm.write {
-                realm.add(toolState, update: true)
+                realm.add(toolState, update: .modified)
             }
             
         }
