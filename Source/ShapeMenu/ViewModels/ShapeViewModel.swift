@@ -13,7 +13,7 @@ struct ShapeViewModel {
         case circle, triangle, rectangle, arrow
     }
     var `type`: ShapeType = .circle
-    var fillColor: UIColor = .black
-    var borderColor: UIColor = .clear
+    var fillColor: UIColor = .blue
+    var borderColor: UIColor = .black
     var borderWidth: CGFloat = 0
 }

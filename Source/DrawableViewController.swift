@@ -159,6 +159,10 @@ class DrawableViewController: UIViewController {
     func strokeUpdated(_ strokeGesture: StrokeGestureRecognizer) {
         
         guard style != .eraser else {
+            if let shapeView = strokeGesture.trackedTouch?.view as? ShapeView {
+                shapeView.removeFromSuperview()
+                return
+            }
             cgView.eraseStroke = strokeGesture.stroke
             return
         }

@@ -413,6 +413,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         shapeMenuViewController.dismissed = { [weak self] in
             self?.drawableViewController.deselectCurrentShape()
+            self?.toolBarViewController.currentTool = .none
+            
         }
         
         navigationController?.present(shapeMenuViewController, animated: true, completion: nil)
