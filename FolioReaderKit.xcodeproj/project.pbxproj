@@ -112,6 +112,7 @@
 		45D1CE84236A95DE00D28EC1 /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */; };
 		45D1CE85236A95DE00D28EC1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1CE83236A95DE00D28EC1 /* ColorPickerView.swift */; };
 		45D1CE87236AA75C00D28EC1 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1CE86236AA75C00D28EC1 /* ShapeView.swift */; };
+		45FBB6D523CEBCEE00732050 /* ResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FBB6D423CEBCEE00732050 /* ResizableView.swift */; };
 		8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0775CA224BE739005CB6EC /* Drawing.swift */; };
 		8C126D432284852D002E0786 /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C126D422284852D002E0786 /* SwipeInteractionController.swift */; };
 		8C3CEFCC227C96EB00C17283 /* LayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CEFCB227C96EB00C17283 /* LayerState.swift */; };
@@ -229,6 +230,7 @@
 		45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPickerView.xib; sourceTree = "<group>"; };
 		45D1CE83236A95DE00D28EC1 /* ColorPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		45D1CE86236AA75C00D28EC1 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
+		45FBB6D423CEBCEE00732050 /* ResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableView.swift; sourceTree = "<group>"; };
 		8C0775CA224BE739005CB6EC /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		8C126D422284852D002E0786 /* SwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
 		8C3CEFCB227C96EB00C17283 /* LayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerState.swift; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 				45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */,
 				45D1CE86236AA75C00D28EC1 /* ShapeView.swift */,
 				4596A6892371DE8800631A9F /* PathFactory.swift */,
+				45FBB6D423CEBCEE00732050 /* ResizableView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -863,6 +866,7 @@
 				8C3CEFD32282162D00C17283 /* DrawerTransition.swift in Sources */,
 				1A958FA61D397BE900D56699 /* FolioReaderPageIndicator.swift in Sources */,
 				8CA2D346226F99D400B707EB /* ToolState.swift in Sources */,
+				45FBB6D523CEBCEE00732050 /* ResizableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

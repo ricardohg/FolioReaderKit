@@ -9,7 +9,7 @@
 import UIKit
 
 struct PathFactory {
-    let viewBounds: CGRect
+    var viewRect: CGRect
     
     func createPath(for type: ShapeViewModel.ShapeType) -> UIBezierPath {
         switch type {
@@ -25,27 +25,27 @@ struct PathFactory {
     }
     
     private func circlePath() -> UIBezierPath {
-        return UIBezierPath(ovalIn: viewBounds)
+        return UIBezierPath(ovalIn: viewRect)
     }
     
     private func rectanglePath() -> UIBezierPath {
-        return UIBezierPath(rect: viewBounds)
+        return UIBezierPath(rect: viewRect)
     }
     
     private func trianglePath() -> UIBezierPath {
-        let rect = viewBounds
+        let rect = viewRect
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: rect.width / 2.0, y: rect.origin.y))
-        path.addLine(to: CGPoint(x: rect.width,y: rect.height))
-        path.addLine(to: CGPoint(x: rect.origin.x,y: rect.height))
+        path.move(to: CGPoint(x: (rect.origin.x + (rect.width / 2.0)), y: rect.origin.y))
+        path.addLine(to: CGPoint(x: rect.origin.x + rect.width,y: rect.origin.y + rect.height))
+        path.addLine(to: CGPoint(x: rect.origin.x,y: rect.origin.y + rect.height))
         path.close()
         
         return path
     }
     
     private func arrowPath() -> UIBezierPath {
-        let start = CGPoint(x: viewBounds.origin.x, y: viewBounds.height / 2)
-        let end = CGPoint(x: viewBounds.width, y: viewBounds.height / 2)
+        let start = CGPoint(x: viewRect.origin.x, y: viewRect.origin.y + viewRect.height / 2)
+        let end = CGPoint(x: viewRect.origin.x + viewRect.width, y: viewRect.origin.y + viewRect.height / 2)
         let tailWidth: CGFloat = 10
         let headWidth: CGFloat = 25
         let headLength: CGFloat = 40
