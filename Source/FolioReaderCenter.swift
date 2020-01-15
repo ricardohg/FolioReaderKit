@@ -416,7 +416,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self?.toolBarViewController.currentTool = .none
             
         }
-        
         navigationController?.present(shapeMenuViewController, animated: true, completion: nil)
     }
 
@@ -502,6 +501,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         setStateFor(tool: tool)
+        
+        drawableViewController.didSelectShape = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.toolBarViewController.currentTool = .shape
+            self.showShapeOptions(from: self.toolBarViewController.shapeButton)
+        }
     }
 
     // MARK: Layout

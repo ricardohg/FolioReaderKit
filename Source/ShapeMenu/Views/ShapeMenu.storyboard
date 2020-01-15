@@ -46,7 +46,10 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jht-aZ-EqV">
                                                         <rect key="frame" x="11" y="10" width="28" height="25"/>
-                                                        <state key="normal" image="rectangle"/>
+                                                        <state key="normal" image="rectangle-icon"/>
+                                                        <connections>
+                                                            <action selector="createSquare:" destination="NFG-vK-pDC" eventType="touchUpInside" id="ezV-kO-gnL"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -59,10 +62,10 @@
                                                 <rect key="frame" x="100" y="0.0" width="50" height="45"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdv-ZB-QrC">
-                                                        <rect key="frame" x="11" y="10" width="28" height="25"/>
-                                                        <state key="normal" image="rectangle"/>
+                                                        <rect key="frame" x="12" y="11.5" width="26" height="22.5"/>
+                                                        <state key="normal" image="triangle"/>
                                                         <connections>
-                                                            <action selector="createSquare:" destination="NFG-vK-pDC" eventType="touchUpInside" id="SDi-nj-24n"/>
+                                                            <action selector="createTriangle:" destination="NFG-vK-pDC" eventType="touchUpInside" id="Zng-1A-1Ch"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -179,6 +182,7 @@
     <resources>
         <image name="arrow" width="12.5" height="23"/>
         <image name="circle" width="25" height="24"/>
-        <image name="rectangle" width="28" height="25"/>
+        <image name="rectangle-icon" width="28" height="25"/>
+        <image name="triangle" width="26" height="22.5"/>
     </resources>
 </document>

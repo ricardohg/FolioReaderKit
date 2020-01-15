@@ -67,6 +67,11 @@ class ShapeMenuViewController: UIViewController {
         createShape?(viewModel)
     }
     
+    @IBAction private func createTriangle(_ sender: Any) {
+        viewModel.type = .triangle
+        createShape?(viewModel)
+    }
+    
     @IBAction private func createSquare(_ sender: Any) {
         viewModel.type = .rectangle
         createShape?(viewModel)

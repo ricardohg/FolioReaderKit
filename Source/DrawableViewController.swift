@@ -54,6 +54,7 @@ class DrawableViewController: UIViewController {
     }
     
     var saveImage: ((UIView) ->())?
+    var didSelectShape: (() -> ())?
     private var currentShape: ShapeView?
     
     // property to store previous drawed image
@@ -273,6 +274,7 @@ extension DrawableViewController {
     
     @objc private func shapeSelected(sender: UITapGestureRecognizer) {
         currentShape = sender.view as? ShapeView
+        didSelectShape?()
     }
     
     private func drawExistingShapes() {
