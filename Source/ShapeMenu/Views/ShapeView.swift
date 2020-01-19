@@ -8,14 +8,19 @@
 
 import UIKit
 
-class ShapeView: UIView {
+class ShapeView: ResizableView {
     
     // MARK: - Vars & Constants
     
     var path: UIBezierPath {
-        pathFactory.viewRect = superview?.frame ?? frame
+        let radians: Double = atan2( Double(transform.b), Double(transform.a))
+        let degrees: Double = radians * (180 / Double.pi )
+        self.transform = .identity
+        pathFactory.viewRect = frame
         shapeLayer.path = pathFactory.createPath(for: type).cgPath
-        return UIBezierPath(cgPath: shapeLayer.path!)
+        let path = UIBezierPath(cgPath: shapeLayer.path!)
+        path.transformAndCenter(transform: (CGAffineTransform(rotationAngle: CGFloat(degrees))))
+        return path
     }
     
     fileprivate var insetBounds: CGRect {
@@ -45,8 +50,7 @@ class ShapeView: UIView {
         backgroundColor = .clear
         center = origin
         pathFactory = PathFactory(viewRect: insetBounds)
-        setupShapePath(pathFactory.createPath(for: viewModel.type).cgPath)
-        initGestureRecognizers()
+        setupShapePath(pathFactory.createPath(for: viewModel.type).cgPath)        
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -63,17 +67,6 @@ class ShapeView: UIView {
     
     // MARK: - Methods
     
-    func initGestureRecognizers() {
-//        let panGR = UIPanGestureRecognizer(target: self, action: #selector(didPan))
-//        addGestureRecognizer(panGR)
-//        
-//        let pinchGR = UIPinchGestureRecognizer(target: self, action: #selector(didPinch))
-//        addGestureRecognizer(pinchGR)
-//        
-//        let rotationGR = UIRotationGestureRecognizer(target: self, action: #selector(didRotate))
-//        addGestureRecognizer(rotationGR)
-    }
-    
     func change(lineWidth: CGFloat, fillColor: UIColor, shapeBorderColor: UIColor) {
         self.lineWidth = lineWidth
         self.fillColor = fillColor
@@ -81,53 +74,18 @@ class ShapeView: UIView {
         setNeedsDisplay()
     }
     
-    @objc func didPan(sender: UIPanGestureRecognizer) {
-        var translation = sender.translation(in: self)
-        translation = translation.applying(self.transform)
-        
-        self.center.x += translation.x
-        self.center.y += translation.y
-//        shapePath.apply((CGAffineTransform(translationX: translation.x, y: translation.y)))
-        
-        sender.setTranslation(CGPoint.zero, in: self)
-    }
-    
-    @objc func didPinch(sender: UIPinchGestureRecognizer) {
-        let scale = sender.scale
-        self.transform = self.transform.scaledBy(x: scale, y: scale)
-//        shapePath.transformAndCenter(transform: CGAffineTransform(scaleX: scale, y: scale))
-        setNeedsDisplay()
-        sender.scale = 1.0
-    }
-    
-    @objc func didRotate(sender: UIRotationGestureRecognizer) {
-        self.superview!.bringSubviewToFront(self)
-        let rotation = sender.rotation
-        self.transform = self.transform.rotated(by: rotation)
-//        shapePath.transformAndCenter(transform: CGAffineTransform(rotationAngle: rotation))
-        
-        sender.rotation = 0.0
-    }
-
-    
     private func setupShapePath(_ path: CGPath) {
         shapeLayer = CAShapeLayer()
         shapeLayer.frame = bounds
         shapeLayer.path = path
         layer.addSublayer(shapeLayer)
     }
-    
-    func transformFromRect(from source: CGRect, toRect destination: CGRect) -> CATransform3D {
-        let a = CATransform3DMakeTranslation(destination.midX - source.midX, destination.midY - source.midY, 0)
-        let b = CATransform3DMakeScale(destination.width / source.width, destination.height / source.height, 1)
-        return CATransform3DConcat(a, b)
-    }
 }
 
-extension UIView {
+private extension UIBezierPath {
     func transformAndCenter(transform: CGAffineTransform) {
         let beforeCenter = self.bounds.center
-        self.transform = transform
+        self.apply(transform)
 
         let afterCenter = self.bounds.center
         let diff = CGPoint(
@@ -136,6 +94,6 @@ extension UIView {
         )
 
         let translateTransform = CGAffineTransform(translationX: diff.x, y: diff.y)
-        self.transform = translateTransform
+        self.apply(translateTransform)
     }
 }

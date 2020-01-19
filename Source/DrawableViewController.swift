@@ -55,7 +55,7 @@ class DrawableViewController: UIViewController {
     
     var saveImage: ((UIView) ->())?
     var didSelectShape: (() -> ())?
-    private var currentShape: RKUserResizableView?
+    private var currentShape: ShapeView?
     
     // property to store previous drawed image
     weak var currentImageView: UIImageView!
@@ -255,15 +255,14 @@ extension DrawableViewController {
     func drawShape(viewModel: ShapeViewModel) {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.shapeSelected))
         let shape: ShapeView = ShapeView(origin: self.view.center, viewModel: viewModel)
-        let userResizableView = RKUserResizableView(frame: shape.frame)
-        userResizableView.addGestureRecognizer(tapGesture)
-        userResizableView.contentView = shape
-        self.view.addSubview(userResizableView)
-        self.currentShape = userResizableView
+        
+        shape.addGestureRecognizer(tapGesture)
+        self.view.addSubview(shape)
+        self.currentShape = shape
     }
     
     func modifyCurrentShape(viewModel: ShapeViewModel) {
-        guard let shape = self.currentShape?.contentView else {
+        guard let shape = self.currentShape else {
             drawShape(viewModel: viewModel)
             return
         }
@@ -275,23 +274,23 @@ extension DrawableViewController {
     }
     
     @objc private func shapeSelected(sender: UITapGestureRecognizer) {
-        currentShape = (sender.view as? RKUserResizableView)
+        currentShape = (sender.view as? ShapeView)
         didSelectShape?()
     }
     
     private func drawExistingShapes() {
         currentShape = nil
-        let views = view.subviews.compactMap({ ($0 as? RKUserResizableView) })
+        let views = view.subviews.compactMap({ ($0 as? ShapeView) })
         views.forEach({
-            draw(shapeView: $0)
+            draw(shape: $0)
             $0.removeFromSuperview()
         })
+        
+        let dragHandleViews = view.subviews.compactMap({ $0 as? DragHandle})
+        dragHandleViews.forEach({ $0.removeFromSuperview() })
     }
     
-    private func draw(shapeView: RKUserResizableView) {
-        guard let shape = shapeView.contentView else {
-            return
-        }
+    private func draw(shape: ShapeView) {
         let shapePath = Shape(
             path: shape.path,
             backgroundColor: shape.fillColor,
@@ -300,8 +299,8 @@ extension DrawableViewController {
         )
         
         let stroke = Stroke(shape: shapePath)
-        let originFrameSample = StrokeSample(timestamp: Date().timeIntervalSinceNow, location: shapeView.frame.origin, coalesced: true)
-        let frameSample = StrokeSample(timestamp: Date().timeIntervalSinceNow, location: CGPoint(x:shapeView.frame.origin.x + shapeView.frame.width, y: shapeView.frame.origin.y + shapeView.frame.height), coalesced: false)
+        let originFrameSample = StrokeSample(timestamp: Date().timeIntervalSinceNow, location: shape.frame.origin, coalesced: true)
+        let frameSample = StrokeSample(timestamp: Date().timeIntervalSinceNow, location: CGPoint(x:shape.frame.origin.x + shape.frame.width, y: shape.frame.origin.y + shape.frame.height), coalesced: false)
         stroke.samples.append(originFrameSample)
         stroke.samples.append(frameSample)
         strokeCollection.activeStroke = stroke
