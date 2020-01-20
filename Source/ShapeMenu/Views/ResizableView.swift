@@ -152,8 +152,7 @@ class ResizableView: UIView {
         updateDragHandles()
         if gesture.state == .ended {
             self.setAnchorPoint(anchorPoint: CGPoint(x: 0.5, y: 0.5))
-        }
-        setNeedsDisplay()
+        }        
     }
 }
 
