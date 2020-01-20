@@ -160,7 +160,7 @@ class DrawableViewController: UIViewController {
     func strokeUpdated(_ strokeGesture: StrokeGestureRecognizer) {
         
         guard style != .eraser else {
-            if let shapeView = strokeGesture.trackedTouch?.view as? ShapeView {
+            if let shapeView = strokeGesture.trackedTouch?.view as? ShapeView {                
                 shapeView.removeFromSuperview()
                 return
             }
@@ -284,10 +284,7 @@ extension DrawableViewController {
         views.forEach({
             draw(shape: $0)
             $0.removeFromSuperview()
-        })
-        
-        let dragHandleViews = view.subviews.compactMap({ $0 as? DragHandle})
-        dragHandleViews.forEach({ $0.removeFromSuperview() })
+        })        
     }
     
     private func draw(shape: ShapeView) {

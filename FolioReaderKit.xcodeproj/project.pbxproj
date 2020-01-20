@@ -102,6 +102,8 @@
 		3A27F0C71FD9C33A00D84A57 /* Highlight+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F211D397BE900D56699 /* Highlight+Helper.swift */; };
 		3A27F0C81FD9C33A00D84A57 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F231D397BE900D56699 /* Highlight.swift */; };
 		3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */; };
+		457D3BE123D6266900BFAC2F /* DragHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D3BE023D6266900BFAC2F /* DragHandle.swift */; };
+		457D3BE323D6269200BFAC2F /* UIView+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D3BE223D6269200BFAC2F /* UIView+Transform.swift */; };
 		4596A67C23709ED700631A9F /* ShapePersisted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A67B23709ED700631A9F /* ShapePersisted.swift */; };
 		4596A67F23712C6400631A9F /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */; };
 		4596A68023712C6400631A9F /* ColorCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */; };
@@ -220,6 +222,8 @@
 		3A27F08A1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderUserDefaults.swift; sourceTree = "<group>"; };
 		3A27F08B1FD9BE5800D84A57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderWebView.swift; sourceTree = "<group>"; };
+		457D3BE023D6266900BFAC2F /* DragHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragHandle.swift; sourceTree = "<group>"; };
+		457D3BE223D6269200BFAC2F /* UIView+Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Transform.swift"; sourceTree = "<group>"; };
 		4596A67B23709ED700631A9F /* ShapePersisted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapePersisted.swift; sourceTree = "<group>"; };
 		4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -453,6 +457,16 @@
 			path = Raleway;
 			sourceTree = "<group>";
 		};
+		457D3BDF23D6265800BFAC2F /* RezizableView */ = {
+			isa = PBXGroup;
+			children = (
+				45FBB6D423CEBCEE00732050 /* ResizableView.swift */,
+				457D3BE023D6266900BFAC2F /* DragHandle.swift */,
+				457D3BE223D6269200BFAC2F /* UIView+Transform.swift */,
+			);
+			path = RezizableView;
+			sourceTree = "<group>";
+		};
 		4596A67A23709EC800631A9F /* Persistance */ = {
 			isa = PBXGroup;
 			children = (
@@ -465,12 +479,12 @@
 		4596A6842371D7D600631A9F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				457D3BDF23D6265800BFAC2F /* RezizableView */,
 				4596A6862371D7FA00631A9F /* ColorCollectionViewCell */,
 				4596A6852371D7E900631A9F /* ColorPickerView */,
 				45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */,
 				45D1CE86236AA75C00D28EC1 /* ShapeView.swift */,
 				4596A6892371DE8800631A9F /* PathFactory.swift */,
-				45FBB6D423CEBCEE00732050 /* ResizableView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -838,6 +852,7 @@
 				1A958F9C1D397BE900D56699 /* FolioReaderCenter.swift in Sources */,
 				8C126D432284852D002E0786 /* SwipeInteractionController.swift in Sources */,
 				1A958FAE1D397BE900D56699 /* PageViewController.swift in Sources */,
+				457D3BE323D6269200BFAC2F /* UIView+Transform.swift in Sources */,
 				1A958FAD1D397BE900D56699 /* Highlight.swift in Sources */,
 				1A958F981D397BE900D56699 /* FRSmils.swift in Sources */,
 				1A958F971D397BE900D56699 /* FRSmilElement.swift in Sources */,
@@ -857,6 +872,7 @@
 				1A9590131D397BE900D56699 /* ScrollScrubber.swift in Sources */,
 				B0D69CC81D0387F7003B4CCD /* HADiscreteSlider.swift in Sources */,
 				45D1CE81236A955D00D28EC1 /* ShapeMenuViewController.swift in Sources */,
+				457D3BE123D6266900BFAC2F /* DragHandle.swift in Sources */,
 				45D1CE87236AA75C00D28EC1 /* ShapeView.swift in Sources */,
 				1A65DDD51DA744410033C277 /* QuoteImage.swift in Sources */,
 				1A958F961D397BE900D56699 /* FRResources.swift in Sources */,

@@ -36,8 +36,8 @@ struct PathFactory {
         let rect = viewRect
         let path = UIBezierPath()
         path.move(to: CGPoint(x: (rect.origin.x + (rect.width / 2.0)), y: rect.origin.y))
-        path.addLine(to: CGPoint(x: rect.origin.x + rect.width,y: rect.origin.y + rect.height))
-        path.addLine(to: CGPoint(x: rect.origin.x,y: rect.origin.y + rect.height))
+        path.addLine(to: CGPoint(x: rect.origin.x + rect.width, y: rect.origin.y + rect.height))
+        path.addLine(to: CGPoint(x: rect.origin.x, y: rect.origin.y + rect.height))
         path.close()
         
         return path
