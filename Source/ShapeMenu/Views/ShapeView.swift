@@ -22,6 +22,7 @@ class ShapeView: ResizableView {
     private(set) var path: UIBezierPath!
     private var shapeLayer: CAShapeLayer!
     private var didDrawForFirstTime: Bool = false
+    private var `type`: ShapeViewModel.ShapeType!
     private var lineWidthScaleFactor: CGFloat {
         return frame.size.height / bounds.size.height
     }
@@ -34,11 +35,12 @@ class ShapeView: ResizableView {
         self.lineWidth = viewModel.borderWidth
         self.fillColor = viewModel.fillColor
         self.shapeBorderColor = viewModel.borderColor
+        self.type = viewModel.type
         super.init(frame: frame)
         backgroundColor = .clear
         center = origin
         path = PathFactory(viewRect: insetBounds).createPath(for: viewModel.type)
-//        setupShapePath()
+        setupShapePath()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -46,14 +48,9 @@ class ShapeView: ResizableView {
     }
     
     override func draw(_ rect: CGRect) {
-        fillColor.setFill()
-        shapeBorderColor.setStroke()
-        path.lineWidth = lineWidth / lineWidthScaleFactor
-        path.stroke()
-        path.fill()
-//        shapeLayer.fillColor = fillColor.cgColor
-//        shapeLayer.lineWidth = lineWidth / lineWidthScaleFactor
-//        shapeLayer.strokeColor = shapeBorderColor.cgColor
+        shapeLayer.fillColor = fillColor.cgColor
+        shapeLayer.lineWidth = lineWidth / lineWidthScaleFactor
+        shapeLayer.strokeColor = shapeBorderColor.cgColor
         
         if !didDrawForFirstTime {
             didDrawForFirstTime.toggle()
@@ -133,7 +130,10 @@ class ShapeView: ResizableView {
         gesture.setTranslation(CGPoint.zero, in: self)
         updateDragHandles()
         path.transformAndCenter(transform: CGAffineTransform(scaleX: bounds.width / oldBounds.width, y: bounds.height / oldBounds.height))
-        path.apply(CGAffineTransform(translationX: frame.center.x - path.bounds.center.x, y: frame.center.y - path.bounds.center.y))        
+        path.apply(CGAffineTransform(translationX: frame.center.x - path.bounds.center.x, y: frame.center.y - path.bounds.center.y))
+        shapeLayer.transform = CATransform3DScale(shapeLayer.transform, bounds.width / oldBounds.width, bounds.height / oldBounds.height, 1.0)
+        shapeLayer.frame = bounds
+        
         if gesture.state == .ended {
             self.setAnchorPoint(anchorPoint: CGPoint(x: 0.5, y: 0.5))
         }
