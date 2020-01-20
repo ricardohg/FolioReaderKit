@@ -27,10 +27,7 @@ class ShapeView: ResizableView {
     private(set) var fillColor: UIColor
     private(set) var shapeBorderColor: UIColor
     private var shapeLayer: CAShapeLayer!
-    private var `type`: ShapeViewModel.ShapeType!
-    private var lineWidthScaleFactor: CGFloat {
-        return frame.size.height / bounds.size.height
-    }
+    private var `type`: ShapeViewModel.ShapeType!   
     
     // MARK: - Life Cycle
     
@@ -61,7 +58,7 @@ class ShapeView: ResizableView {
         let path = PathFactory(viewRect: bounds).createPath(for: type)
         shapeLayer.path = path.cgPath
         shapeLayer.fillColor = fillColor.cgColor
-        shapeLayer.lineWidth = lineWidth / lineWidthScaleFactor
+        shapeLayer.lineWidth = lineWidth
         shapeLayer.strokeColor = shapeBorderColor.cgColor
     }
     
