@@ -20,6 +20,11 @@ class ShapeMenuViewController: UIViewController {
     
     // MARK: - Vars & Constants -
     
+    struct Constants {
+        static let viewWidth: CGFloat = 260
+        static let viewHeight: CGFloat = 425
+    }
+    
     var createShape: ((ShapeViewModel) -> Void)?
     var changeShape: ((ShapeViewModel) -> Void)?
     var dismissed: (() -> Void)?

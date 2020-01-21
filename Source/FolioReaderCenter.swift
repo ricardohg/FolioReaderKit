@@ -397,7 +397,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         addCanvasView(with: .shape)
         
         shapeMenuViewController.modalPresentationStyle = .popover
-        shapeMenuViewController.preferredContentSize = CGSize(width: 260, height: 425)
+        shapeMenuViewController.preferredContentSize = CGSize(width: ShapeMenuViewController.Constants.viewWidth, height: ShapeMenuViewController.Constants.viewHeight)
         shapeMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
         shapeMenuViewController.popoverPresentationController?.sourceView = button
         
