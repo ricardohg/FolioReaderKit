@@ -15,8 +15,7 @@ public struct ShapePersisted: Codable {
     var borderWidth: CGFloat
     
     init(shape: Shape) {
-        pathData = NSKeyedArchiver.archivedData(withRootObject: shape.path).base64EncodedString()
-        print(pathData.utf8.count)
+        pathData = NSKeyedArchiver.archivedData(withRootObject: shape.path).base64EncodedString()    
         backgroundColorHexValue = shape.backgroundColor.hexString(false)
         borderColorHexValue = shape.borderColor.hexString(false)
         borderWidth = shape.borderWidth
