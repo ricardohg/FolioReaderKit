@@ -9,13 +9,14 @@
 import Foundation
 
 public struct ShapePersisted: Codable {
-    var pathData: Data
+    var pathData: String
     var backgroundColorHexValue: String
     var borderColorHexValue: String
     var borderWidth: CGFloat
     
     init(shape: Shape) {
-        pathData = NSKeyedArchiver.archivedData(withRootObject: shape.path)
+        pathData = NSKeyedArchiver.archivedData(withRootObject: shape.path).base64EncodedString()
+        print(pathData.utf8.count)
         backgroundColorHexValue = shape.backgroundColor.hexString(false)
         borderColorHexValue = shape.borderColor.hexString(false)
         borderWidth = shape.borderWidth

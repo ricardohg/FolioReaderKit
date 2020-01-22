@@ -40,10 +40,11 @@ public struct StrokePersisted: Codable {
         }
     }
     
-    func stroke() -> Stroke {        
+    func stroke() -> Stroke {
         let stroke: Stroke
         if let shapePersisted = self.shapePersisted,
-            let path = NSKeyedUnarchiver.unarchiveObject(with: shapePersisted.pathData) as? UIBezierPath {
+            let data = Data(base64Encoded: shapePersisted.pathData),
+            let path = NSKeyedUnarchiver.unarchiveObject(with: data) as? UIBezierPath {
             let shape = Shape(
                 path: path,
                 backgroundColor: UIColor.hexStringToUIColor(hex: shapePersisted.backgroundColorHexValue),
