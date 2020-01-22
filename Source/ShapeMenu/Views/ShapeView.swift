@@ -17,9 +17,8 @@ class ShapeView: ResizableView {
     }
     
     var path: UIBezierPath {
-        let angle = atan2(transform.b, transform.a)
         let path = PathFactory(viewRect: originalFrame()).createPath(for: type)
-        path.transformAndCenter(transform: CGAffineTransform(rotationAngle: angle))
+        path.transformAndCenter(transform: self.transform)
         return path
     }
     
