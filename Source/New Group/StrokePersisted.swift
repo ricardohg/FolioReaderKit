@@ -18,6 +18,10 @@ public struct StrokeCollectionPersisted: Codable {
         self.strokes = strokeCollection.strokes.map { StrokePersisted(stroke: $0) }
     }
     
+    public init(strokes: [StrokePersisted]) {
+        self.strokes = strokes
+    }
+    
     func strokeCollection() -> StrokeCollection? {
         let strokeCollection = StrokeCollection()
         strokeCollection.strokes = strokes.map { $0.stroke() }
