@@ -101,6 +101,20 @@ enum StrokeState {
     case cancelled
 }
 
+public struct Shape {
+    var path: UIBezierPath
+    var backgroundColor: UIColor
+    var borderColor: UIColor
+    var borderWidth: CGFloat
+    
+    init(path: UIBezierPath, backgroundColor: UIColor = .black, borderColor: UIColor = .clear, borderWidth: CGFloat = 0.0) {
+        self.path = path
+        self.backgroundColor = backgroundColor
+        self.borderColor = borderColor
+        self.borderWidth = borderWidth
+    }
+}
+
 open class Stroke {
     static let calligraphyFallbackAzimuthUnitVector = CGVector(dx: 1.0, dy: 1.0).normalized!
     
@@ -115,6 +129,7 @@ open class Stroke {
     
     open var color: UIColor?
     open var width: Double?
+    open var shape: Shape?
     
     var strokeDisplay: StrokeViewDisplayOptions?
     
@@ -192,6 +207,18 @@ open class Stroke {
         
         return false
         
+    }
+    
+    func shapeContainSamples(in stroke: Stroke) -> Bool {
+        guard let origin = samples.first, let completeFrame = samples.last else {
+            return false
+        }
+        
+        let width = completeFrame.location.x - origin.location.x
+        let height = completeFrame.location.y - origin.location.y
+        let size = CGSize(width: width, height: height)
+        let frame = CGRect(origin: origin.location, size: size)
+        return stroke.samples.contains(where: { frame.contains($0.location) })        
     }
     
     private func compare(ls: StrokeSample, rs: StrokeSample) -> Bool {
@@ -343,3 +370,13 @@ open class StrokeSegmentIterator: IteratorProtocol {
         return nil
     }
 }
+
+// MARK: - Shape -
+
+extension Stroke {
+    convenience init(shape: Shape) {
+        self.init()
+        self.shape = shape
+    }
+}
+
