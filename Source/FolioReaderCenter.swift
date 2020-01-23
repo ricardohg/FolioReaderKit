@@ -270,6 +270,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 self.showEraserOptions(from: button)
             case .highlightOptions(button: let button):
                 self.showHighlighterOptions(from: button)
+            case .shapeOptions(button: let button):
+                self.showShapeOptions(from: button)
             default:
                 self.addCanvasView(with: tool)
             }
@@ -387,6 +389,35 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         navigationController?.present(highlighterMenuViewController, animated: true, completion: nil)
     }
+    
+    // MARK: - Shape Options -
+    private func showShapeOptions(from button: UIButton) {
+        guard let shapeMenuViewController = UIStoryboard(name: "ShapeMenu", bundle: Bundle(for: ShapeMenuViewController.self)).instantiateInitialViewController() as? ShapeMenuViewController else { return }
+        
+        addCanvasView(with: .shape)
+        
+        shapeMenuViewController.modalPresentationStyle = .popover
+        shapeMenuViewController.preferredContentSize = CGSize(width: ShapeMenuViewController.Constants.viewWidth, height: ShapeMenuViewController.Constants.viewHeight)
+        shapeMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
+        shapeMenuViewController.popoverPresentationController?.sourceView = button
+        
+        shapeMenuViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        shapeMenuViewController.createShape = { [weak self] viewModel in
+            self?.drawableViewController.drawShape(viewModel: viewModel)
+        }
+        
+        shapeMenuViewController.changeShape = { [weak self] viewModel in
+            self?.drawableViewController.modifyCurrentShape(viewModel: viewModel)
+        }
+        
+        shapeMenuViewController.dismissed = { [weak self] in
+            self?.drawableViewController.deselectCurrentShape()
+            self?.toolBarViewController.currentTool = .none
+            
+        }
+        navigationController?.present(shapeMenuViewController, animated: true, completion: nil)
+    }
 
     
     // MARK: -- CanvasView For Drawing
@@ -470,6 +501,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         setStateFor(tool: tool)
+        
+        drawableViewController.didSelectShape = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.toolBarViewController.currentTool = .shape
+            self.showShapeOptions(from: self.toolBarViewController.shapeButton)
+        }
     }
 
     // MARK: Layout

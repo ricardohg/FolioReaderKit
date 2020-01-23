@@ -2,15 +2,14 @@
 //  ColorCollectionViewCell.swift
 //  FolioReaderKit
 //
-//  Created by Catalina Sanchez on 3/21/19.
+//  Created by Santiago Carmona on 4/11/19.
 //  Copyright © 2019 FolioReader. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class ColorCollectionViewCell: UICollectionViewCell {
-    
+
     // MARK: - Properties -
     
     @IBOutlet weak var colorEllipse: UIImageView!
@@ -39,4 +38,5 @@ class ColorCollectionViewCell: UICollectionViewCell {
             colorEllipse.image = coloredEllipse
         }
     }
+
 }

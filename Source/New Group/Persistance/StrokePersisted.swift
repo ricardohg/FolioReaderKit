@@ -6,7 +6,7 @@
 //  Copyright © 2019 FolioReader. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /// struct to persist strokes
 
@@ -30,17 +30,35 @@ public struct StrokePersisted: Codable {
     
     var samples: [StrokeSamplePersisted] = []
     var colorHexValue: String
+    var shapePersisted: ShapePersisted?
     
     init(stroke: Stroke) {
-        
         self.samples = stroke.samples.map { StrokeSamplePersisted(sample: $0) }
         self.colorHexValue = stroke.color?.hexString(false) ?? ""
+        if let shape = stroke.shape {
+            self.shapePersisted = ShapePersisted(shape: shape)
+        }
     }
     
     func stroke() -> Stroke {
-        let stroke = Stroke()
+        let stroke: Stroke
+        if let shapePersisted = self.shapePersisted,
+            let data = Data(base64Encoded: shapePersisted.pathData),
+            let path = NSKeyedUnarchiver.unarchiveObject(with: data) as? UIBezierPath {
+            let shape = Shape(
+                path: path,
+                backgroundColor: UIColor.hexStringToUIColor(hex: shapePersisted.backgroundColorHexValue),
+                borderColor: UIColor.hexStringToUIColor(hex: shapePersisted.borderColorHexValue),
+                borderWidth: shapePersisted.borderWidth
+            )
+            stroke = Stroke(shape: shape)
+        } else {
+            stroke = Stroke()
+        }
+        
         stroke.samples = samples.map { $0.strokeSample() }
         stroke.color = UIColor.hexStringToUIColor(hex: colorHexValue)
+        
         return stroke
     }
 }

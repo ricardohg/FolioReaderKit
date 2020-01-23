@@ -102,6 +102,19 @@
 		3A27F0C71FD9C33A00D84A57 /* Highlight+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F211D397BE900D56699 /* Highlight+Helper.swift */; };
 		3A27F0C81FD9C33A00D84A57 /* Highlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A958F231D397BE900D56699 /* Highlight.swift */; };
 		3AD5EEB91D9433C100E42810 /* FolioReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */; };
+		457D3BE123D6266900BFAC2F /* DragHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D3BE023D6266900BFAC2F /* DragHandle.swift */; };
+		457D3BE323D6269200BFAC2F /* UIView+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457D3BE223D6269200BFAC2F /* UIView+Transform.swift */; };
+		4596A67C23709ED700631A9F /* ShapePersisted.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A67B23709ED700631A9F /* ShapePersisted.swift */; };
+		4596A67F23712C6400631A9F /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */; };
+		4596A68023712C6400631A9F /* ColorCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */; };
+		4596A6822371D7AF00631A9F /* ShapeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A6812371D7AF00631A9F /* ShapeViewModel.swift */; };
+		4596A68A2371DE8800631A9F /* PathFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596A6892371DE8800631A9F /* PathFactory.swift */; };
+		45D1CE7D236A918A00D28EC1 /* ShapeMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */; };
+		45D1CE81236A955D00D28EC1 /* ShapeMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1CE80236A955D00D28EC1 /* ShapeMenuViewController.swift */; };
+		45D1CE84236A95DE00D28EC1 /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */; };
+		45D1CE85236A95DE00D28EC1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1CE83236A95DE00D28EC1 /* ColorPickerView.swift */; };
+		45D1CE87236AA75C00D28EC1 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1CE86236AA75C00D28EC1 /* ShapeView.swift */; };
+		45FBB6D523CEBCEE00732050 /* ResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FBB6D423CEBCEE00732050 /* ResizableView.swift */; };
 		8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C0775CA224BE739005CB6EC /* Drawing.swift */; };
 		8C126D432284852D002E0786 /* SwipeInteractionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C126D422284852D002E0786 /* SwipeInteractionController.swift */; };
 		8C3CEFCC227C96EB00C17283 /* LayerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3CEFCB227C96EB00C17283 /* LayerState.swift */; };
@@ -131,7 +144,6 @@
 		B0D69CD61D0388EF003B4CCD /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0D69CD01D0388EF003B4CCD /* ZipArchive.framework */; };
 		B444288C22B3FC72005AA564 /* HighlighterMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B444288B22B3FC72005AA564 /* HighlighterMenu.storyboard */; };
 		B444288E22B3FDCE005AA564 /* HighlighterMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B444288D22B3FDCE005AA564 /* HighlighterMenuViewController.swift */; };
-		B45148A62243FF450027B6B6 /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */; };
 		B46E3577224AE3F900910E49 /* StrokeFormatMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */; };
 		B46E357C224BD8F500910E49 /* SF Pro in Resources */ = {isa = PBXBuildFile; fileRef = B46E357B224BD8F500910E49 /* SF Pro */; };
 		B4ACA920224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */; };
@@ -210,6 +222,19 @@
 		3A27F08A1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderUserDefaults.swift; sourceTree = "<group>"; };
 		3A27F08B1FD9BE5800D84A57 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3AD5EEB81D9433C100E42810 /* FolioReaderWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolioReaderWebView.swift; sourceTree = "<group>"; };
+		457D3BE023D6266900BFAC2F /* DragHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragHandle.swift; sourceTree = "<group>"; };
+		457D3BE223D6269200BFAC2F /* UIView+Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Transform.swift"; sourceTree = "<group>"; };
+		4596A67B23709ED700631A9F /* ShapePersisted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapePersisted.swift; sourceTree = "<group>"; };
+		4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
+		4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorCollectionViewCell.xib; sourceTree = "<group>"; };
+		4596A6812371D7AF00631A9F /* ShapeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeViewModel.swift; sourceTree = "<group>"; };
+		4596A6892371DE8800631A9F /* PathFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathFactory.swift; sourceTree = "<group>"; };
+		45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShapeMenu.storyboard; sourceTree = "<group>"; };
+		45D1CE80236A955D00D28EC1 /* ShapeMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeMenuViewController.swift; sourceTree = "<group>"; };
+		45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ColorPickerView.xib; sourceTree = "<group>"; };
+		45D1CE83236A95DE00D28EC1 /* ColorPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
+		45D1CE86236AA75C00D28EC1 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
+		45FBB6D423CEBCEE00732050 /* ResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableView.swift; sourceTree = "<group>"; };
 		8C0775CA224BE739005CB6EC /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		8C126D422284852D002E0786 /* SwipeInteractionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeInteractionController.swift; sourceTree = "<group>"; };
 		8C3CEFCB227C96EB00C17283 /* LayerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerState.swift; sourceTree = "<group>"; };
@@ -243,7 +268,6 @@
 		B0D69CD01D0388EF003B4CCD /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
 		B444288B22B3FC72005AA564 /* HighlighterMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HighlighterMenu.storyboard; sourceTree = "<group>"; };
 		B444288D22B3FDCE005AA564 /* HighlighterMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlighterMenuViewController.swift; sourceTree = "<group>"; };
-		B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
 		B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StrokeFormatMenu.storyboard; sourceTree = "<group>"; };
 		B46E357B224BD8F500910E49 /* SF Pro */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "SF Pro"; sourceTree = "<group>"; };
 		B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCollectionViewController.swift; sourceTree = "<group>"; };
@@ -295,6 +319,7 @@
 		1A958F031D397BE900D56699 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				45D1CE7B236A917600D28EC1 /* ShapeMenu */,
 				B444288A22B3FC03005AA564 /* HighlighterMenu */,
 				8C5C726E2284B2C200139F0B /* TOC */,
 				B4B155D22264E2C50087E4E6 /* EraserMenu */,
@@ -432,6 +457,82 @@
 			path = Raleway;
 			sourceTree = "<group>";
 		};
+		457D3BDF23D6265800BFAC2F /* RezizableView */ = {
+			isa = PBXGroup;
+			children = (
+				45FBB6D423CEBCEE00732050 /* ResizableView.swift */,
+				457D3BE023D6266900BFAC2F /* DragHandle.swift */,
+				457D3BE223D6269200BFAC2F /* UIView+Transform.swift */,
+			);
+			path = RezizableView;
+			sourceTree = "<group>";
+		};
+		4596A67A23709EC800631A9F /* Persistance */ = {
+			isa = PBXGroup;
+			children = (
+				8CCBA72E22CA6B3100C49D3E /* StrokePersisted.swift */,
+				4596A67B23709ED700631A9F /* ShapePersisted.swift */,
+			);
+			path = Persistance;
+			sourceTree = "<group>";
+		};
+		4596A6842371D7D600631A9F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				457D3BDF23D6265800BFAC2F /* RezizableView */,
+				4596A6862371D7FA00631A9F /* ColorCollectionViewCell */,
+				4596A6852371D7E900631A9F /* ColorPickerView */,
+				45D1CE7C236A918A00D28EC1 /* ShapeMenu.storyboard */,
+				45D1CE86236AA75C00D28EC1 /* ShapeView.swift */,
+				4596A6892371DE8800631A9F /* PathFactory.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4596A6852371D7E900631A9F /* ColorPickerView */ = {
+			isa = PBXGroup;
+			children = (
+				45D1CE83236A95DE00D28EC1 /* ColorPickerView.swift */,
+				45D1CE82236A95DE00D28EC1 /* ColorPickerView.xib */,
+			);
+			path = ColorPickerView;
+			sourceTree = "<group>";
+		};
+		4596A6862371D7FA00631A9F /* ColorCollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				4596A67D23712C6400631A9F /* ColorCollectionViewCell.swift */,
+				4596A67E23712C6400631A9F /* ColorCollectionViewCell.xib */,
+			);
+			path = ColorCollectionViewCell;
+			sourceTree = "<group>";
+		};
+		4596A6872371D82600631A9F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				4596A6812371D7AF00631A9F /* ShapeViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		4596A6882371D83300631A9F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				45D1CE80236A955D00D28EC1 /* ShapeMenuViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		45D1CE7B236A917600D28EC1 /* ShapeMenu */ = {
+			isa = PBXGroup;
+			children = (
+				4596A6882371D83300631A9F /* ViewControllers */,
+				4596A6872371D82600631A9F /* ViewModels */,
+				4596A6842371D7D600631A9F /* Views */,
+			);
+			path = ShapeMenu;
+			sourceTree = "<group>";
+		};
 		8C5AE8992228747B0027C17F /* LayerSelector */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,11 +554,11 @@
 		8C829858222470FF004BF531 /* DrawingEngine */ = {
 			isa = PBXGroup;
 			children = (
+				4596A67A23709EC800631A9F /* Persistance */,
 				8C82985A2224714A004BF531 /* CGDrawingEngine.swift */,
 				8C8298592224714A004BF531 /* CGMathExtensions.swift */,
 				8C82985B2224714A004BF531 /* StrokeCollection.swift */,
 				8C82985C2224714A004BF531 /* StrokeGestureRecognizer.swift */,
-				8CCBA72E22CA6B3100C49D3E /* StrokePersisted.swift */,
 			);
 			name = DrawingEngine;
 			path = "New Group";
@@ -567,7 +668,6 @@
 			children = (
 				B46E3576224AE3F900910E49 /* StrokeFormatMenu.storyboard */,
 				B4DBCD862242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift */,
-				B45148A52243FF450027B6B6 /* ColorCollectionViewCell.swift */,
 				B4ACA91F224EC1D5002C4CBB /* ColorPickerCollectionViewController.swift */,
 			);
 			path = StrokeFormatMenu;
@@ -671,6 +771,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A958FBA1D397BE900D56699 /* Lora-Italic.ttf in Resources */,
+				45D1CE7D236A918A00D28EC1 /* ShapeMenu.storyboard in Resources */,
 				1A958FB21D397BE900D56699 /* Andada-Italic.otf in Resources */,
 				1A958FBF1D397BE900D56699 /* Raleway-Regular.ttf in Resources */,
 				B4FCDB8122C2872B003A793B /* SF-Pro-Display-RegularItalic.otf in Resources */,
@@ -689,6 +790,7 @@
 				1A958FB71D397BE900D56699 /* Lato-Regular.ttf in Resources */,
 				1A9590121D397BE900D56699 /* Style.css in Resources */,
 				B46E3577224AE3F900910E49 /* StrokeFormatMenu.storyboard in Resources */,
+				4596A68023712C6400631A9F /* ColorCollectionViewCell.xib in Resources */,
 				1A958FB01D397BE900D56699 /* Andada-Bold.otf in Resources */,
 				1A9590171D397CAF00D56699 /* FolioReaderKit.podspec in Resources */,
 				1A958FB51D397BE900D56699 /* Lato-BoldItalic.ttf in Resources */,
@@ -697,6 +799,7 @@
 				B444288C22B3FC72005AA564 /* HighlighterMenu.storyboard in Resources */,
 				1A958FBD1D397BE900D56699 /* Raleway-BoldItalic.ttf in Resources */,
 				1A958FB11D397BE900D56699 /* Andada-BoldItalic.otf in Resources */,
+				45D1CE84236A95DE00D28EC1 /* ColorPickerView.xib in Resources */,
 				1A958FB91D397BE900D56699 /* Lora-BoldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -720,6 +823,7 @@
 				1A958F9F1D397BE900D56699 /* FolioReaderConfig.swift in Sources */,
 				1A958FA51D397BE900D56699 /* FolioReaderPage.swift in Sources */,
 				8C5AE89122272A830027C17F /* DrawableViewController.swift in Sources */,
+				4596A6822371D7AF00631A9F /* ShapeViewModel.swift in Sources */,
 				8C82985F2224714A004BF531 /* StrokeCollection.swift in Sources */,
 				B0D69CC91D0387F7003B4CCD /* SMSegment.swift in Sources */,
 				B0D69CCA1D0387F7003B4CCD /* SMSegmentView.swift in Sources */,
@@ -732,8 +836,10 @@
 				1A958FA41D397BE900D56699 /* FolioReaderKit.swift in Sources */,
 				8C3CEFCC227C96EB00C17283 /* LayerState.swift in Sources */,
 				B444288E22B3FDCE005AA564 /* HighlighterMenuViewController.swift in Sources */,
+				4596A67F23712C6400631A9F /* ColorCollectionViewCell.swift in Sources */,
 				8C0775CB224BE739005CB6EC /* Drawing.swift in Sources */,
 				1A65DDD71DA7450A0033C277 /* FolioReaderQuoteShare.swift in Sources */,
+				4596A67C23709ED700631A9F /* ShapePersisted.swift in Sources */,
 				8CCBA72F22CA6B3100C49D3E /* StrokePersisted.swift in Sources */,
 				3A27F08C1FD9BE5800D84A57 /* FolioReaderUserDefaults.swift in Sources */,
 				1A958FA21D397BE900D56699 /* FolioReaderHighlightList.swift in Sources */,
@@ -743,10 +849,10 @@
 				256AE60B20A1D4DD00EAD746 /* FolioReaderAddHighlightNote.swift in Sources */,
 				1A958FA71D397BE900D56699 /* FolioReaderPlayerMenu.swift in Sources */,
 				1A958F921D397BE900D56699 /* FREpubParser.swift in Sources */,
-				B45148A62243FF450027B6B6 /* ColorCollectionViewCell.swift in Sources */,
 				1A958F9C1D397BE900D56699 /* FolioReaderCenter.swift in Sources */,
 				8C126D432284852D002E0786 /* SwipeInteractionController.swift in Sources */,
 				1A958FAE1D397BE900D56699 /* PageViewController.swift in Sources */,
+				457D3BE323D6269200BFAC2F /* UIView+Transform.swift in Sources */,
 				1A958FAD1D397BE900D56699 /* Highlight.swift in Sources */,
 				1A958F981D397BE900D56699 /* FRSmils.swift in Sources */,
 				1A958F971D397BE900D56699 /* FRSmilElement.swift in Sources */,
@@ -755,6 +861,7 @@
 				8C5AE89D22287A0B0027C17F /* LayersTableViewController.swift in Sources */,
 				1A958F9D1D397BE900D56699 /* FolioReaderChapterList.swift in Sources */,
 				B4B155D62264ED480087E4E6 /* EraserMenuViewController.swift in Sources */,
+				45D1CE85236A95DE00D28EC1 /* ColorPickerView.swift in Sources */,
 				B4DBCD872242D0B9004A5EE8 /* StrokeFormatMenuTableViewController.swift in Sources */,
 				1A958F951D397BE900D56699 /* FRResource.swift in Sources */,
 				1A958F9B1D397BE900D56699 /* FolioReaderAudioPlayer.swift in Sources */,
@@ -764,13 +871,18 @@
 				1A958F941D397BE900D56699 /* FRMetadata.swift in Sources */,
 				1A9590131D397BE900D56699 /* ScrollScrubber.swift in Sources */,
 				B0D69CC81D0387F7003B4CCD /* HADiscreteSlider.swift in Sources */,
+				45D1CE81236A955D00D28EC1 /* ShapeMenuViewController.swift in Sources */,
+				457D3BE123D6266900BFAC2F /* DragHandle.swift in Sources */,
+				45D1CE87236AA75C00D28EC1 /* ShapeView.swift in Sources */,
 				1A65DDD51DA744410033C277 /* QuoteImage.swift in Sources */,
 				1A958F961D397BE900D56699 /* FRResources.swift in Sources */,
 				1A958F991D397BE900D56699 /* FRSpine.swift in Sources */,
+				4596A68A2371DE8800631A9F /* PathFactory.swift in Sources */,
 				8C82985D2224714A004BF531 /* CGMathExtensions.swift in Sources */,
 				8C3CEFD32282162D00C17283 /* DrawerTransition.swift in Sources */,
 				1A958FA61D397BE900D56699 /* FolioReaderPageIndicator.swift in Sources */,
 				8CA2D346226F99D400B707EB /* ToolState.swift in Sources */,
+				45FBB6D523CEBCEE00732050 /* ResizableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

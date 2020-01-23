@@ -429,6 +429,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                 if (self.shouldShowBar == true && self.menuIsVisible == false) {
                     self.folioReader.readerCenter?.toggleBars()
+                    self.folioReader.readerCenter?.toggleToolBar()
                 }
             })
         } else if (self.readerConfig.shouldHideNavigationOnTap == true) {
