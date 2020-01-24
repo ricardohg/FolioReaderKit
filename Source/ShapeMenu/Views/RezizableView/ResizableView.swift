@@ -42,19 +42,30 @@ class ResizableView: UIView {
         
         
         var pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        setupUIPanGestureRecognizer(pan)
         topLeft.addGestureRecognizer(pan)
         pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        setupUIPanGestureRecognizer(pan)
         topRight.addGestureRecognizer(pan)
         pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        setupUIPanGestureRecognizer(pan)
         bottomLeft.addGestureRecognizer(pan)
         pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        setupUIPanGestureRecognizer(pan)
         bottomRight.addGestureRecognizer(pan)
         pan = UIPanGestureRecognizer(target: self, action: #selector(handleRotate))
+        setupUIPanGestureRecognizer(pan)
         rotateHandle.addGestureRecognizer(pan)
         pan = UIPanGestureRecognizer(target: self, action: #selector(handleMove))
+        setupUIPanGestureRecognizer(pan)
         self.addGestureRecognizer(pan)
         
         self.updateDragHandles()
+    }
+    
+    func setupUIPanGestureRecognizer(_ pan: UIPanGestureRecognizer) {
+        pan.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber, UITouch.TouchType.pencil.rawValue as NSNumber]
+        pan.delegate = self
     }
     
     func updateDragHandles() {
@@ -153,5 +164,11 @@ class ResizableView: UIView {
         if gesture.state == .ended {
             self.setAnchorPoint(anchorPoint: CGPoint(x: 0.5, y: 0.5))
         }        
+    }
+}
+
+extension ResizableView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

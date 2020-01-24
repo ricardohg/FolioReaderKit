@@ -427,12 +427,16 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         switch tool {
         case .pen:
             drawableViewController.loadToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+            drawableViewController.strokeColor = UIColor.black
             drawableViewController.style = .ink
-            
+            drawableViewController.pencilStrokeRecognizer.isEnabled = true
+        case .eraser:
+            drawableViewController.style = .eraser
+            drawableViewController.pencilStrokeRecognizer.isEnabled = true
         case .highlighter:
             drawableViewController.handleSingleTap(self)
         default:
-            drawableViewController.setStrokeColor(for: tool)
+            drawableViewController.pencilStrokeRecognizer.isEnabled = false
         }
         
     }
