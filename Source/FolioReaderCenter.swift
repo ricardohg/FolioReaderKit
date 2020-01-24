@@ -735,6 +735,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard let cell = cell, let readerContainer = readerContainer else {
             return UICollectionViewCell()
         }
+    
 
         cell.setup(withReaderContainer: readerContainer)
         cell.pageNumber = indexPath.row+1
@@ -744,6 +745,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         if let image = pageDrawings[cell.pageNumber] {
             cell.drawImageView.image = image
+        }
+            
+        
+        //hide toolBar if notes cannot be added to page
+        if pageIds[cell.pageNumber - 1].number == nil && isShowingToolBar {
+            toggleToolBar()
         }
 
         else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", pageId: pageIds[cell.pageNumber - 1], configuration: readerConfig), let image = drawing.image {
