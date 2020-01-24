@@ -63,7 +63,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jdv-ZB-QrC">
                                                         <rect key="frame" x="12" y="11.5" width="26" height="22.5"/>
-                                                        <state key="normal" image="triangle"/>
+                                                        <state key="normal" image="triangle-icon"/>
                                                         <connections>
                                                             <action selector="createTriangle:" destination="NFG-vK-pDC" eventType="touchUpInside" id="Zng-1A-1Ch"/>
                                                         </connections>
@@ -183,6 +183,6 @@
         <image name="arrow" width="12.5" height="23"/>
         <image name="circle" width="25" height="24"/>
         <image name="rectangle-icon" width="28" height="25"/>
-        <image name="triangle" width="26" height="22.5"/>
+        <image name="triangle-icon" width="26" height="22.5"/>
     </resources>
 </document>
