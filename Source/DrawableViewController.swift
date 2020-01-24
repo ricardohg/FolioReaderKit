@@ -119,18 +119,6 @@ class DrawableViewController: UIViewController {
         stroke.clearUpdateInfo()
     }
     
-    func setStrokeColor(for tool: ToolBarViewController.Tool) {
-        switch tool {
-        case .pen:
-            strokeColor = UIColor.black
-            self.style = .ink
-        case .eraser:
-            self.style = .eraser
-        default:
-            break
-        }
-    }
-    
     func saveToolState(for bookId: String, configuration: FolioReaderConfig) {
         ToolState.store(color: strokeColor, thickness: thinkness, bookId: bookId, configuration: configuration)
     }
