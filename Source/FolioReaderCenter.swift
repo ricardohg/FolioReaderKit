@@ -294,6 +294,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     func toggleToolBar() {
         
+        guard pageIds[currentPageNumber - 1].number != nil else {
+            return
+        }
+        
         toolBarAnchor?.isActive = false
         toolBarAnchor?.constant = toolBarAnchor?.constant == 0 ? ToolBarViewController.toolbarHeight : 0
         toolBarAnchor?.isActive = true
@@ -442,6 +446,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     private func addCanvasView(with tool: ToolBarViewController.Tool) {
+        
+        guard pageIds[currentPageNumber - 1].number != nil else {
+            return
+        }
         
         guard drawableViewController.viewIfLoaded?.window == nil else {
             setStateFor(tool: tool)

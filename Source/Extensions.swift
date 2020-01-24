@@ -439,6 +439,28 @@ internal extension String {
         return String(format: "%02.f:%02.f", min, sec)
     }
     
+    // the number component of an alphanumeric String
+    var number: Int?  {
+        
+        let zero: Unicode.Scalar = "0"
+        let nine: Unicode.Scalar = "9"
+        
+        var stringNumber = ""
+        
+        for letter in unicodeScalars {
+            switch letter.value {
+            case zero.value...nine.value:
+                stringNumber.append(String(letter))
+            default:
+                break
+            }
+        }
+        
+        return Int(stringNumber)
+        
+    
+    }
+    
     // MARK: - NSString helpers
     
     var lastPathComponent: String {
@@ -468,6 +490,7 @@ internal extension String {
     func appendingPathExtension(_ str: String) -> String {
         return (self as NSString).appendingPathExtension(str) ?? self+"."+str
     }
+
 }
 
 internal extension UIImage {
