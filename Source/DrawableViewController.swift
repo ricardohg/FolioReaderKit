@@ -56,6 +56,7 @@ class DrawableViewController: UIViewController {
     var saveImage: ((UIView) ->())?
     var didSelectShape: (() -> ())?
     private var currentShape: ShapeView?
+    private var shapeViewOffset: CGFloat = 50.0
     
     // property to store previous drawed image
     weak var currentImageView: UIImageView!
@@ -242,7 +243,13 @@ extension DrawableViewController {
 extension DrawableViewController {
     func drawShape(viewModel: ShapeViewModel) {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.shapeSelected))
-        let shape: ShapeView = ShapeView(origin: self.view.center, viewModel: viewModel)
+        var center = self.view.center
+        for view in view.subviews.filter({ $0 is ShapeView }) {
+            if center == view.center {
+                center.x += shapeViewOffset
+            }
+        }
+        let shape: ShapeView = ShapeView(center: center, viewModel: viewModel)
         
         shape.addGestureRecognizer(tapGesture)
         self.view.addSubview(shape)

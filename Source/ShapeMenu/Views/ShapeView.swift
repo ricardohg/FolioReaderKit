@@ -30,7 +30,7 @@ class ShapeView: ResizableView {
     
     // MARK: - Life Cycle
     
-    init(origin: CGPoint, size: CGSize = CGSize(width: 100, height: 100), viewModel: ShapeViewModel) {
+    init(center: CGPoint, size: CGSize = CGSize(width: 100, height: 100), viewModel: ShapeViewModel) {
         let frame = CGRect(origin: .zero, size: size)
         
         self.lineWidth = viewModel.borderWidth
@@ -39,7 +39,7 @@ class ShapeView: ResizableView {
         self.type = viewModel.type
         super.init(frame: frame)
         backgroundColor = .clear
-        center = origin
+        self.center = center
         setupShapeLayer()
     }
     
