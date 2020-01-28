@@ -84,7 +84,7 @@ public struct StrokeSamplePersisted: Codable {
 
 extension StrokeCollectionPersisted {
     
-    func save(bookId: String, page: Int) throws {
+    public func save(bookId: String, page: Int) throws {
         do {
             let encoder = JSONEncoder()
             let encoded = try encoder.encode(self)
