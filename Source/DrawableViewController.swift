@@ -134,7 +134,7 @@ class DrawableViewController: UIViewController {
     /// - Tag: setupStrokeGestureRecognizer
     func setupStrokeGestureRecognizer(isForPencil: Bool) -> StrokeGestureRecognizer {
         let recognizer = StrokeGestureRecognizer(target: self, action: #selector(strokeUpdated(_:)))
-        //recognizer.delegate = self
+        recognizer.delegate = self
         recognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(recognizer)
         recognizer.coordinateSpaceView = cgView
@@ -292,5 +292,15 @@ extension DrawableViewController {
         strokeCollection.takeActiveStroke()
         cgView.strokeCollection = strokeCollection
         cgView.setNeedsDisplay()
+    }
+}
+
+extension DrawableViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is ShapeView && style == .ink {
+            return false
+        }
+        
+        return true
     }
 }

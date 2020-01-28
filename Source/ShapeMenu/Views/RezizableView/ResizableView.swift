@@ -65,7 +65,6 @@ class ResizableView: UIView {
     
     func setupUIPanGestureRecognizer(_ pan: UIPanGestureRecognizer) {
         pan.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber, UITouch.TouchType.pencil.rawValue as NSNumber]
-        pan.delegate = self
     }
     
     func updateDragHandles() {
@@ -164,11 +163,5 @@ class ResizableView: UIView {
         if gesture.state == .ended {
             self.setAnchorPoint(anchorPoint: CGPoint(x: 0.5, y: 0.5))
         }        
-    }
-}
-
-extension ResizableView: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
     }
 }
