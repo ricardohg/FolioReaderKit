@@ -67,7 +67,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var pageScrollDirection = ScrollDirection()
     var nextPageNumber: Int = 0
     var previousPageNumber: Int = 0
-    var currentPageNumber: Int = 0
+    var currentPageNumber: Int = 0 {
+        willSet(newValue) {
+//            setStrokes(forPage: newValue)
+        }
+    }
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
     
@@ -95,7 +99,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     
     // current layers (filters)
     
-    private var items: LayersTableViewController.Items = .none
+    private var items: LayersTableViewController.Items = .none {
+        willSet(newValue) {
+            currentPage?.applyLayer(items: newValue)
+        }
+    }
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -228,7 +236,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         
         folioReader.delegate = self
-        
+        setupCanvasView()
     }
 
 
@@ -292,16 +300,30 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
     }
     
-    func toggleToolBar() {
-        
+    func toolBar(isHidden: Bool) {
         toolBarAnchor?.isActive = false
-        toolBarAnchor?.constant = toolBarAnchor?.constant == 0 ? ToolBarViewController.toolbarHeight : 0
+        toolBarAnchor?.constant = isHidden ? ToolBarViewController.toolbarHeight : 0
         toolBarAnchor?.isActive = true
+        
+        if isHidden == false {
+            addCanvasView(with: .none)
+            let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: currentPageNumber)
+            clearCurrentStrokes()
+            
+            if let strokeCollection = strokes?.strokeCollection() {
+                drawableViewController.strokeCollection = strokeCollection
+            }
+        } else {
+            drawableViewController.view.isHidden = true
+        }
         
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
+    }
     
+    func showToolBar() {
+        
     }
     
     // MARK: -- Pencil Options
@@ -441,70 +463,37 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
     }
     
-    private func addCanvasView(with tool: ToolBarViewController.Tool) {
-        
-        guard drawableViewController.viewIfLoaded?.window == nil else {
-            setStateFor(tool: tool)
-            return
-        }
-        
-        drawableViewController.currentImage = nil
-        
+    private func setupCanvasView() {
         addChild(drawableViewController)
-        
         drawableViewController.didMove(toParent: self)
-        
-        drawableViewController.saveImage = { view in
-            
-            let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
-            try? persisted.save(bookId: self.book.name ?? "", page: self.currentPageNumber)
-            
-            let image = UIImage.imageWithLayer(view.layer)
-            self.currentPage?.drawImageView.image = image
-
-            self.pageDrawings[self.currentPageNumber] = image
-    
-            self.toggleToolBar()
-            self.updateCurrentPage()
-            let strokeCollection = StrokeCollection()
-            self.drawableViewController.strokeCollection = strokeCollection
-            self.drawableViewController.cgView.strokeCollection = strokeCollection
-            self.drawableViewController.saveToolState(for: self.book.name ?? "", configuration: self.readerConfig)
-            self.drawableViewController.willMove(toParent: nil)
-            self.drawableViewController.view.removeFromSuperview()
-            self.drawableViewController.removeFromParent()
-            self.toolBarViewController.currentTool = .none
-            
-            Drawing.store(image: image, pageId: self.pageIds[self.currentPageNumber - 1], bookId: self.book.name ?? "", configuration: self.readerConfig)
-            
-        }
-        
-        if let image = pageDrawings[currentPageNumber] {
-            currentPage?.drawImageView.image = nil
-            drawableViewController.currentImage = image
-        }
         
         view.addSubview(drawableViewController.view)
         view.bringSubviewToFront(toolBarViewController.view)
         
+        drawableViewController.view.isHidden = true
+        
         drawableViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        drawableViewController.view.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
+        drawableViewController.view.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor).isActive = true
+        drawableViewController.view.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor).isActive = true
+        drawableViewController.view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
         
-        let drawableOffset: CGFloat = -0.5
-        
-        drawableViewController.view.topAnchor.constraint(equalTo: view.topAnchor, constant: drawableOffset).isActive = true
-        drawableViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        drawableViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        drawableViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
-        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: self.currentPageNumber)
-        
-        drawableViewController.strokeCollection = StrokeCollection()
-        
-        if let strokeCollection = strokes?.strokeCollection() {
-            drawableViewController.strokeCollection = strokeCollection
+        drawableViewController.saveImage = { [weak self] view in
+            guard let self = self else {
+                return
+            }
+            
+            let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
+            try? persisted.save(bookId: self.book.name ?? "", page: self.currentPageNumber)
+            
+            self.toolBar(isHidden: true)
+            self.updateCurrentPage()
+            self.drawableViewController.saveToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+            self.toolBarViewController.currentTool = .none
+            self.items = .none
+            Drawing.store(pageId: self.pageIds[self.currentPageNumber - 1], bookId: self.book.name ?? "", configuration: self.readerConfig)
+            self.setStrokesAndUpdateImageForCurrentPage()
         }
-        
-        setStateFor(tool: tool)
         
         drawableViewController.didSelectShape = { [weak self] in
             guard let self = self else {
@@ -513,6 +502,35 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.toolBarViewController.currentTool = .shape
             self.showShapeOptions(from: self.toolBarViewController.shapeButton)
         }
+    }
+    
+    private func addCanvasView(with tool: ToolBarViewController.Tool) {
+        drawableViewController.view.isHidden = false
+        setStateFor(tool: tool)
+    }
+    
+    private func setStrokes(forPage page: Int) {
+        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: page)
+        clearCurrentStrokes()
+        
+        if let strokeCollection = strokes?.strokeCollection() {
+            drawableViewController.strokeCollection = strokeCollection
+        }
+                
+        drawableViewController.view.isHidden = false
+        let image = UIImage.imageWithLayer(drawableViewController.view.layer)
+        drawableViewController.view.isHidden = true
+//        self.currentPage?.drawImageView.image = image
+        self.pageDrawings[page] = image
+    }
+    
+    private func setStrokesAndUpdateImageForCurrentPage() {
+        setStrokes(forPage: currentPageNumber)
+        self.currentPage?.drawImageView.image = self.pageDrawings[currentPageNumber]
+    }
+    
+    private func clearCurrentStrokes() {
+        drawableViewController.strokeCollection = StrokeCollection()
     }
 
     // MARK: Layout
@@ -731,26 +749,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         cell.setup(withReaderContainer: readerContainer)
         cell.pageNumber = indexPath.row+1
         cell.drawImageView.image = nil
-        
-        cell.applyLayer(items: items)
-        
         if let image = pageDrawings[cell.pageNumber] {
             cell.drawImageView.image = image
+        } else {
+            setStrokes(forPage: cell.pageNumber)
+            if let image = pageDrawings[cell.pageNumber] {
+                cell.drawImageView.image = image
+            }
         }
-
-        else if let drawing = Drawing.drawing(bookId: self.book.name ?? "", pageId: pageIds[cell.pageNumber - 1], configuration: readerConfig), let image = drawing.image {
-
-            pageDrawings[cell.pageNumber] = image
-            cell.drawImageView.image = image
-        }
-
-        
-        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: cell.pageNumber - 1)
-        
-        if let strokeCollection = strokes?.strokeCollection() {
-            drawableViewController.strokeCollection = strokeCollection
-        }
-        
+        cell.applyLayer(items: items)
         cell.webView?.scrollView.delegate = self
         if #available(iOS 11.0, *) {
             cell.webView?.scrollView.contentInsetAdjustmentBehavior = .never
@@ -1497,6 +1504,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - ScrollView Delegate
 
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        clearCurrentStrokes()
         self.isScrolling = true
         clearRecentlyScrolled()
         recentlyScrolled = true
@@ -1627,11 +1635,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
         
-        layersViewController.itemsSelected = { items in
+        layersViewController.itemsSelected = { [weak self] items in
+            guard let self = self else {
+                return
+            }
             
             self.items = items
-            self.currentPage?.applyLayer(items: items)
-            self.drawableViewController.layersItem = items
+            self.currentPage?.applyLayer(items: self.items)
             
             LayerState.store(items: items, bookId: self.book.name ?? "", configuration: self.readerConfig)
 

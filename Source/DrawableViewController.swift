@@ -41,24 +41,13 @@ class DrawableViewController: UIViewController {
         didSet {
             cgView?.strokeStyle = self.style
         }
-    }
-    
-    var layersItem: LayersTableViewController.Items = .all
+    }        
     
     var pencilStrokeRecognizer: StrokeGestureRecognizer!
-    
-    var currentImage: UIImage? {
-        didSet {
-            currentImageView?.image = currentImage
-        }
-    }
     
     var saveImage: ((UIView) ->())?
     var didSelectShape: (() -> ())?
     private var currentShape: ShapeView?
-    
-    // property to store previous drawed image
-    weak var currentImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,17 +66,7 @@ class DrawableViewController: UIViewController {
         canvasContainerView.documentView = cgView
         self.canvasContainerView = canvasContainerView
         
-        view.addSubview(canvasContainerView)
-        
-        let topOffset = 128
-        
-        let currentImageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: -topOffset), size: CGSize(width: maxScreenDimension, height: maxScreenDimension)))
-        currentImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        currentImageView.contentMode = .center
-        
-        currentImageView.image = currentImage
-        
-        self.currentImageView = currentImageView
+        view.addSubview(canvasContainerView)                
         
         cgView.strokeCollection = self.strokeCollection
         

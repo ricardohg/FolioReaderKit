@@ -571,7 +571,7 @@ internal extension UIImage {
      - parameter layer: The input `CALayer`
      - returns: Return a rendered image
      */
-    class func imageWithLayer(_ layer: CALayer) -> UIImage {
+    class func imageWithLayer(_ layer: CALayer) -> UIImage {        
         UIGraphicsBeginImageContextWithOptions(layer.bounds.size, layer.isOpaque, 0.0)
         layer.render(in: UIGraphicsGetCurrentContext()!)
         let img = UIGraphicsGetImageFromCurrentImageContext()

@@ -49,8 +49,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
     fileprivate var shouldShowBar = true
     fileprivate var menuIsVisible = false
     
-    fileprivate var isHiddingHighlights = false
-
+    var isHiddingHighlights = false    
     fileprivate var readerConfig: FolioReaderConfig {
         guard let readerContainer = readerContainer else { return FolioReaderConfig() }
         return readerContainer.readerConfig
@@ -122,12 +121,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         pencilTapGestureRecognizer.delegate = self
         pencilTapGestureRecognizer.numberOfTapsRequired = 1
         webView?.addGestureRecognizer(pencilTapGestureRecognizer)
-        
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap(_:)))
-        singleTapGestureRecognizer.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber]
-        singleTapGestureRecognizer.delegate = self
-        singleTapGestureRecognizer.numberOfTapsRequired = 1
-        webView?.addGestureRecognizer(singleTapGestureRecognizer)
+               
     }
     
     func applyLayer(items: LayersTableViewController.Items) {
@@ -398,7 +392,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         return nil
     }
 
-    // MARK: Gesture recognizer
+    // MARK: Gesture recognizer Delegate
 
     open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.view is FolioReaderWebView {
@@ -428,31 +422,18 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             
             DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                 if (self.shouldShowBar == true && self.menuIsVisible == false) {
-                    self.folioReader.readerCenter?.toggleBars()
-                    self.folioReader.readerCenter?.toggleToolBar()
+                    self.folioReader.readerCenter?.toggleBars()                    
                 }
             })
         } else if (self.readerConfig.shouldHideNavigationOnTap == true) {
             self.folioReader.readerCenter?.hideBars()
-            //hide toolbar if needed
-            if self.folioReader.readerCenter?.isShowingToolBar ?? false {
-                self.folioReader.readerCenter?.toggleToolBar()
-            }
             self.menuIsVisible = false
         }
     }
     
     @objc open func handlePencilTap(_ recognizer: UITapGestureRecognizer) {
         
-        self.folioReader.readerCenter?.toggleToolBar()
-    }
-    
-    @objc open func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
-        
-        if let isShowing = self.folioReader.readerCenter?.isShowingToolBar, isShowing {
-            self.folioReader.readerCenter?.toggleToolBar()
-
-        }
+        self.folioReader.readerCenter?.toolBar(isHidden: false)
     }
     
     
