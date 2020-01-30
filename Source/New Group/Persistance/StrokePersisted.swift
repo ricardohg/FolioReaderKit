@@ -11,7 +11,7 @@ import UIKit
 /// struct to persist strokes
 
 public struct StrokeCollectionPersisted: Codable {
-    var strokes: [StrokePersisted] = []
+    public var strokes: [StrokePersisted] = []
     
     init(strokeCollection: StrokeCollection) {
         

@@ -471,7 +471,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         drawableViewController.saveImage = { view in
             
             let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
-            try? persisted.save(bookId: String(self.contentId), page: self.currentPageNumber)
+            try? persisted.save(bookId: String(self.contentId), page: self.pageIds[self.currentPageNumber - 1].number ?? 0)
             
             let image = UIImage.imageWithLayer(view.layer)
             self.currentPage?.drawImageView.image = image
@@ -483,13 +483,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             let strokeCollection = StrokeCollection()
             self.drawableViewController.strokeCollection = strokeCollection
             self.drawableViewController.cgView.strokeCollection = strokeCollection
-            self.drawableViewController.saveToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+            self.drawableViewController.saveToolState(for: String(self.contentId), configuration: self.readerConfig)
             self.drawableViewController.willMove(toParent: nil)
             self.drawableViewController.view.removeFromSuperview()
             self.drawableViewController.removeFromParent()
             self.toolBarViewController.currentTool = .none
             
-            Drawing.store(image: image, pageId: self.pageIds[self.currentPageNumber - 1], bookId: self.book.name ?? "", configuration: self.readerConfig)
+            Drawing.store(image: image, pageId: self.pageIds[self.currentPageNumber - 1], bookId:String(self.contentId), configuration: self.readerConfig)
             
         }
         
@@ -767,7 +767,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: String(self.contentId), page: pageIds[cell.pageNumber - 1].number ?? 0)
         
         if let strokeCollection = strokes?.strokeCollection() {
-            print(strokeCollection.strokes.first?.samples.count)
             drawableViewController.strokeCollection = strokeCollection
         }
         
