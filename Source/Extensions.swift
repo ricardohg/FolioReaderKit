@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 
-extension Notification.Name {
+public extension Notification.Name {
     static let undoAction = Notification.Name("undoAction")
     static let redoAction = Notification.Name("redoAction")
+    
+    static let postStrokes = Notification.Name("postStrokes")
 }
 
 extension UICollectionView.ScrollDirection {

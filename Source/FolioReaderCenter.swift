@@ -468,10 +468,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         drawableViewController.didMove(toParent: self)
         
-        drawableViewController.saveImage = { view in
+        drawableViewController.saveImage = { [unowned self] view in
             
             let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
             try? persisted.save(bookId: String(self.contentId), page: self.pageIds[self.currentPageNumber - 1].number ?? 0)
+            
+            NotificationCenter.default.post(name: .postStrokes, object: self, userInfo: ["strokes": persisted, "contentId": self.contentId, "sectionId": self.pageIds[self.currentPageNumber - 1].number ?? 0])
             
             let image = UIImage.imageWithLayer(view.layer)
             self.currentPage?.drawImageView.image = image
