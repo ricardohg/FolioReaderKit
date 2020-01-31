@@ -15,15 +15,10 @@ open class Drawing: Object {
     
     /// drawID is a combination of bookId + page number
     @objc open dynamic var drawId: String!
-    @objc open dynamic var imageData: Data!
     @objc open dynamic var scale: Double = 1.0
     
     override open class func primaryKey() -> String {
         return "drawId"
-    }
-    
-    var image: UIImage? {
-        return UIImage(data: imageData, scale: CGFloat(scale))
     }
     
 }
@@ -34,30 +29,20 @@ extension Drawing {
     /// Saves an image (drawing) in realm
     ///
     /// - Parameters:
-    ///   - image: the image to be save
     ///   - page: page number
     ///   - bookId: book unique identifier (name)
     ///   - configuration: realm configuration
-    static func store(image: UIImage, pageId: String, bookId: String, configuration: FolioReaderConfig) {
+    static func store(pageId: String, bookId: String, configuration: FolioReaderConfig) {
         
         do {
             let realm = try Realm(configuration: configuration.realmConfiguration)
             
-            if let imageData = image.pngData() {
-                
-                let drawing = Drawing()
-                drawing.drawId = bookId + "_" + pageId
-                drawing.imageData = imageData
-                drawing.scale = Double(image.scale)
-                
-                try realm.write {
-                    realm.add(drawing, update: .modified)
-                }
-            }
-            else {
-                print("cannot convert image to data")
-            }
+            let drawing = Drawing()
+            drawing.drawId = bookId + "_" + pageId            
             
+            try realm.write {
+                realm.add(drawing, update: .modified)
+            }
         }
         catch {
             print(error)
