@@ -11,7 +11,7 @@ import UIKit
 /// struct to persist strokes
 
 public struct StrokeCollectionPersisted: Codable {
-    var strokes: [StrokePersisted] = []
+    public var strokes: [StrokePersisted] = []
     
     init(strokeCollection: StrokeCollection) {
         
@@ -84,7 +84,7 @@ public struct StrokeSamplePersisted: Codable {
 
 extension StrokeCollectionPersisted {
     
-    func save(bookId: String, page: Int) throws {
+    public func save(bookId: String, page: Int) throws {
         do {
             let encoder = JSONEncoder()
             let encoded = try encoder.encode(self)

@@ -67,11 +67,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var pageScrollDirection = ScrollDirection()
     var nextPageNumber: Int = 0
     var previousPageNumber: Int = 0
-    var currentPageNumber: Int = 0 {
-        willSet(newValue) {
-//            setStrokes(forPage: newValue)
-        }
-    }
+    var currentPageNumber: Int = 0
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
     
@@ -126,7 +122,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     fileprivate var folioReader: FolioReader {
         guard let readerContainer = readerContainer else { return FolioReader() }
         return readerContainer.folioReader
-    }        
+    }
+    
+    fileprivate var contentId: Int {
+        guard let readerContainer = readerContainer else { return 0 }
+        return readerContainer.contentId
+        
+    }
 
     // MARK: - Init
 
@@ -281,7 +283,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             case .shapeOptions(button: let button):
                 self.showShapeOptions(from: button)
             default:
-                self.addCanvasView(with: tool)
+                self.setCanvasView(tool: tool)
             }
         }
         
@@ -301,29 +303,23 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func toolBar(isHidden: Bool) {
-        toolBarAnchor?.isActive = false
-        toolBarAnchor?.constant = isHidden ? ToolBarViewController.toolbarHeight : 0
-        toolBarAnchor?.isActive = true
-        
         if isHidden == false {
-            addCanvasView(with: .none)
-            let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: currentPageNumber)
-            clearCurrentStrokes()
-            
-            if let strokeCollection = strokes?.strokeCollection() {
-                drawableViewController.strokeCollection = strokeCollection
+            guard pageIds[currentPageNumber - 1].number != nil else {
+                return
             }
+            setStrokes(forPage: currentPageNumber)
+            setCanvasView(tool: .none)
         } else {
             drawableViewController.view.isHidden = true
         }
         
+        toolBarAnchor?.isActive = false
+        toolBarAnchor?.constant = isHidden ? ToolBarViewController.toolbarHeight : 0
+        toolBarAnchor?.isActive = true
+        
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
         }
-    }
-    
-    func showToolBar() {
-        
     }
     
     // MARK: -- Pencil Options
@@ -332,7 +328,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
        
         guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() as? StrokeFormatMenuTableViewController else { return }
     
-        addCanvasView(with: .pen)
+        setCanvasView(tool: .pen)
         
         strokeFormatViewController.selectedStrokeColor =  { color in
             
@@ -372,7 +368,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         
         guard let eraserMenuViewController = UIStoryboard(name: "EraserMenu", bundle: Bundle(for: EraserMenuViewController.self)).instantiateInitialViewController() as? EraserMenuViewController else { return }
         
-        addCanvasView(with: .eraser)
+        setCanvasView(tool: .eraser)
         
         eraserMenuViewController.modalPresentationStyle = .popover
         eraserMenuViewController.preferredContentSize = CGSize(width: 300, height: 100)
@@ -395,7 +391,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     private func showHighlighterOptions(from button: UIButton) {
         guard let highlighterMenuViewController = UIStoryboard(name: "HighlighterMenu", bundle: Bundle(for: HighlighterMenuViewController.self)).instantiateInitialViewController() as? HighlighterMenuViewController else { return }
         
-        addCanvasView(with: .highlighter)
+        setCanvasView(tool: .highlighter)
         
         highlighterMenuViewController.currentColor = HighlightStyle(rawValue: folioReader.currentHighlightStyle) ?? .yellow
         highlighterMenuViewController.modalPresentationStyle = .popover
@@ -416,7 +412,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     private func showShapeOptions(from button: UIButton) {
         guard let shapeMenuViewController = UIStoryboard(name: "ShapeMenu", bundle: Bundle(for: ShapeMenuViewController.self)).instantiateInitialViewController() as? ShapeMenuViewController else { return }
         
-        addCanvasView(with: .shape)
+        setCanvasView(tool: .shape)
         
         shapeMenuViewController.modalPresentationStyle = .popover
         shapeMenuViewController.preferredContentSize = CGSize(width: ShapeMenuViewController.Constants.viewWidth, height: ShapeMenuViewController.Constants.viewHeight)
@@ -484,14 +480,16 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             }
             
             let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
-            try? persisted.save(bookId: self.book.name ?? "", page: self.currentPageNumber)
+            try? persisted.save(bookId: String(self.contentId), page: self.pageIds[self.currentPageNumber - 1].number ?? 0)
+            
+            NotificationCenter.default.post(name: .postStrokes, object: self, userInfo: ["strokes": persisted, "contentId": self.contentId, "sectionId": self.pageIds[self.currentPageNumber - 1].number ?? 0])
             
             self.toolBar(isHidden: true)
             self.updateCurrentPage()
-            self.drawableViewController.saveToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+            self.drawableViewController.saveToolState(for: String(self.contentId), configuration: self.readerConfig)
             self.toolBarViewController.currentTool = .none
             self.items = .none
-            Drawing.store(pageId: self.pageIds[self.currentPageNumber - 1], bookId: self.book.name ?? "", configuration: self.readerConfig)
+            Drawing.store(pageId: self.pageIds[self.currentPageNumber - 1], bookId:String(self.contentId), configuration: self.readerConfig)
             self.setStrokesAndUpdateImageForCurrentPage()
         }
         
@@ -504,13 +502,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    private func addCanvasView(with tool: ToolBarViewController.Tool) {
+    private func setCanvasView(tool: ToolBarViewController.Tool) {
         drawableViewController.view.isHidden = false
         setStateFor(tool: tool)
     }
     
     private func setStrokes(forPage page: Int) {
-        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: self.book.name ?? "", page: page)
+        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: String(self.contentId), page: pageIds[page - 1].number ?? 0)
         clearCurrentStrokes()
         
         if let strokeCollection = strokes?.strokeCollection() {
@@ -520,7 +518,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         drawableViewController.view.isHidden = false
         let image = UIImage.imageWithLayer(drawableViewController.view.layer)
         drawableViewController.view.isHidden = true
-//        self.currentPage?.drawImageView.image = image
         self.pageDrawings[page] = image
     }
     
@@ -745,6 +742,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard let cell = cell, let readerContainer = readerContainer else {
             return UICollectionViewCell()
         }
+    
 
         cell.setup(withReaderContainer: readerContainer)
         cell.pageNumber = indexPath.row+1

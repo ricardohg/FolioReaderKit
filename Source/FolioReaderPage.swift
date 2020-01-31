@@ -69,7 +69,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
 
     public override init(frame: CGRect) {
         // Init explicit attributes with a default value. The `setup` function MUST be called to configure the current object with valid attributes.
-        self.readerContainer = FolioReaderContainer(withConfig: FolioReaderConfig(), folioReader: FolioReader(), epubPath: "", categories: [], orientation: "")
+        self.readerContainer = FolioReaderContainer(withConfig: FolioReaderConfig(), folioReader: FolioReader(), epubPath: "", categories: [], orientation: "", contentId: 0)
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
 
@@ -422,7 +422,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             
             DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                 if (self.shouldShowBar == true && self.menuIsVisible == false) {
-                    self.folioReader.readerCenter?.toggleBars()                    
+                    self.folioReader.readerCenter?.toggleBars()
                 }
             })
         } else if (self.readerConfig.shouldHideNavigationOnTap == true) {
