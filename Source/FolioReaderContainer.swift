@@ -20,6 +20,7 @@ open class FolioReaderContainer: UIViewController {
     public var book: FRBook
     public var categories: [String]
     public var orientationString: String
+    public var contentId: Int
     
     public var centerNavigationController: UINavigationController?
     public var centerViewController: FolioReaderCenter?
@@ -40,7 +41,7 @@ open class FolioReaderContainer: UIViewController {
     ///   - path: The ePub path on system. Must not be nil nor empty string.
 	///   - unzipPath: Path to unzip the compressed epub.
     ///   - removeEpub: Should delete the original file after unzip? Default to `true` so the ePub will be unziped only once.
-    public init(withConfig config: FolioReaderConfig, folioReader: FolioReader, epubPath path: String, unzipPath: String? = nil, removeEpub: Bool = true, categories: [String], orientation: String) {
+    public init(withConfig config: FolioReaderConfig, folioReader: FolioReader, epubPath path: String, unzipPath: String? = nil, removeEpub: Bool = true, categories: [String], orientation: String, contentId: Int) {
         self.readerConfig = config
         self.folioReader = folioReader
         self.epubPath = path
@@ -49,6 +50,7 @@ open class FolioReaderContainer: UIViewController {
         self.book = FRBook()
         self.categories = categories
         self.orientationString = orientation
+        self.contentId = contentId
 
         super.init(nibName: nil, bundle: Bundle.frameworkBundle())
 
@@ -73,6 +75,7 @@ open class FolioReaderContainer: UIViewController {
         self.book = FRBook()
         self.categories = []
         self.orientationString = ""
+        self.contentId = 0
         super.init(coder: aDecoder)
 
         // Configure the folio reader.

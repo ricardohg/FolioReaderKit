@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 
-extension Notification.Name {
+public extension Notification.Name {
     static let undoAction = Notification.Name("undoAction")
     static let redoAction = Notification.Name("redoAction")
+    
+    static let postStrokes = Notification.Name("postStrokes")
 }
 
 extension UICollectionView.ScrollDirection {
@@ -439,6 +441,28 @@ internal extension String {
         return String(format: "%02.f:%02.f", min, sec)
     }
     
+    // the number component of an alphanumeric String
+    var number: Int?  {
+        
+        let zero: Unicode.Scalar = "0"
+        let nine: Unicode.Scalar = "9"
+        
+        var stringNumber = ""
+        
+        for letter in unicodeScalars {
+            switch letter.value {
+            case zero.value...nine.value:
+                stringNumber.append(String(letter))
+            default:
+                break
+            }
+        }
+        
+        return Int(stringNumber)
+        
+    
+    }
+    
     // MARK: - NSString helpers
     
     var lastPathComponent: String {
@@ -468,6 +492,7 @@ internal extension String {
     func appendingPathExtension(_ str: String) -> String {
         return (self as NSString).appendingPathExtension(str) ?? self+"."+str
     }
+
 }
 
 internal extension UIImage {
@@ -571,7 +596,7 @@ internal extension UIImage {
      - parameter layer: The input `CALayer`
      - returns: Return a rendered image
      */
-    class func imageWithLayer(_ layer: CALayer) -> UIImage {
+    class func imageWithLayer(_ layer: CALayer) -> UIImage {        
         UIGraphicsBeginImageContextWithOptions(layer.bounds.size, layer.isOpaque, 0.0)
         layer.render(in: UIGraphicsGetCurrentContext()!)
         let img = UIGraphicsGetImageFromCurrentImageContext()
