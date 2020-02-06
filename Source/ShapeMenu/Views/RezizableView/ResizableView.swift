@@ -10,6 +10,7 @@ import UIKit
 
 class ResizableView: UIView {
     
+    let menuController = UIMenuController.shared
     var topLeft:DragHandle!
     var topRight:DragHandle!
     var bottomLeft:DragHandle!
@@ -18,8 +19,15 @@ class ResizableView: UIView {
     var previousLocation = CGPoint.zero
     var rotateLine = CAShapeLayer()
     
+    // This is needed in order to display de UIMenuController with our custom actions
+    override var canBecomeFirstResponder: Bool {
+           return true
+    }
     
     override func didMoveToSuperview() {
+        let deleteItem = UIMenuItem(title: "Delete", action: #selector(deleteView))
+        menuController.menuItems = [deleteItem]
+        
         let resizeFillColor = UIColor.cyan
         let resizeStrokeColor = UIColor.black
         let rotateFillColor = UIColor.orange
@@ -63,6 +71,16 @@ class ResizableView: UIView {
         self.updateDragHandles()
     }
     
+    override func removeFromSuperview() {
+           topLeft.removeFromSuperview()
+           topRight.removeFromSuperview()
+           bottomLeft.removeFromSuperview()
+           bottomRight.removeFromSuperview()
+           rotateHandle.removeFromSuperview()
+           rotateLine.removeFromSuperlayer()
+           super.removeFromSuperview()
+       }
+    
     func setupUIPanGestureRecognizer(_ pan: UIPanGestureRecognizer) {
         pan.allowedTouchTypes = [UITouch.TouchType.direct.rawValue as NSNumber, UITouch.TouchType.pencil.rawValue as NSNumber]
     }
@@ -87,6 +105,7 @@ class ResizableView: UIView {
         
         gesture.setTranslation(CGPoint.zero, in: self.superview!)
         updateDragHandles()
+        setMenuVisible(true)
     }
     
     func angleBetweenPoints(startPoint:CGPoint, endPoint:CGPoint)  -> CGFloat {
@@ -125,6 +144,7 @@ class ResizableView: UIView {
         self.transform = self.transform.rotated(by: angle)
         previousLocation = location
         self.updateDragHandles()
+        setMenuVisible(gesture.state == .ended)
     }
     
     @objc func handlePan(gesture:UIPanGestureRecognizer) {
@@ -160,8 +180,31 @@ class ResizableView: UIView {
         
         gesture.setTranslation(CGPoint.zero, in: self)
         updateDragHandles()
+        setMenuVisible(true)
         if gesture.state == .ended {
             self.setAnchorPoint(anchorPoint: CGPoint(x: 0.5, y: 0.5))
         }        
+    }
+    
+    // MARK: - Menu Controller
+    
+    private func setMenuVisible(_ menuVisible: Bool) {
+        becomeFirstResponder()
+        menuController.setMenuVisible(menuVisible, animated: true)
+        menuController.setTargetRect(bounds, in: self)
+        if menuController.menuFrame.intersects(rotateHandle.frame) {
+            let diameterOffset = diameter * 2 + 5.0
+            let menuRect = CGRect(
+                x: -(diameterOffset / 2),
+                y: -(diameterOffset / 2),
+                width: bounds.width + diameterOffset,
+                height: bounds.height + diameterOffset
+            )
+            menuController.setTargetRect(menuRect, in: self)
+        }
+    }
+    
+    @objc private func deleteView() {
+        removeFromSuperview()
     }
 }

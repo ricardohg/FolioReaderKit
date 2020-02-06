@@ -59,17 +59,7 @@ class ShapeView: ResizableView {
         shapeLayer.fillColor = fillColor.cgColor
         shapeLayer.lineWidth = lineWidth
         shapeLayer.strokeColor = shapeBorderColor.cgColor
-    }
-    
-    override func removeFromSuperview() {
-        topLeft.removeFromSuperview()
-        topRight.removeFromSuperview()
-        bottomLeft.removeFromSuperview()
-        bottomRight.removeFromSuperview()
-        rotateHandle.removeFromSuperview()
-        rotateLine.removeFromSuperlayer()
-        super.removeFromSuperview()
-    }
+    }       
     
     // MARK: - Methods
     
