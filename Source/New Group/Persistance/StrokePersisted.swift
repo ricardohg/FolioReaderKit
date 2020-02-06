@@ -13,6 +13,20 @@ import UIKit
 public struct StrokeCollectionPersisted: Codable {
     public var strokes: [StrokePersisted] = []
     
+    public var hasShapes: Bool {
+        
+        var shapeIncluded = false
+        
+        strokes.forEach { (stroke) in
+            if stroke.shapePersisted != nil {
+                shapeIncluded = true
+                return
+            }
+        }
+        
+        return shapeIncluded
+    }
+    
     init(strokeCollection: StrokeCollection) {
         
         self.strokes = strokeCollection.strokes.map { StrokePersisted(stroke: $0) }
