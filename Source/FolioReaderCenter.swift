@@ -503,6 +503,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     private func setCanvasView(tool: ToolBarViewController.Tool) {
+        currentPage?.drawImageView.isHidden = true
         drawableViewController.view.isHidden = false
         setStateFor(tool: tool)
     }
