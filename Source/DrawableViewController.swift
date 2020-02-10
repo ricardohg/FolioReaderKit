@@ -48,6 +48,10 @@ class DrawableViewController: UIViewController {
     var saveImage: ((UIView) ->())?
     var didSelectShape: (() -> ())?
     private var currentShape: ShapeView?
+    private var shapeViewOffset: CGFloat = 50.0
+    
+    // property to store previous drawed image
+    weak var currentImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +117,7 @@ class DrawableViewController: UIViewController {
     /// - Tag: setupStrokeGestureRecognizer
     func setupStrokeGestureRecognizer(isForPencil: Bool) -> StrokeGestureRecognizer {
         let recognizer = StrokeGestureRecognizer(target: self, action: #selector(strokeUpdated(_:)))
-        //recognizer.delegate = self
+        recognizer.delegate = self
         recognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(recognizer)
         recognizer.coordinateSpaceView = cgView
@@ -221,7 +225,13 @@ extension DrawableViewController {
 extension DrawableViewController {
     func drawShape(viewModel: ShapeViewModel) {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.shapeSelected))
-        let shape: ShapeView = ShapeView(origin: self.view.center, viewModel: viewModel)
+        var center = self.view.center
+        for view in view.subviews.filter({ $0 is ShapeView }) {
+            if center == view.center {
+                center.x += shapeViewOffset
+            }
+        }
+        let shape: ShapeView = ShapeView(center: center, viewModel: viewModel)
         
         shape.addGestureRecognizer(tapGesture)
         self.view.addSubview(shape)
@@ -271,5 +281,15 @@ extension DrawableViewController {
         strokeCollection.takeActiveStroke()
         cgView.strokeCollection = strokeCollection
         cgView.setNeedsDisplay()
+    }
+}
+
+extension DrawableViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view is ShapeView && style == .ink {
+            return false
+        }
+        
+        return true
     }
 }
