@@ -38,6 +38,8 @@ import MenuItemKit
 open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRecognizerDelegate {
     weak var delegate: FolioReaderPageDelegate?
     var readerContainer: FolioReaderContainer?
+    
+    var didAddedHighlight: ((Highlight) -> ())?
 
     /// The index of the current page. Note: The index start at 1!
     open var pageNumber: Int!
@@ -88,6 +90,13 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
             webView?.scrollView.showsVerticalScrollIndicator = false
             webView?.scrollView.showsHorizontalScrollIndicator = false
             webView?.backgroundColor = .clear
+            
+            webView?.didAddedHighlight = { [unowned self] highlight in
+                
+                self.didAddedHighlight?(highlight)
+                
+            }
+            
             self.contentView.addSubview(webView!)
         }
         webView?.delegate = self
