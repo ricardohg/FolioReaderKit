@@ -14,6 +14,7 @@ public extension Notification.Name {
     static let redoAction = Notification.Name("redoAction")
     
     static let postStrokes = Notification.Name("postStrokes")
+    static let postHighlight = Notification.Name("postHighlight")
 }
 
 extension UICollectionView.ScrollDirection {

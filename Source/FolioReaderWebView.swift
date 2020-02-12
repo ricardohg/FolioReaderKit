@@ -13,6 +13,8 @@ open class FolioReaderWebView: UIWebView {
     var isColors = false
     var isShare = false
     var isOneWord = false
+    
+    var didAddedHighlights: (([Highlight]) -> ())?
 
     fileprivate weak var readerContainer: FolioReaderContainer?
 
@@ -162,7 +164,11 @@ open class FolioReaderWebView: UIWebView {
             let match = Highlight.MatchingHighlight(text: html, id: identifier, startOffset: startOffset, endOffset: endOffset, bookId: bookId, currentPage: pageNumber)
             let highlight = Highlight.matchHighlight(match)
             highlight?.persist(withConfiguration: self.readerConfig)
-
+            
+           let highlights = Highlight.allByBookId(withConfiguration: self.readerConfig, bookId: bookId, andPage: pageNumber as NSNumber)
+            
+            didAddedHighlights?(highlights)
+     
         } catch {
             print("Could not receive JSON")
         }

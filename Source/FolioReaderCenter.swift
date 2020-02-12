@@ -756,6 +756,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 cell.drawImageView.image = image
             }
         }
+        
+        cell.didAddedHighlights = { highlights in
+            
+            NotificationCenter.default.post(name: .postHighlight, object: self, userInfo: ["highlights": highlights, "contentId": self.contentId, "sectionId": self.pageIds[self.currentPageNumber - 1].number ?? 0])
+            
+        }
+        
         cell.applyLayer(items: items)
         cell.webView?.scrollView.delegate = self
         if #available(iOS 11.0, *) {
@@ -1735,6 +1742,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func presentAddHighlightNote(_ highlight: Highlight, edit: Bool) {
         let addHighlightView = FolioReaderAddHighlightNote(withHighlight: highlight, folioReader: folioReader, readerConfig: readerConfig)
         addHighlightView.isEditHighlight = edit
+        
         let nav = UINavigationController(rootViewController: addHighlightView)
         nav.modalPresentationStyle = .formSheet
         
