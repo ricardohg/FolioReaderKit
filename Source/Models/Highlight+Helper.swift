@@ -170,7 +170,7 @@ extension Highlight {
             highlight = realm.objects(Highlight.self).filter(predicate).toArray(Highlight.self).first
             realm.beginWrite()
 
-            highlight?.type = type.hashValue
+            highlight?.type = type.rawValue
 
             try realm.commitWrite()
             
