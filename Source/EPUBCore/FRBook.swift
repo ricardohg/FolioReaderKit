@@ -23,6 +23,7 @@ open class FRBook: NSObject {
     public var resources = FRResources()
     public var tableOfContents: [FRTocReference]!
     public var flatTableOfContents: [FRTocReference]!
+    public var categories: [String]?
 
     var hasAudio: Bool {
         return smils.smils.count > 0
@@ -56,6 +57,39 @@ open class FRBook: NSObject {
         }
         return className
     }
+    
+    /**
+     Calculates the viewPortSize coming in the meta tag on the html
+     */
+    lazy var viewPortSize: CGSize? = {
+        guard let html = spine.spineReferences.first?.html?.lowercased() else {
+            return nil
+        }
+        
+        guard let viewPortStartIndex = html.lowercased().range(of: "<meta name=\"viewport\"")?.lowerBound,
+            let viewPortEndIndex = html[viewPortStartIndex..<html.endIndex].firstIndex(of: ">") else {
+                return nil
+        }
+        
+        let viewPortTag = html[viewPortStartIndex...viewPortEndIndex]
+        
+        
+        guard let contentStartIndex = viewPortTag.range(of: "content=\"")?.upperBound,
+            let contentEndIndex = viewPortTag[contentStartIndex..<viewPortTag.endIndex].firstIndex(of: "\"") else {
+                return nil
+        }
+        let range = contentStartIndex..<contentEndIndex
+        let regex = "[^\\d.,+]"
+        let viewPortSizeString = viewPortTag[range].replacingOccurrences(of: regex, with: "", options: .regularExpression, range: nil)
+        let viewPortSizeComponents = viewPortSizeString.split(separator: ",").compactMap{( Double($0) )}
+        if viewPortSizeComponents.count > 1 {
+            let width = viewPortSizeComponents[0]
+            let height = viewPortSizeComponents[1]
+            return CGSize(width: width, height: height)
+        }
+        
+        return nil
+    }()
 
     // MARK: - Media Overlay (SMIL) retrieval
 

@@ -90,7 +90,7 @@ extension Highlight {
         do {
             let realm = try Realm(configuration: readerConfig.realmConfiguration)
             realm.beginWrite()
-            realm.add(self, update: true)
+            realm.add(self, update: .modified)
             try realm.commitWrite()
             completion?(nil)
         } catch let error as NSError {
@@ -170,7 +170,7 @@ extension Highlight {
             highlight = realm.objects(Highlight.self).filter(predicate).toArray(Highlight.self).first
             realm.beginWrite()
 
-            highlight?.type = type.hashValue
+            highlight?.type = type.rawValue
 
             try realm.commitWrite()
             

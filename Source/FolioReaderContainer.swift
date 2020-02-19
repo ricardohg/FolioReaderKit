@@ -11,13 +11,16 @@ import FontBlaster
 
 /// Reader container
 open class FolioReaderContainer: UIViewController {
-    var shouldHideStatusBar = true
+    var shouldHideStatusBar = false
     var shouldRemoveEpub = true
     
     // Mark those property as public so they can accessed from other classes/subclasses.
     public var epubPath: String
 	public var unzipPath: String?
     public var book: FRBook
+    public var categories: [String]
+    public var orientationString: String
+    public var contentId: Int
     
     public var centerNavigationController: UINavigationController?
     public var centerViewController: FolioReaderCenter?
@@ -38,13 +41,16 @@ open class FolioReaderContainer: UIViewController {
     ///   - path: The ePub path on system. Must not be nil nor empty string.
 	///   - unzipPath: Path to unzip the compressed epub.
     ///   - removeEpub: Should delete the original file after unzip? Default to `true` so the ePub will be unziped only once.
-    public init(withConfig config: FolioReaderConfig, folioReader: FolioReader, epubPath path: String, unzipPath: String? = nil, removeEpub: Bool = true) {
+    public init(withConfig config: FolioReaderConfig, folioReader: FolioReader, epubPath path: String, unzipPath: String? = nil, removeEpub: Bool = true, categories: [String], orientation: String, contentId: Int) {
         self.readerConfig = config
         self.folioReader = folioReader
         self.epubPath = path
 		self.unzipPath = unzipPath
         self.shouldRemoveEpub = removeEpub
         self.book = FRBook()
+        self.categories = categories
+        self.orientationString = orientation
+        self.contentId = contentId
 
         super.init(nibName: nil, bundle: Bundle.frameworkBundle())
 
@@ -67,7 +73,9 @@ open class FolioReaderContainer: UIViewController {
         self.epubPath = ""
         self.shouldRemoveEpub = false
         self.book = FRBook()
-
+        self.categories = []
+        self.orientationString = ""
+        self.contentId = 0
         super.init(coder: aDecoder)
 
         // Configure the folio reader.
@@ -106,6 +114,37 @@ open class FolioReaderContainer: UIViewController {
         self.epubPath = path
 		self.unzipPath = unzipPath
         self.shouldRemoveEpub = removeEpub
+    }
+    
+    //TODO: -- presenttion fixed to portrait temporally
+    
+    open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        
+        switch orientationString {
+        case "PORTRAIT":
+            return .portrait
+        case "LANDSCAPE":
+            return .landscapeLeft
+        default:
+            return.portrait
+        }
+
+    }
+    
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        
+        switch orientationString {
+           case "PORTRAIT":
+               return .portrait
+           case "LANDSCAPE":
+               return .landscapeLeft
+           default:
+               return.portrait
+           }
+    }
+    
+    open override var shouldAutorotate: Bool {
+        return false
     }
 
     // MARK: - View life cicle
@@ -160,6 +199,7 @@ open class FolioReaderContainer: UIViewController {
             do {
                 let parsedBook = try FREpubParser().readEpub(epubPath: self.epubPath, removeEpub: self.shouldRemoveEpub, unzipPath: self.unzipPath)
                 self.book = parsedBook
+                self.book.categories = self.categories
                 self.folioReader.isReaderOpen = true
 
                 // Reload data
@@ -173,7 +213,6 @@ open class FolioReaderContainer: UIViewController {
                     self.folioReader.delegate?.folioReader?(self.folioReader, didFinishedLoading: self.book)
                 }
             } catch {
-                self.errorOnLoad = true
                 self.alert(message: error.localizedDescription)
             }
         }

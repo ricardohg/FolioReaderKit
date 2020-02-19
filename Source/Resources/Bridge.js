@@ -125,6 +125,20 @@ function highlightStringWithNote(style) {
     return JSON.stringify(params);
 }
 
+function hideHighlights() {
+    var highlights = document.querySelectorAll("highlight");
+    for (var i = 0; i < highlights.length; i ++) {
+        highlights[i].setAttribute("style", "background-color: transparent;");
+    }
+}
+
+function showHighlights() {
+    var highlights = document.querySelectorAll("highlight");
+    for (var i = 0; i < highlights.length; i ++) {
+        highlights[i].style.removeProperty("background-color")
+    }
+}
+
 function getHighlightId() {
     return thisHighlight.id;
 }

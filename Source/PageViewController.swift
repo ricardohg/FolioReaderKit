@@ -38,12 +38,12 @@ class PageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        segmentedControl = UISegmentedControl(items: segmentedControlItems)
-        segmentedControl.addTarget(self, action: #selector(PageViewController.didSwitchMenu(_:)), for: UIControl.Event.valueChanged)
-        segmentedControl.selectedSegmentIndex = index
-        segmentedControl.setWidth(100, forSegmentAt: 0)
-        segmentedControl.setWidth(100, forSegmentAt: 1)
-        self.navigationItem.titleView = segmentedControl
+//        segmentedControl = UISegmentedControl(items: segmentedControlItems)
+//        segmentedControl.addTarget(self, action: #selector(PageViewController.didSwitchMenu(_:)), for: UIControl.Event.valueChanged)
+//        segmentedControl.selectedSegmentIndex = index
+//        segmentedControl.setWidth(100, forSegmentAt: 0)
+//        segmentedControl.setWidth(100, forSegmentAt: 1)
+//        self.navigationItem.titleView = segmentedControl
 
         viewList = [viewControllerOne, viewControllerTwo]
 
@@ -82,8 +82,8 @@ class PageViewController: UIPageViewController {
 
     // MARK: - Segmented control changes
 
-    @objc func didSwitchMenu(_ sender: UISegmentedControl) {
-        self.index = sender.selectedSegmentIndex
+    @objc func didSwitchMenu(_ sender: UIButton) {
+        self.index = sender.tag
         let direction: UIPageViewController.NavigationDirection = (index == 0 ? .reverse : .forward)
         setViewControllers([viewList[index]], direction: direction, animated: true, completion: nil)
         self.folioReader.currentMenuIndex = index
@@ -104,7 +104,7 @@ extension PageViewController: UIPageViewControllerDelegate {
 
         if finished && completed {
             let viewController = pageViewController.viewControllers?.last
-            segmentedControl.selectedSegmentIndex = viewList.index(of: viewController!)!
+            segmentedControl.selectedSegmentIndex = viewList.firstIndex(of: viewController!)!
         }
     }
 }
@@ -115,7 +115,7 @@ extension PageViewController: UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
 
-        let index = viewList.index(of: viewController)!
+        let index = viewList.firstIndex(of: viewController)!
         if index == viewList.count - 1 {
             return nil
         }
@@ -126,7 +126,7 @@ extension PageViewController: UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
 
-        let index = viewList.index(of: viewController)!
+        let index = viewList.firstIndex(of: viewController)!
         if index == 0 {
             return nil
         }

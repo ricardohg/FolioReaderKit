@@ -70,6 +70,36 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var currentPageNumber: Int = 0
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
+    
+    // tool bar
+    
+    let toolBarViewController = ToolBarViewController()
+    
+    var toolBarAnchor: NSLayoutConstraint?
+    
+    var isShowingToolBar: Bool {
+        return toolBarAnchor?.constant == 0
+    }
+    
+    var pageIds: [String] {
+        
+        return book.spine.spineReferences.map { $0.resource.id }.compactMap { $0 }
+    }
+    
+    // drawable
+    
+    let drawableViewController = DrawableViewController()
+    
+    // Dictionary to store images [page number: image]
+    var pageDrawings: [Int: UIImage] = [:]
+    
+    // current layers (filters)
+    
+    private var items: LayersTableViewController.Items = .none {
+        willSet(newValue) {
+            currentPage?.applyLayer(items: newValue)
+        }
+    }
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -92,6 +122,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     fileprivate var folioReader: FolioReader {
         guard let readerContainer = readerContainer else { return FolioReader() }
         return readerContainer.folioReader
+    }
+    
+    fileprivate var contentId: Int {
+        guard let readerContainer = readerContainer else { return 0 }
+        return readerContainer.contentId
+        
     }
 
     // MARK: - Init
@@ -124,6 +160,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         loadingView.hidesWhenStopped = true
         loadingView.startAnimating()
         self.view.addSubview(loadingView)
+
     }
 
     // MARK: - View life cicle
@@ -177,7 +214,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.register(FolioReaderPage.self, forCellWithReuseIdentifier: kReuseCellIdentifier)
 
         // Configure navigation bar and layout
-        automaticallyAdjustsScrollViewInsets = false
+        
         extendedLayoutIncludesOpaqueBars = true
         configureNavBar()
 
@@ -196,18 +233,27 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let scrollScrubber = scrollScrubber {
             view.addSubview(scrollScrubber.slider)
         }
+        
+        setupToolBar()
+        
+        
+        folioReader.delegate = self
+        setupCanvasView()
     }
+
 
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         configureNavBar()
+        
+        showBars()
 
         // Update pages
         pagesForCurrentPage(currentPage)
         pageIndicatorView?.reloadView(updateShadow: true)
     }
-
+    
     override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -216,6 +262,273 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         setPageSize(UIApplication.shared.statusBarOrientation)
         updateSubviewFrames()
+    }
+    
+    // MARK: -- Toolbar
+    
+    private func setupToolBar() {
+        
+        addChild(toolBarViewController)
+        toolBarViewController.didMove(toParent: self)
+        
+        toolBarViewController.toolSelected = { tool in
+            
+            switch tool {
+            case .penOptions(let button):
+                self.showPencilOptions(from: button)
+            case .eraseOptions(let button):
+                self.showEraserOptions(from: button)
+            case .highlightOptions(button: let button):
+                self.showHighlighterOptions(from: button)
+            case .shapeOptions(button: let button):
+                self.showShapeOptions(from: button)
+            default:
+                self.setCanvasView(tool: tool)
+            }
+        }
+        
+        view.addSubview(toolBarViewController.view)
+        
+        toolBarViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        toolBarViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        toolBarViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        toolBarViewController.view.heightAnchor.constraint(equalToConstant: ToolBarViewController.toolbarHeight).isActive = true
+        
+        
+        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: ToolBarViewController.toolbarHeight)
+        toolBarAnchor?.isActive = true
+        
+        
+    }
+    
+    func toolBar(isHidden: Bool) {
+        if isHidden == false {
+            guard pageIds[currentPageNumber - 1].number != nil else {
+                return
+            }
+            setStrokes(forPage: currentPageNumber)
+            setCanvasView(tool: .none)
+        } else {
+            drawableViewController.view.isHidden = true
+        }
+        
+        toolBarAnchor?.isActive = false
+        toolBarAnchor?.constant = isHidden ? ToolBarViewController.toolbarHeight : 0
+        toolBarAnchor?.isActive = true
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    // MARK: -- Pencil Options
+    
+    private func showPencilOptions(from button: UIButton) {
+       
+        guard let strokeFormatViewController = UIStoryboard(name: "StrokeFormatMenu", bundle: Bundle(for: StrokeFormatMenuTableViewController.self)).instantiateInitialViewController() as? StrokeFormatMenuTableViewController else { return }
+    
+        setCanvasView(tool: .pen)
+        
+        strokeFormatViewController.selectedStrokeColor =  { color in
+            
+            self.drawableViewController.strokeColor = color
+        }
+        
+        strokeFormatViewController.selectedStrokeThickness = { thickness in
+            
+            self.drawableViewController.thinkness = thickness
+        }
+    
+        
+        if let toolSelected = ToolState.toolState(for: self.book.name ?? "", configuration: self.readerConfig) {
+            strokeFormatViewController.currentColor = UIColor.hexStringToUIColor(hex: toolSelected.colorHex)
+            strokeFormatViewController.currrentThinkness = toolSelected.thickness
+            
+        }
+        
+        strokeFormatViewController.modalPresentationStyle = .popover
+        strokeFormatViewController.preferredContentSize = CGSize(width: StrokeFormatMenuTableViewController.viewWidth, height: StrokeFormatMenuTableViewController.viewHeight)
+        strokeFormatViewController.popoverPresentationController?.permittedArrowDirections = .any
+        strokeFormatViewController.popoverPresentationController?.sourceView = button
+        strokeFormatViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        strokeFormatViewController.saveState = { (color, thickness) in
+            
+            ToolState.store(color: color, thickness: thickness, bookId: self.book.name ?? "", configuration: self.readerConfig)
+            
+        }
+        
+        navigationController?.present(strokeFormatViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: -- Eraser Options
+    
+    private func showEraserOptions(from button: UIButton) {
+        
+        guard let eraserMenuViewController = UIStoryboard(name: "EraserMenu", bundle: Bundle(for: EraserMenuViewController.self)).instantiateInitialViewController() as? EraserMenuViewController else { return }
+        
+        setCanvasView(tool: .eraser)
+        
+        eraserMenuViewController.modalPresentationStyle = .popover
+        eraserMenuViewController.preferredContentSize = CGSize(width: 300, height: 100)
+        eraserMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
+        eraserMenuViewController.popoverPresentationController?.sourceView = button
+        
+        eraserMenuViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        eraserMenuViewController.selectedEraserThickness = { thikness in
+            
+            self.drawableViewController.eraseWidth = thikness
+        }
+        
+        navigationController?.present(eraserMenuViewController, animated: true, completion: nil)
+        
+    }
+    
+    // MARK: - Highlighter Options -
+    
+    private func showHighlighterOptions(from button: UIButton) {
+        guard let highlighterMenuViewController = UIStoryboard(name: "HighlighterMenu", bundle: Bundle(for: HighlighterMenuViewController.self)).instantiateInitialViewController() as? HighlighterMenuViewController else { return }
+        
+        setCanvasView(tool: .highlighter)
+        
+        highlighterMenuViewController.currentColor = HighlightStyle(rawValue: folioReader.currentHighlightStyle) ?? .yellow
+        highlighterMenuViewController.modalPresentationStyle = .popover
+        highlighterMenuViewController.preferredContentSize = CGSize(width: HighlighterMenuViewController.Constants.viewWidth, height: HighlighterMenuViewController.Constants.viewHeight)
+        highlighterMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
+        highlighterMenuViewController.popoverPresentationController?.sourceView = button
+        
+        highlighterMenuViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        highlighterMenuViewController.selectedColor = { color in
+            self.folioReader.currentHighlightStyle = color.rawValue
+        }
+        
+        navigationController?.present(highlighterMenuViewController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Shape Options -
+    private func showShapeOptions(from button: UIButton) {
+        guard let shapeMenuViewController = UIStoryboard(name: "ShapeMenu", bundle: Bundle(for: ShapeMenuViewController.self)).instantiateInitialViewController() as? ShapeMenuViewController else { return }
+        
+        setCanvasView(tool: .shape)
+        
+        shapeMenuViewController.modalPresentationStyle = .popover
+        shapeMenuViewController.preferredContentSize = CGSize(width: ShapeMenuViewController.Constants.viewWidth, height: ShapeMenuViewController.Constants.viewHeight)
+        shapeMenuViewController.popoverPresentationController?.permittedArrowDirections = .any
+        shapeMenuViewController.popoverPresentationController?.sourceView = button
+        
+        shapeMenuViewController.popoverPresentationController?.sourceRect = CGRect(x: button.bounds.midX, y: button.bounds.minY, width: 0, height: 0)
+        
+        shapeMenuViewController.createShape = { [weak self] viewModel in
+            self?.drawableViewController.drawShape(viewModel: viewModel)
+        }
+        
+        shapeMenuViewController.changeShape = { [weak self] viewModel in
+            self?.drawableViewController.modifyCurrentShape(viewModel: viewModel)
+        }
+        
+        shapeMenuViewController.dismissed = { [weak self] in
+            self?.drawableViewController.deselectCurrentShape()
+            self?.toolBarViewController.currentTool = .none
+            
+        }
+        navigationController?.present(shapeMenuViewController, animated: true, completion: nil)
+    }
+
+    
+    // MARK: -- CanvasView For Drawing
+    
+    private func setStateFor(tool: ToolBarViewController.Tool) {
+        
+        switch tool {
+        case .pen:
+            drawableViewController.loadToolState(for: self.book.name ?? "", configuration: self.readerConfig)
+            drawableViewController.strokeColor = UIColor.black
+            drawableViewController.style = .ink
+            drawableViewController.pencilStrokeRecognizer.isEnabled = true
+        case .eraser:
+            drawableViewController.style = .eraser
+            drawableViewController.pencilStrokeRecognizer.isEnabled = true
+        case .highlighter:
+            drawableViewController.handleSingleTap(self)
+        default:
+            drawableViewController.pencilStrokeRecognizer.isEnabled = false
+        }
+        
+    }
+    
+    private func setupCanvasView() {
+        addChild(drawableViewController)
+        drawableViewController.didMove(toParent: self)
+        
+        view.addSubview(drawableViewController.view)
+        view.bringSubviewToFront(toolBarViewController.view)
+        
+        drawableViewController.view.isHidden = true
+        
+        drawableViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        drawableViewController.view.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
+        drawableViewController.view.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor).isActive = true
+        drawableViewController.view.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor).isActive = true
+        drawableViewController.view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
+        
+        drawableViewController.saveImage = { [weak self] view in
+            guard let self = self else {
+                return
+            }
+            
+            let persisted = StrokeCollectionPersisted(strokeCollection: self.drawableViewController.strokeCollection)
+            try? persisted.save(bookId: String(self.contentId), page: self.pageIds[self.currentPageNumber - 1].number ?? 0)
+            
+            NotificationCenter.default.post(name: .postStrokes, object: self, userInfo: ["strokes": persisted, "contentId": self.contentId, "sectionId": self.pageIds[self.currentPageNumber - 1].number ?? 0])
+            
+            self.toolBar(isHidden: true)
+            self.updateCurrentPage()
+            self.drawableViewController.saveToolState(for: String(self.contentId), configuration: self.readerConfig)
+            self.toolBarViewController.currentTool = .none
+            self.items = .none
+            Drawing.store(pageId: self.pageIds[self.currentPageNumber - 1], bookId:String(self.contentId), configuration: self.readerConfig)
+            self.setStrokesAndUpdateImageForCurrentPage()
+        }
+        
+        drawableViewController.didSelectShape = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.toolBarViewController.currentTool = .shape
+            self.showShapeOptions(from: self.toolBarViewController.shapeButton)
+        }
+    }
+    
+    private func setCanvasView(tool: ToolBarViewController.Tool) {
+        currentPage?.drawImageView.isHidden = true
+        drawableViewController.view.isHidden = false
+        setStateFor(tool: tool)
+    }
+    
+    private func setStrokes(forPage page: Int) {
+        let strokes = try? StrokeCollectionPersisted.retreiveStrokes(for: String(self.contentId), page: pageIds[page - 1].number ?? 0)
+        clearCurrentStrokes()
+        
+        if let strokeCollection = strokes?.strokeCollection() {
+            drawableViewController.strokeCollection = strokeCollection
+        }
+                
+        drawableViewController.view.isHidden = false
+        let image = UIImage.imageWithLayer(drawableViewController.view.layer)
+        drawableViewController.view.isHidden = true
+        self.pageDrawings[page] = image
+    }
+    
+    private func setStrokesAndUpdateImageForCurrentPage() {
+        setStrokes(forPage: currentPageNumber)
+        self.currentPage?.drawImageView.image = self.pageDrawings[currentPageNumber]
+    }
+    
+    private func clearCurrentStrokes() {
+        drawableViewController.strokeCollection = StrokeCollection()
     }
 
     // MARK: Layout
@@ -260,33 +573,19 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func configureNavBarButtons() {
 
         // Navbar buttons
-        let shareIcon = UIImage(readerImageNamed: "icon-navbar-share")?.ignoreSystemTint(withConfiguration: self.readerConfig)
-        let audioIcon = UIImage(readerImageNamed: "icon-navbar-tts")?.ignoreSystemTint(withConfiguration: self.readerConfig) //man-speech-icon
+
         let closeIcon = UIImage(readerImageNamed: "icon-navbar-close")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let tocIcon = UIImage(readerImageNamed: "icon-navbar-toc")?.ignoreSystemTint(withConfiguration: self.readerConfig)
-        let fontIcon = UIImage(readerImageNamed: "icon-navbar-font")?.ignoreSystemTint(withConfiguration: self.readerConfig)
-        let space = 70 as CGFloat
 
         let menu = UIBarButtonItem(image: closeIcon, style: .plain, target: self, action:#selector(closeReader(_:)))
         let toc = UIBarButtonItem(image: tocIcon, style: .plain, target: self, action:#selector(presentChapterList(_:)))
 
         navigationItem.leftBarButtonItems = [menu, toc]
-
-        var rightBarIcons = [UIBarButtonItem]()
-
-        if (self.readerConfig.allowSharing == true) {
-            rightBarIcons.append(UIBarButtonItem(image: shareIcon, style: .plain, target: self, action:#selector(shareChapter(_:))))
-        }
-
-        if self.book.hasAudio || self.readerConfig.enableTTS {
-            rightBarIcons.append(UIBarButtonItem(image: audioIcon, style: .plain, target: self, action:#selector(presentPlayerMenu(_:))))
-        }
-
-        let font = UIBarButtonItem(image: fontIcon, style: .plain, target: self, action: #selector(presentFontsMenu))
-        font.width = space
-
-        rightBarIcons.append(contentsOf: [font])
-        navigationItem.rightBarButtonItems = rightBarIcons
+        
+        let layerIcon = UIImage(readerImageNamed: "layers-icon")?.ignoreSystemTint(withConfiguration: self.readerConfig)
+        let layerButton =  UIBarButtonItem(image: layerIcon, style: .plain, target: self, action:#selector(showLayers(_:)))
+        
+        navigationItem.rightBarButtonItem = layerButton
         
         if(self.readerConfig.displayTitle){
             navigationItem.title = book.title
@@ -296,7 +595,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func reloadData() {
         self.loadingView.stopAnimating()
         self.totalPages = book.spine.spineReferences.count
-
         self.collectionView.reloadData()
         self.configureNavBarButtons()
         self.setCollectionViewProgressiveDirection()
@@ -445,26 +743,44 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard let cell = cell, let readerContainer = readerContainer else {
             return UICollectionViewCell()
         }
+    
 
         cell.setup(withReaderContainer: readerContainer)
         cell.pageNumber = indexPath.row+1
+        cell.drawImageView.image = nil
+        if let image = pageDrawings[cell.pageNumber] {
+            cell.drawImageView.image = image
+        } else {
+            setStrokes(forPage: cell.pageNumber)
+            if let image = pageDrawings[cell.pageNumber] {
+                cell.drawImageView.image = image
+            }
+        }
+        
+        cell.didAddedHighlights = { highlights in
+            
+            NotificationCenter.default.post(name: .postHighlight, object: self, userInfo: ["highlights": highlights, "contentId": self.contentId, "sectionId": self.pageIds[self.currentPageNumber - 1].number ?? 0])
+            
+        }
+        
+        cell.applyLayer(items: items)
         cell.webView?.scrollView.delegate = self
         if #available(iOS 11.0, *) {
             cell.webView?.scrollView.contentInsetAdjustmentBehavior = .never
         }
         cell.webView?.setupScrollDirection()
-        cell.webView?.frame = cell.webViewFrame()
+        let webViewFrame = cell.webViewFrame()
+        cell.webView?.frame = webViewFrame
         cell.delegate = self
         cell.backgroundColor = .clear
 
         setPageProgressiveDirection(cell)
 
         // Configure the cell
-        let resource = self.book.spine.spineReferences[indexPath.row].resource
-        guard var html = try? String(contentsOfFile: resource.fullHref, encoding: String.Encoding.utf8) else {
+        let spine = self.book.spine.spineReferences[indexPath.row]
+        guard var html = spine.html else {
             return cell
         }
-
         let mediaOverlayStyleColors = "\"\(self.readerConfig.mediaOverlayColor.hexString(false))\", \"\(self.readerConfig.mediaOverlayColor.highlightColor().hexString(false))\""
 
         // Inject CSS
@@ -495,20 +811,20 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let modifiedHtmlContent = self.delegate?.htmlContentForPage?(cell, htmlContent: html) {
             html = modifiedHtmlContent
         }
-
-        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: resource.fullHref.deletingLastPathComponent))
+        
+        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: spine.resource.fullHref.deletingLastPathComponent))
         return cell
     }
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        let size = CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
         
         if #available(iOS 11.0, *) {
             let orientation = UIDevice.current.orientation
             
             if orientation == .portrait || orientation == .portraitUpsideDown {
                 if readerConfig.scrollDirection == .horizontal {
-                    size.height = size.height - view.safeAreaInsets.bottom
+                   // size.height = size.height - view.safeAreaInsets.bottom
                 }
             }
         }
@@ -629,6 +945,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func updateCurrentPage(_ page: FolioReaderPage? = nil, completion: (() -> Void)? = nil) {
         if let page = page {
             currentPage = page
+            
             self.previousPageNumber = page.pageNumber-1
             self.currentPageNumber = page.pageNumber
         } else {
@@ -1208,6 +1525,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - ScrollView Delegate
 
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        clearCurrentStrokes()
         self.isScrolling = true
         clearRecentlyScrolled()
         recentlyScrolled = true
@@ -1331,6 +1649,35 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         dismiss()
         folioReader.close()
     }
+    
+    @objc func showLayers(_ sender: UIBarButtonItem) {
+        guard let layersViewController = UIStoryboard(name: "Layers", bundle: Bundle(for: LayersTableViewController.self)).instantiateInitialViewController() as? LayersTableViewController else {
+            assertionFailure("cannot load view controller")
+            return
+        }
+        
+        layersViewController.itemsSelected = { [weak self] items in
+            guard let self = self else {
+                return
+            }
+            
+            self.items = items
+            self.currentPage?.applyLayer(items: self.items)
+            
+            LayerState.store(items: items, bookId: self.book.name ?? "", configuration: self.readerConfig)
+
+        }
+        
+        layersViewController.items = items
+        layersViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+        layersViewController.preferredContentSize = CGSize(width: 300, height: 200)
+        self.navigationController?.present(layersViewController, animated: true, completion: nil)
+        
+        let popController = layersViewController.popoverPresentationController
+        popController?.permittedArrowDirections = .any
+        popController?.barButtonItem = sender
+
+    }
 
     /**
      Present chapter list
@@ -1338,16 +1685,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     @objc func presentChapterList(_ sender: UIBarButtonItem) {
         folioReader.saveReaderState()
 
-        let chapter = FolioReaderChapterList(folioReader: folioReader, readerConfig: readerConfig, book: book, delegate: self)
-        let highlight = FolioReaderHighlightList(folioReader: folioReader, readerConfig: readerConfig)
-        let pageController = PageViewController(folioReader: folioReader, readerConfig: readerConfig)
-
-        pageController.viewControllerOne = chapter
-        pageController.viewControllerTwo = highlight
-        pageController.segmentedControlItems = [readerConfig.localizedContentsTitle, readerConfig.localizedHighlightsTitle]
-
-        let nav = UINavigationController(rootViewController: pageController)
-        present(nav, animated: true, completion: nil)
+        
+        let tocViewController = TOCViewController.create(with: folioReader, config: readerConfig, book: book, chapterDelegate: self)
+        
+        tocViewController.book = book
+        tocViewController.modalPresentationStyle = .custom
+        tocViewController.transitioningDelegate = self
+        present(tocViewController, animated: true, completion: nil)
     }
 
     /**
@@ -1413,6 +1757,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     func presentAddHighlightNote(_ highlight: Highlight, edit: Bool) {
         let addHighlightView = FolioReaderAddHighlightNote(withHighlight: highlight, folioReader: folioReader, readerConfig: readerConfig)
         addHighlightView.isEditHighlight = edit
+        
         let nav = UINavigationController(rootViewController: addHighlightView)
         nav.modalPresentationStyle = .formSheet
         
@@ -1458,6 +1803,7 @@ extension FolioReaderCenter: FolioReaderPageDelegate {
         
         // Pass the event to the centers `pageDelegate`
         pageDelegate?.pageDidLoad?(page)
+        
     }
     
     public func pageWillLoad(_ page: FolioReaderPage) {
@@ -1510,6 +1856,42 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
         }
         
         return bounds
+    }
+    
+}
+
+extension FolioReaderCenter: FolioReaderDelegate {
+    public func folioReader(_ folioReader: FolioReader, didFinishedLoading book: FRBook) {
+        
+        if let currentItems = LayerState.layerState(for: self.book.name ?? "", configuration: readerConfig) {
+            items = currentItems
+        }
+        
+    }
+}
+
+extension FolioReaderCenter: UIViewControllerTransitioningDelegate {
+    
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DrawerTransition(withType: .presenting, interactionController: nil)
+    }
+    
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if let dismissed = dismissed as? TOCViewController {
+            return DrawerTransition(withType: .dismissing, interactionController: dismissed.swipeInteractionController)
+        }
+        return nil
+    }
+    
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+        
+        guard let animator = animator as? DrawerTransition,
+            let interactionController = animator.interactionController,
+            interactionController.interactionInProgress
+            else {
+                return nil
+        }
+        return interactionController
     }
     
 }

@@ -28,6 +28,9 @@ class FolioReaderChapterList: UITableViewController {
     fileprivate var book: FRBook
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
+    
+    private var didLayoutSubviews = false
+    
 
     init(folioReader: FolioReader, readerConfig: FolioReaderConfig, book: FRBook, delegate: FolioReaderChapterListDelegate?) {
         self.readerConfig = readerConfig
@@ -53,6 +56,8 @@ class FolioReaderChapterList: UITableViewController {
 
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 50
+        
+        tableView.tableFooterView = UIView()
 
         // Create TOC list
         self.tocItems = self.book.flatTableOfContents
@@ -76,6 +81,11 @@ class FolioReaderChapterList: UITableViewController {
         let isSection = tocReference.children.count > 0
 
         cell.indexLabel?.text = tocReference.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let selectedView = UIView()
+        selectedView.backgroundColor = UIColor.hexStringToUIColor(hex: "2BB2AC")
+        
+        cell.selectedBackgroundView = selectedView
 
         // Add audio duration for Media Ovelay
         if let resource = tocReference.resource {
@@ -95,12 +105,12 @@ class FolioReaderChapterList: UITableViewController {
             let reference = self.book.spine.spineReferences[safe: currentPageNumber - 1],
             (tocReference.resource != nil) {
             let resource = reference.resource
-            cell.indexLabel?.textColor = (tocReference.resource == resource ? self.readerConfig.tintColor : self.readerConfig.menuTextColor)
+            cell.indexLabel?.textColor = (tocReference.resource == resource ? .white : UIColor.hexStringToUIColor(hex: "#939393"))
+            cell.contentView.backgroundColor = (tocReference.resource == resource ? UIColor.hexStringToUIColor(hex: "2BB2AC") : .clear)
         }
 
         cell.layoutMargins = UIEdgeInsets.zero
         cell.preservesSuperviewLayoutMargins = false
-        cell.contentView.backgroundColor = isSection ? UIColor(white: 0.7, alpha: 0.1) : UIColor.clear
         cell.backgroundColor = UIColor.clear
         return cell
     }
@@ -110,6 +120,10 @@ class FolioReaderChapterList: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tocReference = tocItems[(indexPath as NSIndexPath).row]
         delegate?.chapterList(self, didSelectRowAtIndexPath: indexPath, withTocReference: tocReference)
+       
+        if let cell = tableView.cellForRow(at: indexPath) as? FolioReaderChapterListCell {
+            cell.indexLabel?.textColor = .white
+        }
         
         tableView.deselectRow(at: indexPath, animated: true)
         dismiss { 

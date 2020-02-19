@@ -98,7 +98,7 @@ open class FolioReaderConfig: NSObject {
     // MARK: Colors
 
     /// Base header custom TintColor
-    open var tintColor = UIColor(rgba: "#6ACC50")
+    open var tintColor = UIColor(rgba: "#929292")
 
     /// Menu background color
     open var menuBackgroundColor = UIColor.white
@@ -145,7 +145,7 @@ open class FolioReaderConfig: NSObject {
     open var displayTitle = false
 
     /// Hide the page indicator
-    open var hidePageIndicator = false
+    open var hidePageIndicator = true
 
     /// Go to saved position when open a book
     open var loadSavedPositionForCurrentBook = true
@@ -164,7 +164,7 @@ open class FolioReaderConfig: NSObject {
     // MARK: Realm
 
     /// Realm configuration for storing highlights
-    open var realmConfiguration         = Realm.Configuration(schemaVersion: 2)
+    open var realmConfiguration         = Realm.Configuration(schemaVersion: 0)
 
     // MARK: Localized strings
 

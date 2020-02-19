@@ -9,6 +9,14 @@
 import Foundation
 import UIKit
 
+public extension Notification.Name {
+    static let undoAction = Notification.Name("undoAction")
+    static let redoAction = Notification.Name("redoAction")
+    
+    static let postStrokes = Notification.Name("postStrokes")
+    static let postHighlight = Notification.Name("postHighlight")
+}
+
 extension UICollectionView.ScrollDirection {
     static func direction(withConfiguration readerConfig: FolioReaderConfig) -> UICollectionView.ScrollDirection {
         return readerConfig.isDirection(.vertical, .horizontal, .horizontal)
@@ -41,6 +49,94 @@ extension CGRect {
     func forDirection(withConfiguration readerConfig: FolioReaderConfig) -> CGFloat {
         return readerConfig.isDirection(height, width, height)
     }
+}
+
+extension UIView {
+    
+    @IBInspectable
+    var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+        }
+    }
+    
+    @IBInspectable
+    var borderWidth: CGFloat {
+        get {
+            return layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }
+    
+    @IBInspectable
+    var borderColor: UIColor? {
+        get {
+            if let color = layer.borderColor {
+                return UIColor(cgColor: color)
+            }
+            return nil
+        }
+        set {
+            if let color = newValue {
+                layer.borderColor = color.cgColor
+            } else {
+                layer.borderColor = nil
+            }
+        }
+    }
+    
+    @IBInspectable
+    var shadowRadius: CGFloat {
+        get {
+            return layer.shadowRadius
+        }
+        set {
+            layer.shadowRadius = newValue
+        }
+    }
+    
+    @IBInspectable
+    var shadowOpacity: Float {
+        get {
+            return layer.shadowOpacity
+        }
+        set {
+            layer.shadowOpacity = newValue
+        }
+    }
+    
+    @IBInspectable
+    var shadowOffset: CGSize {
+        get {
+            return layer.shadowOffset
+        }
+        set {
+            layer.shadowOffset = newValue
+        }
+    }
+    
+    @IBInspectable
+    var shadowColor: UIColor? {
+        get {
+            if let color = layer.shadowColor {
+                return UIColor(cgColor: color)
+            }
+            return nil
+        }
+        set {
+            if let color = newValue {
+                layer.shadowColor = color.cgColor
+            } else {
+                layer.shadowColor = nil
+            }
+        }
+    }
+
 }
 
 extension ScrollDirection {
@@ -124,6 +220,26 @@ internal extension UIColor {
         self.init(red:red, green:green, blue:blue, alpha:alpha)
     }
     
+    ///Custom colors
+    
+    static let lightBlue = UIColor(red: 0.29, green: 0.56, blue: 0.89, alpha: 0.8)
+    
+    static let lightGreen = UIColor(red: 0.32, green: 0.7, blue: 0.39, alpha: 0.8)
+    
+    static let lightYellow = UIColor(red: 0.97, green: 0.81, blue: 0.11, alpha: 0.8)
+    
+    static let lightOrange = UIColor(red: 0.95, green: 0.48, blue: 0.07, alpha: 0.8)
+    
+    static let lightRed = UIColor(red: 0.95, green: 0.28, blue: 0.28, alpha: 0.8)
+    
+    static let pink = UIColor(red: 0.94, green: 0.55, blue: 0.73, alpha: 1)
+    
+    static let lightPurple = UIColor(red: 0.41, green: 0.42, blue: 0.83, alpha: 1)
+    
+    static let customGray = UIColor(red: 0.43, green: 0.43, blue: 0.43, alpha: 1)
+    
+    static let lightWhite = UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
+    
     //
     /// Hex string of a UIColor instance.
     ///
@@ -143,6 +259,30 @@ internal extension UIColor {
         } else {
             return String(format: "#%02X%02X%02X", Int(r * 255), Int(g * 255), Int(b * 255))
         }
+    }
+    
+    // MARK: - Convert hex color to UIColor -
+    
+    class func hexStringToUIColor(hex: String) -> UIColor {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+        
+        if (cString.count != 6) {
+            return UIColor.gray
+        }
+        
+        var rgbValue:UInt32 = 0
+        Scanner(string: cString).scanHexInt32(&rgbValue)
+        
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
     }
     
     // MARK: - color shades
@@ -302,6 +442,28 @@ internal extension String {
         return String(format: "%02.f:%02.f", min, sec)
     }
     
+    // the number component of an alphanumeric String
+    var number: Int?  {
+        
+        let zero: Unicode.Scalar = "0"
+        let nine: Unicode.Scalar = "9"
+        
+        var stringNumber = ""
+        
+        for letter in unicodeScalars {
+            switch letter.value {
+            case zero.value...nine.value:
+                stringNumber.append(String(letter))
+            default:
+                break
+            }
+        }
+        
+        return Int(stringNumber)
+        
+    
+    }
+    
     // MARK: - NSString helpers
     
     var lastPathComponent: String {
@@ -331,6 +493,7 @@ internal extension String {
     func appendingPathExtension(_ str: String) -> String {
         return (self as NSString).appendingPathExtension(str) ?? self+"."+str
     }
+
 }
 
 internal extension UIImage {
@@ -400,12 +563,41 @@ internal extension UIImage {
     }
     
     /**
+     Generates an ellipse with a color
+     
+     - parameter color: The input color
+     - returns: Return a colored ellipse
+     */
+    
+    class func ellipseWithColor(_ color: UIColor, size: CGFloat?, border: UIColor?) -> UIImage {
+        let layerFrame = CGRect(x: 0, y: 0, width: size ?? 16.0, height: size ?? 16.0)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = CGPath(ellipseIn: layerFrame.insetBy(dx: 1, dy: 1), transform: nil)
+        shapeLayer.fillColor = color.cgColor
+        
+        if let border = border {
+            let darkerColor = border
+            shapeLayer.strokeColor = darkerColor.withAlphaComponent(0.8).cgColor
+        } else {
+            let darkerColor = color.darkerColor(0.4)
+            shapeLayer.strokeColor = darkerColor.withAlphaComponent(0.65).cgColor
+        }
+        
+        let layer = CALayer.init()
+        layer.frame = layerFrame
+        layer.addSublayer(shapeLayer)
+        
+        return UIImage.imageWithLayer(layer)
+    }
+    
+    /**
      Generates a image with a `CALayer`
      
      - parameter layer: The input `CALayer`
      - returns: Return a rendered image
      */
-    class func imageWithLayer(_ layer: CALayer) -> UIImage {
+    class func imageWithLayer(_ layer: CALayer) -> UIImage {        
         UIGraphicsBeginImageContextWithOptions(layer.bounds.size, layer.isOpaque, 0.0)
         layer.render(in: UIGraphicsGetCurrentContext()!)
         let img = UIGraphicsGetImageFromCurrentImageContext()
