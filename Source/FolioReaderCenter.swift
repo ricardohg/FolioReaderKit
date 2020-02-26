@@ -812,7 +812,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             html = modifiedHtmlContent
         }
         
-        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: spine.resource.fullHref.deletingLastPathComponent))
+        let fileURL = URL(fileURLWithPath: spine.resource.fullHref)
+        cell.webView?.loadFileURL(fileURL, allowingReadAccessTo: fileURL.deletingLastPathComponent().deletingLastPathComponent())
+        cell.loadHTMLString(html, baseURL: fileURL.deletingLastPathComponent())
         return cell
     }
 
