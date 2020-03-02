@@ -435,6 +435,7 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
     open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if gestureRecognizer.view is FolioReaderWebView {
             if otherGestureRecognizer is UILongPressGestureRecognizer {
+                webView?.createMenu(options: false)
                 if UIMenuController.shared.isMenuVisible {
                     webView?.setMenuVisible(false)
                 }
@@ -617,8 +618,6 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
                 }
                 
                 webView.isOneWord = true
-                webView.createMenu(options: false)
-                
             }
         }
 
