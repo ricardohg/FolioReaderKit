@@ -974,7 +974,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         scrollScrubber?.setSliderVal()
         
-        currentPage.webView?.js("getReadingTime()") { readingTime in
+        currentPage.webView?.js("getReadingTime()") { [unowned self] readingTime in
             
             guard let readingTime = readingTime
                 else {
@@ -1410,7 +1410,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard let currentPage = currentPage else { return }
 
         
-        currentPage.webView?.js("getBodyText()") { chapterText in
+        currentPage.webView?.js("getBodyText()") { [unowned self] chapterText in
             
             guard let chapterText = chapterText else { return }
             

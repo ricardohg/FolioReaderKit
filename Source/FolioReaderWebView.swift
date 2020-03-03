@@ -85,12 +85,12 @@ open class FolioReaderWebView: WKWebView {
         
         let shareImage = UIAlertAction(title: self.readerConfig.localizedShareImageQuote, style: .default, handler: { (action) -> Void in
             if self.isShare {
-                self.js("getHighlightContent()") { textToShare in
+                self.js("getHighlightContent()") { [unowned self] textToShare in
                     guard let textToShare = textToShare else { return }
                     self.folioReader.readerCenter?.presentQuoteShare(textToShare)
                 }
             } else {
-                self.js("getSelectedText()") { textToShare in
+                self.js("getSelectedText()") { [unowned self] textToShare in
                     guard let textToShare = textToShare else { return }
                     self.folioReader.readerCenter?.presentQuoteShare(textToShare)
                     
@@ -102,12 +102,12 @@ open class FolioReaderWebView: WKWebView {
         
         let shareText = UIAlertAction(title: self.readerConfig.localizedShareTextQuote, style: .default) { (action) -> Void in
             if self.isShare {
-                self.js("getHighlightContent()") { textToShare in
+                self.js("getHighlightContent()") { [unowned self] textToShare in
                     guard let textToShare = textToShare else { return }
                     self.folioReader.readerCenter?.shareHighlight(textToShare, rect: sender.menuFrame)
                 }
             } else {
-                self.js("getSelectedText()") { textToShare in
+                self.js("getSelectedText()") { [unowned self] textToShare in
                     guard let textToShare = textToShare else { return }
                     self.folioReader.readerCenter?.shareHighlight(textToShare, rect: sender.menuFrame)
                 }
@@ -137,7 +137,7 @@ open class FolioReaderWebView: WKWebView {
     
     func remove(_ sender: UIMenuController?) {
         
-        js("removeThisHighlight()") { removedId in
+        js("removeThisHighlight()") { [unowned self] removedId in
             guard let removedId = removedId else { return }
             Highlight.removeById(withConfiguration: self.readerConfig, highlightId: removedId)
         }
@@ -147,7 +147,7 @@ open class FolioReaderWebView: WKWebView {
     
     @objc func highlight(_ sender: UIMenuController?) {
         
-        js("highlightString('\(HighlightStyle.classForStyle(self.folioReader.currentHighlightStyle))')") { highlightAndReturn in
+        js("highlightString('\(HighlightStyle.classForStyle(self.folioReader.currentHighlightStyle))')") { [unowned self] highlightAndReturn in
             let jsonData = highlightAndReturn?.data(using: String.Encoding.utf8)
             
             do {
@@ -166,7 +166,7 @@ open class FolioReaderWebView: WKWebView {
                 
                 
                 // Persist
-                self.js("getHTML()") { html in                    
+                self.js("getHTML()") { [unowned self] html in
                     guard let html = html, let identifier = dic["id"], let bookId = (self.book.name as NSString?)?.deletingPathExtension
                         else {
                             return
@@ -189,7 +189,7 @@ open class FolioReaderWebView: WKWebView {
     }
     
     @objc func highlightWithNote(_ sender: UIMenuController?) {
-        js("highlightStringWithNote('\(HighlightStyle.classForStyle(self.folioReader.currentHighlightStyle))')") { highlightAndReturn in
+        js("highlightStringWithNote('\(HighlightStyle.classForStyle(self.folioReader.currentHighlightStyle))')") { [unowned self] highlightAndReturn in
             
             let jsonData = highlightAndReturn?.data(using: String.Encoding.utf8)
             
@@ -201,7 +201,7 @@ open class FolioReaderWebView: WKWebView {
                 
                 self.clearTextSelection()
                 
-                self.js("getHTML()", completion: { html in
+                self.js("getHTML()", completion: { [unowned self] html in
                     guard let html = html else { return }
                     guard let identifier = dic["id"] else { return }
                     guard let bookId = (self.book.name as NSString?)?.deletingPathExtension else { return }
@@ -221,7 +221,7 @@ open class FolioReaderWebView: WKWebView {
     }
     
     @objc func updateHighlightNote (_ sender: UIMenuController?) {
-        js("getHighlightId()", completion: { highlightId in
+        js("getHighlightId()", completion: { [unowned self] highlightId in
             guard let highlightId = highlightId else {
                 return
             }
@@ -247,7 +247,7 @@ open class FolioReaderWebView: WKWebView {
     }
     
     @objc func define(_ sender: UIMenuController?) {
-        js("getSelectedText()") { selectedText in
+        js("getSelectedText()") { [unowned self] selectedText in
             guard let selectedText = selectedText else { return }
             
             self.setMenuVisible(false)
@@ -291,7 +291,7 @@ open class FolioReaderWebView: WKWebView {
     func changeHighlightStyle(_ sender: UIMenuController?, style: HighlightStyle) {
         self.folioReader.currentHighlightStyle = style.rawValue
         
-        js("setHighlightStyle('\(HighlightStyle.classForStyle(style.rawValue))')") { updateId in
+        js("setHighlightStyle('\(HighlightStyle.classForStyle(style.rawValue))')") { [unowned self] updateId in
             guard let updateId = updateId else { return }
             Highlight.updateById(withConfiguration: self.readerConfig, highlightId: updateId, type: style)
         }

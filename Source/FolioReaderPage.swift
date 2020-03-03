@@ -452,7 +452,7 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
         if let _navigationController = self.folioReader.readerCenter?.navigationController, (_navigationController.isNavigationBarHidden == true) {
             
             
-            webView?.js("getSelectedText()") { selected in
+            webView?.js("getSelectedText()") { [weak self] selected in
                 
                 guard (selected == nil || selected?.isEmpty == true) else {
                     return
@@ -462,6 +462,9 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
                 let dispatchTime = (DispatchTime.now() + (Double(Int64(delay)) / Double(NSEC_PER_SEC)))
                 
                 DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
+                    guard let self = self else {
+                        return
+                    }
                     if (self.shouldShowBar == true && self.menuIsVisible == false) {
                         self.folioReader.readerCenter?.toggleBars()
                     }
@@ -610,14 +613,14 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
 
         if !webView.isShare && !webView.isColors {
             
-            webView.js("getSelectedText()") { result in
+            webView.js("getSelectedText()") { [weak webView] result in
                 
                 guard let result = result, result.components(separatedBy: " ").count == 1 else {
-                    webView.isOneWord = false
+                    webView?.isOneWord = false
                     return
                 }
                 
-                webView.isOneWord = true
+                webView?.isOneWord = true
             }
         }
 
