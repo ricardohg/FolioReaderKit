@@ -813,6 +813,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         let fileURL = URL(fileURLWithPath: spine.resource.fullHref)
+        
+        // Call to loadFileURL is needed in order to allow webkit load local resources as javascript, css and images
+        // Stored in a different folder where html file is located.
+        // Also calling loadHTMLString allow us to inject the html with the highlighted words
+        //
+        // We are removing the 2 last path component to allow the reading access to the root folder where html file is located since there are some references inside the html as ../resources/image1 and so on.
         cell.webView?.loadFileURL(fileURL, allowingReadAccessTo: fileURL.deletingLastPathComponent().deletingLastPathComponent())
         cell.loadHTMLString(html, baseURL: fileURL.deletingLastPathComponent())
         return cell
