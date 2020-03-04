@@ -757,7 +757,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             }
         }
         
-        cell.didAddedHighlights = { highlights in
+        cell.didAddedHighlights = { [unowned self] highlights in
             
             NotificationCenter.default.post(name: .postHighlight, object: self, userInfo: ["highlights": highlights, "contentId": self.contentId, "sectionId": self.pageIds[self.currentPageNumber - 1].number ?? 0])
             
