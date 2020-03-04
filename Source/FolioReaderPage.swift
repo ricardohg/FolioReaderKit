@@ -237,8 +237,7 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
     }
     
     // MARK: - WKNavigationDelegate
-    
-    public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         guard let webView = webView as? FolioReaderWebView else {
             return
         }
@@ -269,8 +268,6 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
         
         scalePageToFitDeviceScreen()
         delegate?.pageDidLoad?(self)
-        
-        
     }
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
