@@ -296,7 +296,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         toolBarViewController.view.heightAnchor.constraint(equalToConstant: ToolBarViewController.toolbarHeight).isActive = true
         
         
-        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: ToolBarViewController.toolbarHeight)
+        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: ToolBarViewController.toolbarHeight)
         toolBarAnchor?.isActive = true
         
         
@@ -757,7 +757,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             }
         }
         
-        cell.didAddedHighlights = { highlights in
+        cell.didAddedHighlights = { [unowned self] highlights in
             
             NotificationCenter.default.post(name: .postHighlight, object: self, userInfo: ["highlights": highlights, "contentId": self.contentId, "sectionId": self.pageIds[self.currentPageNumber - 1].number ?? 0])
             
@@ -812,7 +812,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             html = modifiedHtmlContent
         }
         
-        cell.loadHTMLString(html, baseURL: URL(fileURLWithPath: spine.resource.fullHref.deletingLastPathComponent))
+        let fileURL = URL(fileURLWithPath: spine.resource.fullHref)
+        
+        // Call to loadFileURL is needed in order to allow webkit load local resources as javascript, css and images
+        // Stored in a different folder where html file is located.
+        // Also calling loadHTMLString allow us to inject the html with the highlighted words
+        //
+        // We are removing the 2 last path component to allow the reading access to the root folder where html file is located since there are some references inside the html as ../resources/image1 and so on.
+        cell.webView?.loadFileURL(fileURL, allowingReadAccessTo: fileURL.deletingLastPathComponent().deletingLastPathComponent())
+        cell.loadHTMLString(html, baseURL: fileURL.deletingLastPathComponent())
         return cell
     }
 
@@ -965,12 +973,21 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
 
         scrollScrubber?.setSliderVal()
-
-        if let readingTime = currentPage.webView?.js("getReadingTime()") {
-            pageIndicatorView?.totalMinutes = Int(readingTime)!
-        } else {
-            pageIndicatorView?.totalMinutes = 0
+        
+        currentPage.webView?.js("getReadingTime()") { [unowned self] readingTime in
+            
+            guard let readingTime = readingTime
+                else {
+                    self.pageIndicatorView?.totalMinutes = 0
+                    return
+                    
+            }
+            
+            self.pageIndicatorView?.totalMinutes = Int(readingTime)!
+            
         }
+
+
         pagesForCurrentPage(currentPage)
 
         delegate?.pageDidAppear?(currentPage)
@@ -1392,60 +1409,66 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     @objc func shareChapter(_ sender: UIBarButtonItem) {
         guard let currentPage = currentPage else { return }
 
-        if let chapterText = currentPage.webView?.js("getBodyText()") {
+        
+        currentPage.webView?.js("getBodyText()") { [unowned self] chapterText in
+            
+            guard let chapterText = chapterText else { return }
+            
             let htmlText = chapterText.replacingOccurrences(of: "[\\n\\r]+", with: "<br />", options: .regularExpression)
-            var subject = readerConfig.localizedShareChapterSubject
+            var subject = self.readerConfig.localizedShareChapterSubject
             var html = ""
             var text = ""
             var bookTitle = ""
             var chapterName = ""
             var authorName = ""
             var shareItems = [AnyObject]()
-
+            
             // Get book title
             if let title = self.book.title {
                 bookTitle = title
                 subject += " “\(title)”"
             }
-
+            
             // Get chapter name
-            if let chapter = getCurrentChapterName() {
+            if let chapter = self.getCurrentChapterName() {
                 chapterName = chapter
             }
-
+            
             // Get author name
             if let author = self.book.metadata.creators.first {
                 authorName = author.name
             }
-
+            
             // Sharing html and text
             html = "<html><body>"
             html += "<br /><hr> <p>\(htmlText)</p> <hr><br />"
-            html += "<center><p style=\"color:gray\">"+readerConfig.localizedShareAllExcerptsFrom+"</p>"
+            html += "<center><p style=\"color:gray\">"+self.readerConfig.localizedShareAllExcerptsFrom+"</p>"
             html += "<b>\(bookTitle)</b><br />"
-            html += readerConfig.localizedShareBy+" <i>\(authorName)</i><br />"
-
-            if let bookShareLink = readerConfig.localizedShareWebLink {
+            html += self.readerConfig.localizedShareBy+" <i>\(authorName)</i><br />"
+            
+            if let bookShareLink = self.readerConfig.localizedShareWebLink {
                 html += "<a href=\"\(bookShareLink.absoluteString)\">\(bookShareLink.absoluteString)</a>"
                 shareItems.append(bookShareLink as AnyObject)
             }
-
+            
             html += "</center></body></html>"
-            text = "\(chapterName)\n\n“\(chapterText)” \n\n\(bookTitle) \n\(readerConfig.localizedShareBy) \(authorName)"
-
+            text = "\(chapterName)\n\n“\(chapterText)” \n\n\(bookTitle) \n\(self.readerConfig.localizedShareBy) \(authorName)"
+            
             let act = FolioReaderSharingProvider(subject: subject, text: text, html: html)
             shareItems.insert(contentsOf: [act, "" as AnyObject], at: 0)
-
+            
             let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
             activityViewController.excludedActivityTypes = [UIActivity.ActivityType.print, UIActivity.ActivityType.postToVimeo]
-
+            
             // Pop style on iPad
             if let actv = activityViewController.popoverPresentationController {
                 actv.barButtonItem = sender
             }
-
-            present(activityViewController, animated: true, completion: nil)
+            
+           self.present(activityViewController, animated: true, completion: nil)
+            
         }
+        
     }
 
     /**
