@@ -296,7 +296,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         toolBarViewController.view.heightAnchor.constraint(equalToConstant: ToolBarViewController.toolbarHeight).isActive = true
         
         
-        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: ToolBarViewController.toolbarHeight)
+        toolBarAnchor = toolBarViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: ToolBarViewController.toolbarHeight)
         toolBarAnchor?.isActive = true
         
         
