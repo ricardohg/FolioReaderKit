@@ -140,6 +140,14 @@ open class FolioReaderWebView: WKWebView {
         js("removeThisHighlight()") { [unowned self] removedId in
             guard let removedId = removedId else { return }
             Highlight.removeById(withConfiguration: self.readerConfig, highlightId: removedId)
+            
+            guard let bookId = (self.book.name as NSString?)?.deletingPathExtension else {
+                return
+            }
+            let pageNumber = self.folioReader.readerCenter?.currentPageNumber ?? 0
+            let highlights = Highlight.allByBookId(withConfiguration: self.readerConfig, bookId: bookId, andPage: pageNumber as NSNumber)
+            
+            self.didAddedHighlights?(highlights)
         }
         
         setMenuVisible(false)
