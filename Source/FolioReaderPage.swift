@@ -349,6 +349,8 @@ open class FolioReaderPage: UICollectionViewCell, WKNavigationDelegate, UIGestur
                     }
                 } else {
                     self.folioReader.readerCenter?.changePageWith(href: href, animated: true)
+                    decisionHandler(WKNavigationActionPolicy.cancel)
+                    return
                 }
                decisionHandler(WKNavigationActionPolicy.allow)
                 return
