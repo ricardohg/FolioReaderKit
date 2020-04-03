@@ -154,9 +154,13 @@ open class FolioReaderWebView: WKWebView {
     }
     
     @objc func highlight(_ sender: UIMenuController?) {
-        
+    
         js("highlightString('\(HighlightStyle.classForStyle(self.folioReader.currentHighlightStyle))')") { [unowned self] highlightAndReturn in
-            let jsonData = highlightAndReturn?.data(using: String.Encoding.utf8)
+            guard let highlightAndReturn = highlightAndReturn else {
+                return
+            }
+            
+            let jsonData = highlightAndReturn.data(using: String.Encoding.utf8)
             
             do {
                 let json = try JSONSerialization.jsonObject(with: jsonData!, options: []) as! NSArray
